@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		16E9CC850D6F543A6671F598 /* libPods-WeChatStudy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA1923DBB2C27AFF22EE30 /* libPods-WeChatStudy.a */; };
 		A21FB51920B1A56D00F80B90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A21FB51820B1A56D00F80B90 /* AppDelegate.m */; };
-		A21FB51C20B1A56D00F80B90 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A21FB51B20B1A56D00F80B90 /* ViewController.m */; };
 		A21FB51F20B1A56D00F80B90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A21FB51D20B1A56D00F80B90 /* Main.storyboard */; };
 		A21FB52120B1A56F00F80B90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A21FB52020B1A56F00F80B90 /* Assets.xcassets */; };
 		A21FB52420B1A56F00F80B90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A21FB52220B1A56F00F80B90 /* LaunchScreen.storyboard */; };
@@ -19,6 +18,19 @@
 		A21FB53C20B1D13800F80B90 /* WXMediaMessage+messageConstruct.m in Sources */ = {isa = PBXBuildFile; fileRef = A21FB53B20B1D13800F80B90 /* WXMediaMessage+messageConstruct.m */; };
 		A21FB53E20B1D17C00F80B90 /* IMG_3390.JPG in Resources */ = {isa = PBXBuildFile; fileRef = A21FB53D20B1D17B00F80B90 /* IMG_3390.JPG */; };
 		A21FB54120B1D1D500F80B90 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = A21FB53F20B1D1D500F80B90 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m */; };
+		A21FB55C20B27C1500F80B90 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB55B20B27C1500F80B90 /* CoreTelephony.framework */; };
+		A21FB55E20B27C1B00F80B90 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB55D20B27C1B00F80B90 /* SystemConfiguration.framework */; };
+		A21FB56020B27C3300F80B90 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB55F20B27C3300F80B90 /* libz.tbd */; };
+		A21FB56220B27C3B00F80B90 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB56120B27C3B00F80B90 /* libsqlite3.0.tbd */; };
+		A21FB56420B2F98000F80B90 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB56320B2F98000F80B90 /* libc++.1.tbd */; };
+		A21FB56620B2F99200F80B90 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB56520B2F99100F80B90 /* MobileCoreServices.framework */; };
+		A21FB56820B2F99D00F80B90 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB56720B2F99D00F80B90 /* UIKit.framework */; };
+		A21FB56A20B2F9A300F80B90 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB56920B2F9A300F80B90 /* Foundation.framework */; };
+		A21FB56C20B2F9A900F80B90 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB56B20B2F9A900F80B90 /* CoreGraphics.framework */; };
+		A21FB57720B2FB4400F80B90 /* libWXImageSearch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB57520B2FB4300F80B90 /* libWXImageSearch.a */; };
+		A21FB57820B2FB4400F80B90 /* libmtaWXOsdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A21FB57620B2FB4300F80B90 /* libmtaWXOsdk.a */; };
+		A21FB57C20B2FBAB00F80B90 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A21FB57B20B2FBAB00F80B90 /* ViewController.m */; };
+		A21FB57F20B2FC6900F80B90 /* ImageSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A21FB57E20B2FC6900F80B90 /* ImageSearchViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +39,6 @@
 		A21FB51420B1A56D00F80B90 /* WeChatStudy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeChatStudy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A21FB51720B1A56D00F80B90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A21FB51820B1A56D00F80B90 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		A21FB51A20B1A56D00F80B90 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A21FB51B20B1A56D00F80B90 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		A21FB51E20B1A56D00F80B90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A21FB52020B1A56F00F80B90 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A21FB52320B1A56F00F80B90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -45,6 +55,22 @@
 		A21FB53D20B1D17B00F80B90 /* IMG_3390.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_3390.JPG; sourceTree = "<group>"; };
 		A21FB53F20B1D1D500F80B90 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SendMessageToWXReq+requestWithTextOrMediaMessage.m"; sourceTree = "<group>"; };
 		A21FB54020B1D1D500F80B90 /* SendMessageToWXReq+requestWithTextOrMediaMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SendMessageToWXReq+requestWithTextOrMediaMessage.h"; sourceTree = "<group>"; };
+		A21FB55B20B27C1500F80B90 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		A21FB55D20B27C1B00F80B90 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A21FB55F20B27C3300F80B90 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		A21FB56120B27C3B00F80B90 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		A21FB56320B2F98000F80B90 /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "usr/lib/libc++.1.tbd"; sourceTree = SDKROOT; };
+		A21FB56520B2F99100F80B90 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		A21FB56720B2F99D00F80B90 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		A21FB56920B2F9A300F80B90 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		A21FB56B20B2F9A900F80B90 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A21FB57420B2FB4300F80B90 /* WXImageSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXImageSearch.h; sourceTree = "<group>"; };
+		A21FB57520B2FB4300F80B90 /* libWXImageSearch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWXImageSearch.a; sourceTree = "<group>"; };
+		A21FB57620B2FB4300F80B90 /* libmtaWXOsdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libmtaWXOsdk.a; sourceTree = "<group>"; };
+		A21FB57A20B2FBAB00F80B90 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		A21FB57B20B2FBAB00F80B90 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A21FB57D20B2FC6900F80B90 /* ImageSearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageSearchViewController.h; sourceTree = "<group>"; };
+		A21FB57E20B2FC6900F80B90 /* ImageSearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageSearchViewController.m; sourceTree = "<group>"; };
 		E6D62CE1962CF4B6BBA0E192 /* Pods-WeChatStudy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeChatStudy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WeChatStudy/Pods-WeChatStudy.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,6 +79,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A21FB56C20B2F9A900F80B90 /* CoreGraphics.framework in Frameworks */,
+				A21FB56A20B2F9A300F80B90 /* Foundation.framework in Frameworks */,
+				A21FB57820B2FB4400F80B90 /* libmtaWXOsdk.a in Frameworks */,
+				A21FB56820B2F99D00F80B90 /* UIKit.framework in Frameworks */,
+				A21FB56620B2F99200F80B90 /* MobileCoreServices.framework in Frameworks */,
+				A21FB56420B2F98000F80B90 /* libc++.1.tbd in Frameworks */,
+				A21FB56220B27C3B00F80B90 /* libsqlite3.0.tbd in Frameworks */,
+				A21FB57720B2FB4400F80B90 /* libWXImageSearch.a in Frameworks */,
+				A21FB56020B27C3300F80B90 /* libz.tbd in Frameworks */,
+				A21FB55E20B27C1B00F80B90 /* SystemConfiguration.framework in Frameworks */,
+				A21FB55C20B27C1500F80B90 /* CoreTelephony.framework in Frameworks */,
 				16E9CC850D6F543A6671F598 /* libPods-WeChatStudy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,6 +100,15 @@
 		68938B2D2C0B145497DF1BF9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A21FB56B20B2F9A900F80B90 /* CoreGraphics.framework */,
+				A21FB56920B2F9A300F80B90 /* Foundation.framework */,
+				A21FB56720B2F99D00F80B90 /* UIKit.framework */,
+				A21FB56520B2F99100F80B90 /* MobileCoreServices.framework */,
+				A21FB56320B2F98000F80B90 /* libc++.1.tbd */,
+				A21FB56120B27C3B00F80B90 /* libsqlite3.0.tbd */,
+				A21FB55F20B27C3300F80B90 /* libz.tbd */,
+				A21FB55D20B27C1B00F80B90 /* SystemConfiguration.framework */,
+				A21FB55B20B27C1500F80B90 /* CoreTelephony.framework */,
 				7CCA1923DBB2C27AFF22EE30 /* libPods-WeChatStudy.a */,
 			);
 			name = Frameworks;
@@ -89,14 +135,14 @@
 		A21FB51620B1A56D00F80B90 /* WeChatStudy */ = {
 			isa = PBXGroup;
 			children = (
+				A21FB57920B2FB8E00F80B90 /* controller */,
+				A21FB55420B27BE500F80B90 /* library */,
 				A21FB53820B1D0E500F80B90 /* resource */,
 				A21FB53420B1BF5E00F80B90 /* network */,
 				A21FB53020B1BD6700F80B90 /* wechat */,
 				A21FB52E20B1B16D00F80B90 /* config */,
 				A21FB51720B1A56D00F80B90 /* AppDelegate.h */,
 				A21FB51820B1A56D00F80B90 /* AppDelegate.m */,
-				A21FB51A20B1A56D00F80B90 /* ViewController.h */,
-				A21FB51B20B1A56D00F80B90 /* ViewController.m */,
 				A21FB51D20B1A56D00F80B90 /* Main.storyboard */,
 				A21FB52020B1A56F00F80B90 /* Assets.xcassets */,
 				A21FB52220B1A56F00F80B90 /* LaunchScreen.storyboard */,
@@ -151,6 +197,35 @@
 				A21FB53D20B1D17B00F80B90 /* IMG_3390.JPG */,
 			);
 			path = image;
+			sourceTree = "<group>";
+		};
+		A21FB55420B27BE500F80B90 /* library */ = {
+			isa = PBXGroup;
+			children = (
+				A21FB57320B2FB4300F80B90 /* WXImageSDK */,
+			);
+			path = library;
+			sourceTree = "<group>";
+		};
+		A21FB57320B2FB4300F80B90 /* WXImageSDK */ = {
+			isa = PBXGroup;
+			children = (
+				A21FB57420B2FB4300F80B90 /* WXImageSearch.h */,
+				A21FB57520B2FB4300F80B90 /* libWXImageSearch.a */,
+				A21FB57620B2FB4300F80B90 /* libmtaWXOsdk.a */,
+			);
+			path = WXImageSDK;
+			sourceTree = "<group>";
+		};
+		A21FB57920B2FB8E00F80B90 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				A21FB57A20B2FBAB00F80B90 /* ViewController.h */,
+				A21FB57B20B2FBAB00F80B90 /* ViewController.m */,
+				A21FB57D20B2FC6900F80B90 /* ImageSearchViewController.h */,
+				A21FB57E20B2FC6900F80B90 /* ImageSearchViewController.m */,
+			);
+			path = controller;
 			sourceTree = "<group>";
 		};
 		B35B6DE12D84D39ABAEAF1E0 /* Pods */ = {
@@ -255,12 +330,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A21FB57C20B2FBAB00F80B90 /* ViewController.m in Sources */,
 				A21FB54120B1D1D500F80B90 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */,
-				A21FB51C20B1A56D00F80B90 /* ViewController.m in Sources */,
 				A21FB53320B1BD7100F80B90 /* WXApiManager.m in Sources */,
 				A21FB52720B1A56F00F80B90 /* main.m in Sources */,
 				A21FB53C20B1D13800F80B90 /* WXMediaMessage+messageConstruct.m in Sources */,
 				A21FB51920B1A56D00F80B90 /* AppDelegate.m in Sources */,
+				A21FB57F20B2FC6900F80B90 /* ImageSearchViewController.m in Sources */,
 				A21FB53720B1BFBB00F80B90 /* WeChatNetWorkManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -402,9 +478,13 @@
 			baseConfigurationReference = E6D62CE1962CF4B6BBA0E192 /* Pods-WeChatStudy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 22WMNM937F;
+				ENABLE_BITCODE = NO;
 				EXECUTABLE_PREFIX = "";
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = $SRCROOT/WeChatStudy/config/WeChatStudy.pch;
 				INFOPLIST_FILE = WeChatStudy/Info.plist;
@@ -412,6 +492,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/WeChatStudy/library/WXImageSDK",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.youxun.zhangshangyintai;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -426,9 +510,13 @@
 			baseConfigurationReference = 96E1FAFF06C35246EEE44A7F /* Pods-WeChatStudy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 22WMNM937F;
+				ENABLE_BITCODE = NO;
 				EXECUTABLE_PREFIX = "";
+				GCC_INPUT_FILETYPE = sourcecode.cpp.objcpp;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = $SRCROOT/WeChatStudy/config/WeChatStudy.pch;
 				INFOPLIST_FILE = WeChatStudy/Info.plist;
@@ -436,6 +524,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/WeChatStudy/library/WXImageSDK",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.youxun.zhangshangyintai;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -43,7 +43,63 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1479" y="-249"/>
+            <point key="canvasLocation" x="-3153" y="-231"/>
+        </scene>
+        <!--Image Search View Controller-->
+        <scene sceneID="IAD-mQ-ntO">
+            <objects>
+                <viewController storyboardIdentifier="searchImageCtlIdentifier" id="dwa-eH-TY9" customClass="ImageSearchViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wau-w4-GEf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="usR-yp-whK">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajn-pL-XJh">
+                                        <rect key="frame" x="87.5" y="100" width="200" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="eAe-br-rqO"/>
+                                            <constraint firstAttribute="height" constant="30" id="h0V-er-27q"/>
+                                        </constraints>
+                                        <state key="normal" title="拍照识别"/>
+                                        <connections>
+                                            <action selector="clickTakePhotoButton:" destination="dwa-eH-TY9" eventType="touchUpInside" id="WNX-ys-Wvn"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nbQ-iS-XBs">
+                                        <rect key="frame" x="87.5" y="230" width="200" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="ctK-Lv-Dha"/>
+                                            <constraint firstAttribute="width" constant="200" id="pWI-h1-H9E"/>
+                                        </constraints>
+                                        <state key="normal" title="选图识别"/>
+                                        <connections>
+                                            <action selector="clickChoseImageButton:" destination="dwa-eH-TY9" eventType="touchUpInside" id="Yqo-JN-gEy"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="nbQ-iS-XBs" firstAttribute="centerX" secondItem="usR-yp-whK" secondAttribute="centerX" id="Bk0-Ow-2j9"/>
+                                    <constraint firstItem="ajn-pL-XJh" firstAttribute="top" secondItem="usR-yp-whK" secondAttribute="top" constant="100" id="TiG-2O-0qC"/>
+                                    <constraint firstItem="ajn-pL-XJh" firstAttribute="centerX" secondItem="usR-yp-whK" secondAttribute="centerX" id="ZgK-yv-Qin"/>
+                                    <constraint firstItem="nbQ-iS-XBs" firstAttribute="top" secondItem="ajn-pL-XJh" secondAttribute="bottom" constant="100" id="iwu-jV-3Eg"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TDT-pM-RTN" firstAttribute="trailing" secondItem="usR-yp-whK" secondAttribute="trailing" id="4Fj-cm-EyV"/>
+                            <constraint firstItem="TDT-pM-RTN" firstAttribute="bottom" secondItem="usR-yp-whK" secondAttribute="bottom" id="F6w-ug-3UE"/>
+                            <constraint firstItem="usR-yp-whK" firstAttribute="leading" secondItem="TDT-pM-RTN" secondAttribute="leading" id="o8k-bF-HhG"/>
+                            <constraint firstItem="usR-yp-whK" firstAttribute="top" secondItem="TDT-pM-RTN" secondAttribute="top" id="zAs-8V-OFK"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="TDT-pM-RTN"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UrD-CZ-kkY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2114.4000000000001" y="-307.1964017991005"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Mii-6W-AHR">
@@ -59,7 +115,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vqi-jd-nXU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2249" y="-269"/>
+            <point key="canvasLocation" x="-4186" y="-250"/>
         </scene>
     </scenes>
 </document>
