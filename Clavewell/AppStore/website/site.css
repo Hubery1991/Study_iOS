@@ -1,0 +1,186 @@
+:root {
+  --ink: #120d1f;
+  --sky: #2a1b4a;
+  --brass: #e8c16a;
+  --brass-deep: #b8883a;
+  --parchment: #f6f0e4;
+  --muted: #b5a9c4;
+  --card: rgba(255, 255, 255, 0.06);
+  --line: rgba(232, 193, 106, 0.35);
+  --amber: #ffc857;
+  --tide: #3ec4c4;
+  --violet: #b9a4f5;
+  --max: 760px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--parchment);
+  background:
+    radial-gradient(ellipse at top, rgba(232, 193, 106, 0.16), transparent 42%),
+    linear-gradient(180deg, var(--sky), var(--ink) 42%);
+  font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  line-height: 1.55;
+}
+
+a { color: var(--brass); }
+
+a:hover { color: var(--parchment); }
+
+.wrap {
+  width: min(var(--max), calc(100% - 32px));
+  margin: 0 auto;
+}
+
+header.site {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 0 8px;
+}
+
+.brand {
+  color: var(--parchment);
+  text-decoration: none;
+  font-size: 1.35rem;
+  letter-spacing: 0.01em;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 16px;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.92rem;
+}
+
+nav a[aria-current="page"] { color: var(--brass); }
+
+.hero { padding: 28px 0 12px; text-align: center; }
+
+.kicker {
+  margin: 0;
+  color: var(--brass);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 8px 0 0;
+  font-size: clamp(3rem, 10vw, 4.6rem);
+  font-weight: 600;
+  line-height: 0.95;
+}
+
+.rule {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 14px 0;
+}
+
+.rule i {
+  display: block;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--brass);
+}
+
+.lede {
+  margin: 0 auto;
+  max-width: 36rem;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.05rem;
+}
+
+.well {
+  width: 168px;
+  height: 168px;
+  margin: 28px auto 8px;
+  border-radius: 50%;
+  border: 8px solid var(--brass);
+  background: radial-gradient(circle at 50% 45%, #2a1c44, #0c0a14 72%);
+  position: relative;
+  box-shadow: 0 0 40px rgba(232, 193, 106, 0.18);
+}
+
+.mote {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: inset -6px -8px 12px rgba(0, 0, 0, 0.25), inset 4px 4px 8px rgba(255, 255, 255, 0.45);
+}
+
+.mote.v { width: 44px; height: 44px; background: var(--violet); left: 62px; top: 36px; }
+.mote.a { width: 50px; height: 50px; background: var(--amber); left: 34px; top: 82px; }
+.mote.t { width: 40px; height: 40px; background: var(--tide); left: 92px; top: 92px; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 22px 0 8px; }
+
+.button {
+  display: inline-block;
+  min-width: 148px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: var(--brass);
+  color: var(--ink);
+  text-decoration: none;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.button.ghost {
+  background: transparent;
+  color: var(--parchment);
+  border: 1.5px solid var(--line);
+}
+
+section { padding: 18px 0 8px; }
+
+h2 {
+  font-size: 1.8rem;
+  margin: 0 0 8px;
+}
+
+h3 { margin: 0 0 6px; font-size: 1.25rem; }
+
+p, li { font-family: ui-sans-serif, system-ui, sans-serif; }
+
+.muted { color: var(--muted); }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 14px 0 8px;
+}
+
+article.card, .panel {
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+ol.steps { padding-left: 1.2rem; }
+ol.steps li { margin: 0 0 10px; }
+
+footer.site {
+  margin-top: 28px;
+  padding: 18px 0 36px;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.legal h2 { margin-top: 22px; font-size: 1.35rem; }
+.date { color: var(--brass); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; }

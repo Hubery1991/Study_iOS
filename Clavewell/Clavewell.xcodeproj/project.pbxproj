@@ -1,0 +1,407 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BC420A4B2326DA9AE46F27C2 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217CDF0D47637C470C7EC789 /* AboutView.swift */; };
+		D777C14313A421373A9F50C0 /* ClavewellApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF059C8F89C3699D329E31D1 /* ClavewellApp.swift */; };
+		3372AF02D710F2E5365545E6 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE4F8A8B4A00C9E6311387F /* Components.swift */; };
+		4A8074FB8A811D6955F68DE8 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9674CBBF7C4EA60B1570F6 /* GameView.swift */; };
+		13ACAF1E31282083F6751CA0 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768D75FD6E1BBB417275D8F2 /* Haptics.swift */; };
+		37EA1E2A3DF6CC61CCF702F5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70EAC0872B3DA2F75367633 /* HomeView.swift */; };
+		F70CDE85440EDA84D8C3CA40 /* HowToPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204E26C38104635DD0316C81 /* HowToPlayView.swift */; };
+		8DF3A9DAC9AE822193AD606D /* LegalCopy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33692C94D3A4B4691E01F328 /* LegalCopy.swift */; };
+		7BEE53D538A036D64964C7ED /* ModeSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6985027EFC84F879A5A18B2 /* ModeSelectView.swift */; };
+		2B7FCD3FFB3C97BA0BC8ABD9 /* MoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B2FE65AE094CFC3A1B2175 /* MoteView.swift */; };
+		223409F40E15686CB65125B8 /* PlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B10FDE32C871F99D4F7542 /* PlayModel.swift */; };
+		B41742D53FB0061FE85C97A3 /* RecordsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E6B4B4CB68B4E85C301793 /* RecordsView.swift */; };
+		E778BEAA207CC8A8B11361D2 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92432B8C1D407E054140A102 /* RootView.swift */; };
+		932FFEB1C03E23FAF41C8863 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57100C959D200AE18132258B /* SettingsView.swift */; };
+		D1E0FED10A134728A10DA67C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5D2066EE7E76366E13C30C /* Theme.swift */; };
+		A808F0B2FAEB84BE489CC859 /* ToneBed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEAED0F538318D753212C3E /* ToneBed.swift */; };
+		B09C3CF6BD2E217FE4813D1C /* WellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD66E4BF64EF1434F1E7E27C /* WellView.swift */; };
+		3797C75C0D3E22656816123C /* Hue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13DDAD244427F150BA9B519 /* Hue.swift */; };
+		CBC53EC9A3C40AE01BAE548A /* MatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8001E8D2FA3DFED02FECC4 /* MatchSession.swift */; };
+		779B99C5CDE7E0AB77AF52B4 /* Scorebook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098AF5AE47F1ACC372C921D /* Scorebook.swift */; };
+		ADF25BFA8646499469FD1F6E /* WellBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1BEE689B5248319008499C /* WellBoard.swift */; };
+		676CA0C2C3FF04AFF08464D8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0365672E26E54D87A9D1F001 /* PrivacyInfo.xcprivacy */; };
+		543E8408D996E7ED378179E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D59B301BE12A39FF7C501E5C /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		217CDF0D47637C470C7EC789 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		CF059C8F89C3699D329E31D1 /* ClavewellApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClavewellApp.swift; sourceTree = "<group>"; };
+		CFE4F8A8B4A00C9E6311387F /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		2B9674CBBF7C4EA60B1570F6 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		768D75FD6E1BBB417275D8F2 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		A70EAC0872B3DA2F75367633 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		204E26C38104635DD0316C81 /* HowToPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayView.swift; sourceTree = "<group>"; };
+		33692C94D3A4B4691E01F328 /* LegalCopy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegalCopy.swift; sourceTree = "<group>"; };
+		C6985027EFC84F879A5A18B2 /* ModeSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSelectView.swift; sourceTree = "<group>"; };
+		64B2FE65AE094CFC3A1B2175 /* MoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoteView.swift; sourceTree = "<group>"; };
+		05B10FDE32C871F99D4F7542 /* PlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayModel.swift; sourceTree = "<group>"; };
+		42E6B4B4CB68B4E85C301793 /* RecordsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsView.swift; sourceTree = "<group>"; };
+		92432B8C1D407E054140A102 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		57100C959D200AE18132258B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DA5D2066EE7E76366E13C30C /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		9EEAED0F538318D753212C3E /* ToneBed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToneBed.swift; sourceTree = "<group>"; };
+		FD66E4BF64EF1434F1E7E27C /* WellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellView.swift; sourceTree = "<group>"; };
+		A13DDAD244427F150BA9B519 /* Hue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hue.swift; sourceTree = "<group>"; };
+		6D8001E8D2FA3DFED02FECC4 /* MatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchSession.swift; sourceTree = "<group>"; };
+		6098AF5AE47F1ACC372C921D /* Scorebook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scorebook.swift; sourceTree = "<group>"; };
+		5A1BEE689B5248319008499C /* WellBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WellBoard.swift; sourceTree = "<group>"; };
+		E13C64A991407F941ECFA54F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0365672E26E54D87A9D1F001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		D59B301BE12A39FF7C501E5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2029A639DD8022543C17416B /* Clavewell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clavewell.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		424153ED3CD079DB4DB459AF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D1D0524B025E57AFFF263442 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				217CDF0D47637C470C7EC789 /* AboutView.swift */,
+				CF059C8F89C3699D329E31D1 /* ClavewellApp.swift */,
+				CFE4F8A8B4A00C9E6311387F /* Components.swift */,
+				2B9674CBBF7C4EA60B1570F6 /* GameView.swift */,
+				768D75FD6E1BBB417275D8F2 /* Haptics.swift */,
+				A70EAC0872B3DA2F75367633 /* HomeView.swift */,
+				204E26C38104635DD0316C81 /* HowToPlayView.swift */,
+				33692C94D3A4B4691E01F328 /* LegalCopy.swift */,
+				C6985027EFC84F879A5A18B2 /* ModeSelectView.swift */,
+				64B2FE65AE094CFC3A1B2175 /* MoteView.swift */,
+				05B10FDE32C871F99D4F7542 /* PlayModel.swift */,
+				42E6B4B4CB68B4E85C301793 /* RecordsView.swift */,
+				92432B8C1D407E054140A102 /* RootView.swift */,
+				57100C959D200AE18132258B /* SettingsView.swift */,
+				DA5D2066EE7E76366E13C30C /* Theme.swift */,
+				9EEAED0F538318D753212C3E /* ToneBed.swift */,
+				FD66E4BF64EF1434F1E7E27C /* WellView.swift */,
+				D59B301BE12A39FF7C501E5C /* Assets.xcassets */,
+				E13C64A991407F941ECFA54F /* Info.plist */,
+				0365672E26E54D87A9D1F001 /* PrivacyInfo.xcprivacy */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		35D315DEBBF45F223B169A61 /* ClavewellCore */ = {
+			isa = PBXGroup;
+			children = (
+				A13DDAD244427F150BA9B519 /* Hue.swift */,
+				6D8001E8D2FA3DFED02FECC4 /* MatchSession.swift */,
+				6098AF5AE47F1ACC372C921D /* Scorebook.swift */,
+				5A1BEE689B5248319008499C /* WellBoard.swift */,
+			);
+			path = ClavewellCore;
+			sourceTree = "<group>";
+		};
+		420CFB359C2A33DC60BFB328 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				35D315DEBBF45F223B169A61 /* ClavewellCore */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		2F3A6B1E78F896718625FF06 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2029A639DD8022543C17416B /* Clavewell.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB9F715B20FF2E32E6BC4BDC = {
+			isa = PBXGroup;
+			children = (
+				D1D0524B025E57AFFF263442 /* App */,
+				420CFB359C2A33DC60BFB328 /* Sources */,
+				2F3A6B1E78F896718625FF06 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42AEFBAE01D2DFD981F7DA7D /* Clavewell */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 354589B28580510B6EC24620 /* Build configuration list for PBXNativeTarget "Clavewell" */;
+			buildPhases = (
+				7A70D71C385290AF96BF1031 /* Sources */,
+				424153ED3CD079DB4DB459AF /* Frameworks */,
+				285BB1C1430063331E9F5DD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Clavewell;
+			productName = Clavewell;
+			productReference = 2029A639DD8022543C17416B /* Clavewell.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					42AEFBAE01D2DFD981F7DA7D = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 1F4E3D13C2320EDA50221924 /* Build configuration list for PBXProject "Clavewell" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CB9F715B20FF2E32E6BC4BDC;
+			productRefGroup = 2F3A6B1E78F896718625FF06 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42AEFBAE01D2DFD981F7DA7D /* Clavewell */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		285BB1C1430063331E9F5DD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				543E8408D996E7ED378179E0 /* Assets.xcassets in Resources */,
+				676CA0C2C3FF04AFF08464D8 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7A70D71C385290AF96BF1031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC420A4B2326DA9AE46F27C2 /* AboutView.swift in Sources */,
+				D777C14313A421373A9F50C0 /* ClavewellApp.swift in Sources */,
+				3372AF02D710F2E5365545E6 /* Components.swift in Sources */,
+				4A8074FB8A811D6955F68DE8 /* GameView.swift in Sources */,
+				13ACAF1E31282083F6751CA0 /* Haptics.swift in Sources */,
+				37EA1E2A3DF6CC61CCF702F5 /* HomeView.swift in Sources */,
+				F70CDE85440EDA84D8C3CA40 /* HowToPlayView.swift in Sources */,
+				8DF3A9DAC9AE822193AD606D /* LegalCopy.swift in Sources */,
+				7BEE53D538A036D64964C7ED /* ModeSelectView.swift in Sources */,
+				2B7FCD3FFB3C97BA0BC8ABD9 /* MoteView.swift in Sources */,
+				223409F40E15686CB65125B8 /* PlayModel.swift in Sources */,
+				B41742D53FB0061FE85C97A3 /* RecordsView.swift in Sources */,
+				E778BEAA207CC8A8B11361D2 /* RootView.swift in Sources */,
+				932FFEB1C03E23FAF41C8863 /* SettingsView.swift in Sources */,
+				D1E0FED10A134728A10DA67C /* Theme.swift in Sources */,
+				A808F0B2FAEB84BE489CC859 /* ToneBed.swift in Sources */,
+				B09C3CF6BD2E217FE4813D1C /* WellView.swift in Sources */,
+				3797C75C0D3E22656816123C /* Hue.swift in Sources */,
+				CBC53EC9A3C40AE01BAE548A /* MatchSession.swift in Sources */,
+				779B99C5CDE7E0AB77AF52B4 /* Scorebook.swift in Sources */,
+				ADF25BFA8646499469FD1F6E /* WellBoard.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		92E165A9035A603BE73D2E62 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		E1D3BBA94590957B0374D6E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F22D2FFCC45240A8FF5EBE4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyliu.clavewell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FE4F802C632EAD717BA35062 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyliu.clavewell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1F4E3D13C2320EDA50221924 /* Build configuration list for PBXProject "Clavewell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92E165A9035A603BE73D2E62 /* Debug */,
+				E1D3BBA94590957B0374D6E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		354589B28580510B6EC24620 /* Build configuration list for PBXNativeTarget "Clavewell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F22D2FFCC45240A8FF5EBE4A /* Debug */,
+				FE4F802C632EAD717BA35062 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}
