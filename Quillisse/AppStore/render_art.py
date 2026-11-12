@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Compose Quillisse icons, seed garment stills, and App Store screenshots.
 
-Screenshots place the supplied model portraits next to a drawing of the real
-Today, Closet, Journal, weather, and Atelier screens. They are not Simulator
-captures. This environment has no Xcode.
+The icon is the approved photograph, resized with no extra mask.
+Screenshots are 1206×2622 only: a model portrait, marketing line, and the
+Quillisse UI inside an iPhone bezel. They are not Simulator captures.
 """
 
 from __future__ import annotations
@@ -17,12 +17,13 @@ ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "AppStore"
 ASSETS = ROOT / "App" / "Assets.xcassets"
 ICON_DIR = ASSETS / "AppIcon.appiconset"
-MODELS_SRC = Path("/home/ubuntu/.cursor/projects/workspace/uploads")
+UPLOADS = Path("/home/ubuntu/.cursor/projects/workspace/uploads")
+ICON_SRC = next(UPLOADS.glob("quillisse-icon*.jpg"))
 MODELS = {
-    "casual": next(MODELS_SRC.glob("model-1-casual*.jpg")),
-    "work": next(MODELS_SRC.glob("model-2-work*.jpg")),
-    "evening": next(MODELS_SRC.glob("model-3-evening*.jpg")),
-    "weekend": next(MODELS_SRC.glob("model-4-weekend*.jpg")),
+    "office": next(UPLOADS.glob("model-office*.jpg")),
+    "weekend": next(UPLOADS.glob("model-weekend*.jpg")),
+    "winter": next(UPLOADS.glob("model-winter*.jpg")),
+    "evening": next(UPLOADS.glob("model-evening*.jpg")),
 }
 
 SERIF = "/usr/share/fonts/truetype/liberation/LiberationSerif-Regular.ttf"
@@ -39,12 +40,7 @@ LINE = (214, 204, 190)
 OX = (142, 59, 58)
 WHITE = (255, 252, 248)
 
-SIZES = {
-    "iphone-6.9": (1320, 2868),
-    "iphone-6.7": (1284, 2778),
-    "iphone-6.5": (1242, 2688),
-    "ipad-13": (2064, 2752),
-}
+SHOT = (1206, 2622)
 
 GARMENTS: dict[str, Image.Image] = {}
 
@@ -402,499 +398,507 @@ def thumb(name: str, size: int) -> Image.Image:
     return canvas
 
 
-def draw_icon(size: int) -> Image.Image:
-    image = Image.new("RGB", (size, size), PAPER)
-    draw = ImageDraw.Draw(image)
-    inset = int(size * 0.1)
-    stroke = max(2, size // 48)
-    draw.rounded_rectangle(
-        (inset, inset, size - inset, size - inset),
-        radius=int(size * 0.18),
-        outline=OX,
-        width=stroke,
-    )
-    face = font(SERIF_BOLD, int(size * 0.52))
-    draw.text((size / 2, size * 0.46), "Q", font=face, fill=OX, anchor="mm")
-    rule = int(size * 0.22)
-    draw.line((size / 2 - rule, size * 0.74, size / 2 + rule, size * 0.74), fill=OX, width=max(2, size // 80))
+TERRACOTTA = (161, 69, 46)
+GOLD = (201, 139, 80)
+SAND = (243, 214, 176)
+CREAM = (255, 248, 240)
+FRAME = (28, 22, 18)
+ISLAND = (12, 10, 9)
+
+ICON_SIZES = {
+    "icon-20.png": 20,
+    "icon-29.png": 29,
+    "icon-40.png": 40,
+    "icon-58.png": 58,
+    "icon-60.png": 60,
+    "icon-76.png": 76,
+    "icon-80.png": 80,
+    "icon-87.png": 87,
+    "icon-120.png": 120,
+    "icon-152.png": 152,
+    "icon-167.png": 167,
+    "icon-180.png": 180,
+    "icon-1024.png": 1024,
+}
+
+SCREEN = (688, 1472)
+BEZEL = 16
+
+
+def master_icon() -> Image.Image:
+    image = Image.open(ICON_SRC).convert("RGB")
+    side = min(image.size)
+    left = (image.width - side) // 2
+    top = (image.height - side) // 2
+    image = image.crop((left, top, left + side, top + side))
+    if image.size != (1024, 1024):
+        image = image.resize((1024, 1024), Image.Resampling.LANCZOS)
     return image
 
 
 def save_icons():
-    master = draw_icon(1024)
-    assert master.mode == "RGB"
+    master = master_icon()
+    assert master.mode == "RGB" and master.size == (1024, 1024)
     (ART / "icon").mkdir(parents=True, exist_ok=True)
+    # Drop any earlier generated mark so only the approved icon remains.
+    for stale in (ART / "icon").glob("*.png"):
+        stale.unlink()
     master.save(ART / "icon" / "AppIcon-1024.png")
     ICON_DIR.mkdir(parents=True, exist_ok=True)
-    sizes = {
-        "icon-20.png": 20,
-        "icon-29.png": 29,
-        "icon-40.png": 40,
-        "icon-58.png": 58,
-        "icon-60.png": 60,
-        "icon-76.png": 76,
-        "icon-80.png": 80,
-        "icon-87.png": 87,
-        "icon-120.png": 120,
-        "icon-152.png": 152,
-        "icon-167.png": 167,
-        "icon-180.png": 180,
-        "icon-1024.png": 1024,
-    }
-    for name, side in sizes.items():
+    for name, side in ICON_SIZES.items():
         image = master if side == 1024 else master.resize((side, side), Image.Resampling.LANCZOS)
+        assert image.mode == "RGB"
         image.save(ICON_DIR / name)
-        if name == "icon-1024.png":
-            image.save(ART / "icon" / name)
-
-
-def tab_bar(base, y, width, selected, scale):
-    rounded(base, (0, y, width, base.height), 0, (250, 246, 240, 255))
-    draw = ImageDraw.Draw(base)
-    draw.line((0, y, width, y), fill=LINE, width=max(1, int(2 * scale)))
-    labels = [("Today", "sun"), ("Closet", "shirt"), ("Atelier", "grid"), ("Journal", "cal")]
-    slot = width / 4
-    for index, (label, _) in enumerate(labels):
-        cx = slot * index + slot / 2
-        color = OX if index == selected else MUTED
-        face = font(SANS_BOLD if index == selected else SANS, 22 * scale)
-        draw.text((cx, y + 62 * scale), label, font=face, fill=color, anchor="mm")
-        # tiny mark
-        r = 7 * scale
-        mark_y = y + 28 * scale
-        if index == 0:
-            draw.ellipse((cx - r, mark_y - r, cx + r, mark_y + r), outline=color, width=max(2, int(2 * scale)))
-        elif index == 1:
-            draw.rounded_rectangle((cx - 10 * scale, mark_y - 8 * scale, cx + 10 * scale, mark_y + 10 * scale), radius=3, outline=color, width=max(2, int(2 * scale)))
-        elif index == 2:
-            draw.rectangle((cx - 10 * scale, mark_y - 8 * scale, cx - 2 * scale, mark_y + 8 * scale), outline=color, width=max(2, int(2 * scale)))
-            draw.rectangle((cx + 2 * scale, mark_y - 8 * scale, cx + 10 * scale, mark_y + 8 * scale), outline=color, width=max(2, int(2 * scale)))
-        else:
-            draw.rounded_rectangle((cx - 10 * scale, mark_y - 8 * scale, cx + 10 * scale, mark_y + 10 * scale), radius=2, outline=color, width=max(2, int(2 * scale)))
-
-
-def chips(base, xy, labels, selected, scale):
-    x, y = xy
-    face = font(SANS_BOLD, 24 * scale)
-    draw = ImageDraw.Draw(base)
-    for label in labels:
-        pad = 22 * scale
-        tw = draw.textlength(label, font=face)
-        w = tw + pad * 2
-        h = 52 * scale
-        on = label == selected
-        rounded(base, (x, y, x + w, y + h), h / 2, INK if on else CARD, None if on else LINE, max(1, int(2 * scale)))
-        draw.text((x + w / 2, y + h / 2), label, font=face, fill=CARD if on else INK, anchor="mm")
-        x += w + 12 * scale
-    return y + 64 * scale
-
-
-def piece_row(base, names, xy, tile, scale):
-    x, y = xy
-    label = font(SERIF, 22 * scale)
-    small = font(SANS, 16 * scale)
-    draw = ImageDraw.Draw(base)
-    for name in names:
-        still = thumb(name, int(tile))
-        rounded(base, (x, y, x + tile, y + tile), 16 * scale, PAPER, LINE, max(1, int(2 * scale)))
-        base.paste(still, (int(x + 6), int(y + 6)))
-        title = {
-            "seed-ivory-blouse": "Ivory blouse",
-            "seed-camel-trousers": "Camel trousers",
-            "seed-black-blazer": "Black blazer",
-            "seed-black-loafers": "Black loafers",
-            "seed-blush-scarf": "Blush scarf",
-            "seed-white-tee": "White tee",
-            "seed-olive-shorts": "Olive shorts",
-            "seed-linen-shirt": "Linen shirt",
-            "seed-white-sneakers": "Sneakers",
-            "seed-coral-dress": "Coral dress",
-            "seed-lavender-cardigan": "Lavender layer",
-            "seed-nude-heels": "Nude heels",
-            "seed-cream-cardigan": "Cream cardigan",
-            "seed-light-jeans": "Light jeans",
-            "seed-ivory-cami": "Ivory camisole",
-            "seed-gold-hoops": "Gold hoops",
-        }[name]
-        line_y = y + tile + 6 * scale
-        for line in wrap(draw, title, label, tile)[:2]:
-            draw.text((x, line_y), line, font=label, fill=INK)
-            line_y += label.size + 2
-        x += tile + 16 * scale
-
-
-def wordmark(base, center, scale):
-    text(base, center, "QUILLISSE", font(SANS_BOLD, 22 * scale), INK, anchor="mm")
-
-
-def draw_today(base, scale, top):
-    width = base.width
-    margin = 36 * scale
-    y = top
-    wordmark(base, (width / 2, y), scale)
-    y += 36 * scale
-    text(base, (margin, y), "WEDNESDAY", font(SANS_BOLD, 20 * scale), OX)
-    y += 28 * scale
-    text(base, (margin, y), "11 November", font(SERIF, 64 * scale), INK)
-    y += 84 * scale
-    y = chips(base, (margin, y), ["Work", "Casual", "Date", "Weekend", "Formal"], "Work", scale)
-    y += 8 * scale
-    box = (margin, y, width - margin, y + 92 * scale)
-    rounded(base, box, 22 * scale, CARD, LINE, max(1, int(2 * scale)))
-    draw = ImageDraw.Draw(base)
-    draw.ellipse((margin + 24 * scale, y + 28 * scale, margin + 52 * scale, y + 56 * scale), outline=OX, width=max(2, int(3 * scale)))
-    text(base, (margin + 70 * scale, y + 22 * scale), "Mild", font(SERIF, 32 * scale), INK)
-    text(base, (margin + 70 * scale, y + 54 * scale), "Autumn · chosen on this device", font(SANS, 18 * scale), MUTED)
-    text(base, (width - margin - 16 * scale, y + 46 * scale), "Change", font(SANS_BOLD, 22 * scale), OX, anchor="rm")
-    y += 112 * scale
-    card_bottom = base.height - 150 * scale
-    shadow_card(base, (margin, y, width - margin, card_bottom), 28 * scale)
-    text(base, (margin + 28 * scale, y + 24 * scale), "SUGGESTED", font(SANS_BOLD, 18 * scale), OX)
-    text(base, (width - margin - 48 * scale, y + 18 * scale), "♡", font(SERIF, 40 * scale), OX)
-    text(base, (margin + 28 * scale, y + 52 * scale), "Ivory blouse and\nCamel trousers", font(SERIF, 42 * scale), INK)
-    text(base, (margin + 28 * scale, y + 168 * scale), "A light layer for a mild day.", font(SERIF_ITALIC, 24 * scale), MUTED)
-    text(base, (margin + 28 * scale, y + 204 * scale), "Fits a work day.", font(SERIF_ITALIC, 24 * scale), MUTED)
-    text(base, (margin + 28 * scale, y + 240 * scale), "Not worn in the last 7 days.", font(SERIF_ITALIC, 24 * scale), MUTED)
-    tile = 150 * scale
-    piece_row(
-        base,
-        ["seed-ivory-blouse", "seed-camel-trousers", "seed-black-blazer", "seed-black-loafers", "seed-blush-scarf"],
-        (margin + 28 * scale, y + 290 * scale),
-        tile,
-        scale,
-    )
-    button = (margin + 28 * scale, card_bottom - 150 * scale, width - margin - 28 * scale, card_bottom - 70 * scale)
-    rounded(base, button, 18 * scale, OX)
-    text(base, ((button[0] + button[2]) / 2, (button[1] + button[3]) / 2), "Wear this today", font(SANS_BOLD, 28 * scale), CARD, anchor="mm")
-    text(base, (width / 2, card_bottom - 36 * scale), "Another look", font(SANS_BOLD, 22 * scale), INK, anchor="mm")
-
-
-def draw_closet(base, scale, top):
-    width = base.width
-    margin = 36 * scale
-    y = top
-    text(base, (margin, y), "WARDROBE", font(SANS_BOLD, 20 * scale), OX)
-    y += 30 * scale
-    text(base, (margin, y), "Closet", font(SERIF, 64 * scale), INK)
-    y += 86 * scale
-    y = chips(base, (margin, y), ["All", "Top", "Bottom", "Dress", "Outerwear"], "All", scale)
-    # model band
-    photo_h = 460 * scale
-    photo = cover(MODELS["casual"], (int(width - margin * 2), int(photo_h)), (0.50, 0.20))
-    mask = Image.new("L", photo.size, 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, photo.width, photo.height), radius=28 * scale, fill=255)
-    base.paste(photo, (int(margin), int(y)), mask)
-    y += photo_h + 22 * scale
-    names = [
-        ("seed-cream-cardigan", "Cream cardigan", "SMART"),
-        ("seed-light-jeans", "Light jeans", "CASUAL"),
-        ("seed-ivory-blouse", "Ivory blouse", "SMART"),
-        ("seed-camel-trousers", "Camel trousers", "SMART"),
-        ("seed-black-blazer", "Black blazer", "SMART"),
-        ("seed-white-sneakers", "White sneakers", "CASUAL"),
-        ("seed-coral-dress", "Coral midi dress", "FORMAL"),
-        ("seed-navy-knit", "Navy knit", "SMART"),
-    ]
-    gap = 18 * scale
-    col_w = (width - margin * 2 - gap) / 2
-    tile_h = 250 * scale
-    draw = ImageDraw.Draw(base)
-    for index, (token, title, formality) in enumerate(names):
-        col = index % 2
-        row = index // 2
-        x = margin + col * (col_w + gap)
-        yy = y + row * (tile_h + 92 * scale)
-        if yy + tile_h > base.height - 160 * scale:
-            break
-        still = thumb(token, int(col_w - 8))
-        rounded(base, (x, yy, x + col_w, yy + tile_h), 18 * scale, CARD, LINE, max(1, int(2 * scale)))
-        still.thumbnail((int(col_w - 24), int(tile_h - 16)), Image.Resampling.LANCZOS)
-        base.paste(still, (int(x + (col_w - still.width) / 2), int(yy + 8)))
-        draw.text((x + 8, yy + tile_h + 6 * scale), title, font=font(SERIF, 26 * scale), fill=INK)
-        draw.text((x + 8, yy + tile_h + 40 * scale), formality, font=font(SANS_BOLD, 16 * scale), fill=MUTED)
-
-
-def draw_journal(base, scale, top):
-    width = base.width
-    margin = 36 * scale
-    y = top
-    text(base, (margin, y), "WORN", font(SANS_BOLD, 20 * scale), OX)
-    y += 28 * scale
-    text(base, (margin, y), "Journal", font(SERIF, 64 * scale), INK)
-    y += 80 * scale
-    text(base, (width / 2, y), "November 2026", font(SERIF, 36 * scale), INK, anchor="mt")
-    y += 56 * scale
-    days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
-    draw = ImageDraw.Draw(base)
-    cell = (width - margin * 2) / 7
-    for index, label in enumerate(days):
-        draw.text((margin + cell * index + cell / 2, y), label, font=font(SANS_BOLD, 14 * scale), fill=MUTED, anchor="mt")
-    y += 28 * scale
-    # November 2026 starts Sunday. Marks on the 2nd, 5th, 8th, 10th. Selected 2.
-    marks = {2, 5, 8, 10}
-    number = 1
-    for row in range(5):
-        for col in range(7):
-            if row == 0 and col < 0:
-                continue
-            if number > 30:
-                break
-            x = margin + col * cell
-            yy = y + row * (78 * scale)
-            selected = number == 2
-            if selected:
-                rounded(base, (x + 4, yy, x + cell - 4, yy + 70 * scale), 12 * scale, INK)
-            else:
-                rounded(base, (x + 4, yy, x + cell - 4, yy + 70 * scale), 12 * scale, CARD, LINE, 1)
-            fill = CARD if selected else INK
-            draw.text((x + cell / 2, yy + 16 * scale), str(number), font=font(SERIF, 24 * scale), fill=fill, anchor="mt")
-            if number in marks:
-                dot = OX if not selected else (232, 186, 181)
-                draw.ellipse((x + cell / 2 - 4 * scale, yy + 50 * scale, x + cell / 2 + 4 * scale, yy + 58 * scale), fill=dot)
-            number += 1
-    y += 5 * 78 * scale + 10 * scale
-    shadow_card(base, (margin, y, width - margin, base.height - 150 * scale), 24 * scale)
-    text(base, (margin + 24 * scale, y + 20 * scale), "Monday 2 November", font(SERIF, 32 * scale), INK)
-    text(base, (margin + 24 * scale, y + 68 * scale), "DATE", font(SANS_BOLD, 18 * scale), OX)
-    photo = cover(MODELS["evening"], (int(280 * scale), int(360 * scale)), (0.48, 0.36))
-    mask = Image.new("L", photo.size, 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, photo.width, photo.height), radius=18 * scale, fill=255)
-    base.paste(photo, (int(margin + 24 * scale), int(y + 110 * scale)), mask)
-    piece_row(
-        base,
-        ["seed-coral-dress", "seed-lavender-cardigan", "seed-nude-heels"],
-        (margin + 320 * scale, y + 120 * scale),
-        150 * scale,
-        scale,
-    )
-    text(base, (margin + 24 * scale, base.height - 200 * scale), "Remove this day", font(SANS_BOLD, 20 * scale), MUTED)
-
-
-def draw_weather(base, scale, top):
-    width = base.width
-    margin = 40 * scale
-    y = top
-    text(base, (margin, y), "For today", font(SANS_BOLD, 20 * scale), OX)
-    y += 34 * scale
-    text(base, (margin, y), "Weather", font(SERIF, 60 * scale), INK)
-    y += 80 * scale
-    note = "The closet uses this choice when it builds a look. It does not need a network."
-    draw = ImageDraw.Draw(base)
-    for line in wrap(draw, note, font(SERIF_ITALIC, 26 * scale), width - margin * 2):
-        draw.text((margin, y), line, font=font(SERIF_ITALIC, 26 * scale), fill=MUTED)
-        y += 34 * scale
-    y += 16 * scale
-    text(base, (margin, y), "WEATHER", font(SANS_BOLD, 18 * scale), MUTED)
-    y += 32 * scale
-    y = chips(base, (margin, y), ["Hot", "Warm", "Mild", "Cool", "Cold", "Wet"], "Mild", scale)
-    y += 10 * scale
-    text(base, (margin, y), "Rain", font(SERIF, 32 * scale), INK)
-    # switch off
-    sw = (width - margin - 90 * scale, y, width - margin, y + 48 * scale)
-    rounded(base, sw, 24 * scale, (220, 214, 206))
-    draw.ellipse((sw[0] + 4 * scale, sw[1] + 4 * scale, sw[0] + 40 * scale, sw[3] - 4 * scale), fill=CARD)
-    y += 70 * scale
-    text(base, (margin, y), "SEASON", font(SANS_BOLD, 18 * scale), MUTED)
-    y += 32 * scale
-    y = chips(base, (margin, y), ["From the date", "Spring", "Summer", "Autumn", "Winter"], "From the date", scale)
-    y += 20 * scale
-    draw.line((margin, y, width - margin, y), fill=LINE, width=max(1, int(2 * scale)))
-    y += 24 * scale
-    text(base, (margin, y), "Apple Weather", font(SERIF, 34 * scale), INK)
-    sw = (width - margin - 90 * scale, y, width - margin, y + 48 * scale)
-    rounded(base, sw, 24 * scale, (220, 214, 206))
-    draw.ellipse((sw[0] + 4 * scale, sw[1] + 4 * scale, sw[0] + 40 * scale, sw[3] - 4 * scale), fill=CARD)
-    y += 70 * scale
-    copy = "Uses location only while you allow it, then keeps a band such as mild or rain. If it is denied or offline, the choice above stays."
-    for line in wrap(draw, copy, font(SANS, 22 * scale), width - margin * 2):
-        draw.text((margin, y), line, font=font(SANS, 22 * scale), fill=MUTED)
-        y += 30 * scale
-    y += 18 * scale
-    text(base, (margin, y), "Using the weather you chose. No location is involved.", font(SERIF_ITALIC, 24 * scale), INK)
-
-
-def draw_atelier(base, scale, top):
-    width = base.width
-    margin = 36 * scale
-    y = top
-    text(base, (margin, y), "BY HAND", font(SANS_BOLD, 20 * scale), OX)
-    y += 28 * scale
-    text(base, (margin, y), "Atelier", font(SERIF, 64 * scale), INK)
-    y += 78 * scale
-    text(base, (margin, y), "A dress stands in for a top and a bottom.", font(SERIF_ITALIC, 24 * scale), MUTED)
-    y += 48 * scale
-    rows = [
-        ("TOP", "White tee", "seed-white-tee", ["seed-white-tee", "seed-ivory-blouse", "seed-ivory-cami", "seed-navy-knit"]),
-        ("BOTTOM", "Olive shorts", "seed-olive-shorts", ["seed-olive-shorts", "seed-light-jeans", "seed-camel-trousers"]),
-        ("DRESS", "None", None, ["seed-coral-dress"]),
-        ("OUTERWEAR", "Blue linen shirt", "seed-linen-shirt", ["seed-linen-shirt", "seed-cream-cardigan", "seed-black-blazer"]),
-        ("SHOES", "White sneakers", "seed-white-sneakers", ["seed-white-sneakers", "seed-black-loafers", "seed-nude-heels"]),
-    ]
-    draw = ImageDraw.Draw(base)
-    for label, chosen, selected, options in rows:
-        text(base, (margin, y), label, font(SANS_BOLD, 16 * scale), MUTED)
-        text(base, (width - margin, y), chosen, font(SERIF, 24 * scale), INK, anchor="rt")
-        y += 34 * scale
-        x = margin
-        tile = 110 * scale
-        for token in options:
-            still = thumb(token, int(tile - 8))
-            border = OX if token == selected else LINE
-            thick = 4 if token == selected else 2
-            rounded(base, (x, y, x + tile, y + tile), 14 * scale, CARD, border, max(1, int(thick * scale)))
-            base.paste(still.resize((int(tile - 16), int(tile - 16))), (int(x + 8), int(y + 8)))
-            x += tile + 12 * scale
-        y += tile + 18 * scale
-        draw.line((margin, y - 8 * scale, width - margin, y - 8 * scale), fill=LINE, width=1)
-    y += 8 * scale
-    limit = base.height - 300 * scale
-    if y > limit:
-        y = limit
-    rounded(base, (margin, y, width - margin, y + 68 * scale), 16 * scale, OX)
-    text(base, (width / 2, y + 34 * scale), "Wear this today", font(SANS_BOLD, 26 * scale), CARD, anchor="mm")
-    y += 82 * scale
-    rounded(base, (margin, y, width - margin, y + 64 * scale), 16 * scale, CARD, INK, max(1, int(2 * scale)))
-    text(base, (width / 2, y + 32 * scale), "Save look", font(SANS_BOLD, 26 * scale), INK, anchor="mm")
-
-
-def headline_block(base, lines, sub, x, y, scale, fill=WHITE, subfill=None):
-    face = font(SERIF, 78 * scale)
-    draw = ImageDraw.Draw(base)
-    for line in lines:
-        draw.text((x, y), line, font=face, fill=fill)
-        y += 86 * scale
-    if sub:
-        draw.text((x, y + 6 * scale), sub, font=font(SANS, 28 * scale), fill=subfill or fill)
-    return y
-
-
-def render_phone(size, kind):
-    width, height = size
-    scale = width / 1320
-    image = Image.new("RGBA", size, PAPER + (255,))
-    if kind == "today":
-        photo_h = int(height * 0.40)
-        photo = cover(MODELS["work"], (width, photo_h), (0.55, 0.30))
-        image.paste(photo, (0, 0))
-        scrim = Image.new("RGBA", (width, photo_h), (0, 0, 0, 0))
-        ImageDraw.Draw(scrim).rectangle((0, 0, width, photo_h), fill=(20, 14, 10, 70))
-        image.alpha_composite(scrim)
-        headline_block(image, ["Today, already", "decided"], "A work look from your closet", 48 * scale, 150 * scale, scale)
-        panel_top = photo_h - 30 * scale
-        rounded(image, (0, panel_top, width, height), 36 * scale, PAPER)
-        draw_today(image, scale, panel_top + 28 * scale)
-        tab_bar(image, height - 120 * scale, width, 0, scale)
-    elif kind == "closet":
-        headline_block(image, ["Every piece,", "in its place"], "Tagged, photographed, kept here", 48 * scale, 120 * scale, scale, INK, MUTED)
-        draw_closet(image, scale, 360 * scale)
-        tab_bar(image, height - 120 * scale, width, 1, scale)
-    elif kind == "journal":
-        headline_block(image, ["A quiet record", "of what you wore"], "The same look waits its turn", 48 * scale, 110 * scale, scale, INK, MUTED)
-        draw_journal(image, scale, 340 * scale)
-        tab_bar(image, height - 120 * scale, width, 3, scale)
-    elif kind == "weather":
-        photo_h = int(height * 0.34)
-        photo = cover(MODELS["weekend"], (width, photo_h), (0.5, 0.28))
-        image.paste(photo, (0, 0))
-        scrim = Image.new("RGBA", (width, photo_h), (20, 16, 12, 60))
-        image.alpha_composite(scrim)
-        headline_block(image, ["Occasion, then", "the weather"], "Offline if you want it that way", 48 * scale, 130 * scale, scale)
-        panel_top = photo_h - 24 * scale
-        rounded(image, (0, panel_top, width, height), 36 * scale, PAPER)
-        draw_weather(image, scale, panel_top + 36 * scale)
-        tab_bar(image, height - 120 * scale, width, 0, scale)
-    else:
-        headline_block(image, ["Or build the look", "yourself"], "Pick each piece from the closet", 48 * scale, 100 * scale, scale, INK, MUTED)
-        photo = cover(MODELS["weekend"], (int(250 * scale), int(320 * scale)), (0.5, 0.30))
-        mask = Image.new("L", photo.size, 0)
-        ImageDraw.Draw(mask).rounded_rectangle((0, 0, photo.width, photo.height), radius=22 * scale, fill=255)
-        image.paste(photo, (int(width - 48 * scale - photo.width), int(90 * scale)), mask)
-        draw_atelier(image, scale, 430 * scale)
-        tab_bar(image, height - 120 * scale, width, 2, scale)
-    return image.convert("RGB")
-
-
-def render_ipad(size, kind):
-    width, height = size
-    image = Image.new("RGBA", size, PAPER + (255,))
-    photo_w = int(width * 0.42)
-    model = {
-        "today": "work",
-        "closet": "casual",
-        "journal": "evening",
-        "weather": "weekend",
-        "atelier": "weekend",
-    }[kind]
-    focus = (0.52, 0.38) if kind != "closet" else (0.5, 0.34)
-    photo = cover(MODELS[model], (photo_w, height), focus)
-    image.paste(photo, (0, 0))
-    scrim = Image.new("RGBA", (photo_w, height), (0, 0, 0, 0))
-    gradient = ImageDraw.Draw(scrim)
-    for x in range(photo_w):
-        alpha = int(max(0, (x - photo_w * 0.55) / (photo_w * 0.45) * 90))
-        gradient.line((x, 0, x, height), fill=(243, 238, 230, alpha))
-    image.alpha_composite(scrim)
-    # right panel
-    panel = Image.new("RGBA", (width - photo_w + 40, height), PAPER + (255,))
-    scale = (width - photo_w) / 1100
-    headlines = {
-        "today": (["Today, already", "decided"], "A work look from your closet"),
-        "closet": (["Every piece,", "in its place"], "Tagged, photographed, kept here"),
-        "journal": (["A quiet record", "of what you wore"], "The same look waits its turn"),
-        "weather": (["Occasion, then", "the weather"], "Offline if you want it that way"),
-        "atelier": (["Or build the look", "yourself"], "Pick each piece from the closet"),
-    }
-    lines, sub = headlines[kind]
-    headline_block(panel, lines, sub, 48, 80, scale * 0.92, INK, MUTED)
-    body_top = 340 * scale
-    if kind == "today":
-        draw_today(panel, scale * 0.92, body_top)
-    elif kind == "closet":
-        draw_closet(panel, scale * 0.86, body_top)
-    elif kind == "journal":
-        draw_journal(panel, scale * 0.82, body_top)
-    elif kind == "weather":
-        draw_weather(panel, scale * 0.9, body_top)
-    else:
-        draw_atelier(panel, scale * 0.82, body_top)
-    image.alpha_composite(panel, (photo_w - 40, 0))
-    return image.convert("RGB")
+    web = ART / "website"
+    web.mkdir(parents=True, exist_ok=True)
+    master.resize((32, 32), Image.Resampling.LANCZOS).save(web / "favicon-32.png")
+    master.resize((16, 16), Image.Resampling.LANCZOS).save(web / "favicon-16.png")
+    master.resize((180, 180), Image.Resampling.LANCZOS).save(web / "apple-touch-icon.png")
 
 
 def copy_models():
     dest = ART / "models"
     dest.mkdir(parents=True, exist_ok=True)
     names = {
-        "casual": "model-1-casual.jpg",
-        "work": "model-2-work.jpg",
-        "evening": "model-3-evening.jpg",
-        "weekend": "model-4-weekend.jpg",
+        "office": "model-office.jpg",
+        "weekend": "model-weekend.jpg",
+        "winter": "model-winter.jpg",
+        "evening": "model-evening.jpg",
     }
+    keep = set(names.values())
+    for old in dest.glob("*"):
+        if old.name not in keep:
+            old.unlink()
     for key, filename in names.items():
         shutil.copyfile(MODELS[key], dest / filename)
+
+
+def canvas_background() -> Image.Image:
+    width, height = SHOT
+    row = Image.new("RGB", (width, 1))
+    draw = ImageDraw.Draw(row)
+    for x in range(width):
+        t = x / (width - 1)
+        color = tuple(int(a + (b - a) * t) for a, b in zip(TERRACOTTA, GOLD))
+        draw.point((x, 0), fill=color)
+    base = row.resize(SHOT)
+    sand = Image.new("RGB", SHOT, SAND)
+    mask = Image.new("L", (1, height))
+    for y in range(height):
+        mask.putpixel((0, y), int(255 * (y / (height - 1)) ** 1.15 * 0.62))
+    return Image.composite(sand, base, mask.resize(SHOT))
+
+
+def phone_frame(screen: Image.Image) -> Image.Image:
+    sw, sh = screen.size
+    ow, oh = sw + BEZEL * 2, sh + BEZEL * 2
+    frame = Image.new("RGBA", (ow, oh), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(frame)
+    draw.rounded_rectangle((0, 0, ow - 1, oh - 1), radius=78, fill=FRAME)
+    draw.rounded_rectangle((3, 3, ow - 4, oh - 4), radius=74, outline=(70, 54, 42), width=2)
+    mask = Image.new("L", screen.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, sw - 1, sh - 1), radius=62, fill=255)
+    framed = screen.convert("RGBA")
+    frame.paste(framed, (BEZEL, BEZEL), mask)
+    island_w, island_h = 196, 36
+    ix = BEZEL + (sw - island_w) / 2
+    iy = BEZEL + 14
+    draw.rounded_rectangle((ix, iy, ix + island_w, iy + island_h), radius=island_h / 2, fill=ISLAND)
+    # Side buttons.
+    draw.rounded_rectangle((-3, 220, 4, 300), radius=2, fill=(48, 38, 30))
+    draw.rounded_rectangle((-3, 330, 4, 420), radius=2, fill=(48, 38, 30))
+    draw.rounded_rectangle((ow - 4, 280, ow + 3, 400), radius=2, fill=(48, 38, 30))
+    return frame
+
+
+def status_bar(screen: Image.Image):
+    draw = ImageDraw.Draw(screen)
+    face = font(SANS_BOLD, 22)
+    draw.text((28, 22), "9:41", font=face, fill=INK)
+    # Battery and signal, kept clear of the island (center 196px).
+    x = screen.width - 78
+    draw.rounded_rectangle((x, 26, x + 36, 42), radius=4, outline=INK, width=2)
+    draw.rectangle((x + 2, 29, x + 26, 39), fill=INK)
+    draw.rectangle((x + 37, 32, x + 40, 37), fill=INK)
+    draw.arc((screen.width - 130, 22, screen.width - 108, 44), 200, 340, fill=INK, width=2)
+
+
+def home_indicator(screen: Image.Image):
+    draw = ImageDraw.Draw(screen)
+    w = 150
+    x = (screen.width - w) / 2
+    y = screen.height - 16
+    draw.rounded_rectangle((x, y, x + w, y + 6), radius=3, fill=(80, 70, 62))
+
+
+def tab_bar(screen: Image.Image, selected: int):
+    h = 78
+    y = screen.height - 28 - h
+    draw = ImageDraw.Draw(screen)
+    draw.rectangle((0, y, screen.width, y + h), fill=(250, 246, 240))
+    draw.line((0, y, screen.width, y), fill=LINE, width=2)
+    labels = ["Today", "Closet", "Atelier", "Journal"]
+    slot = screen.width / 4
+    for index, label in enumerate(labels):
+        cx = slot * index + slot / 2
+        color = OX if index == selected else MUTED
+        face = font(SANS_BOLD if index == selected else SANS, 18)
+        draw.text((cx, y + 46), label, font=face, fill=color, anchor="mm")
+        r = 7
+        my = y + 18
+        if index == 0:
+            draw.ellipse((cx - r, my - r, cx + r, my + r), outline=color, width=2)
+        elif index == 1:
+            draw.rounded_rectangle((cx - 9, my - 7, cx + 9, my + 8), radius=2, outline=color, width=2)
+        elif index == 2:
+            draw.rectangle((cx - 9, my - 7, cx - 1, my + 8), outline=color, width=2)
+            draw.rectangle((cx + 1, my - 7, cx + 9, my + 8), outline=color, width=2)
+        else:
+            draw.rounded_rectangle((cx - 9, my - 7, cx + 9, my + 8), radius=2, outline=color, width=2)
+    return y
+
+
+def chips_row(screen, xy, labels, selected):
+    x, y = xy
+    face = font(SANS_BOLD, 15)
+    draw = ImageDraw.Draw(screen)
+    height = 36
+    for label in labels:
+        width = draw.textlength(label, font=face) + 20
+        if x + width > screen.width - 16:
+            break
+        on = label == selected
+        rounded(screen, (x, y, x + width, y + height), height / 2, INK if on else CARD, None if on else LINE, 2)
+        draw.text((x + width / 2, y + height / 2), label, font=face, fill=CARD if on else INK, anchor="mm")
+        x += width + 6
+    return y + height + 12
+
+
+def tile(screen, token, box):
+    x0, y0, x1, y1 = box
+    rounded(screen, box, 12, PAPER, LINE, 2)
+    still = thumb(token, int(min(x1 - x0, y1 - y0) - 8))
+    screen.paste(still, (int(x0 + (x1 - x0 - still.width) / 2), int(y0 + 4)))
+
+
+def screen_base() -> Image.Image:
+    image = Image.new("RGBA", SCREEN, PAPER + (255,))
+    status_bar(image)
+    return image
+
+
+def ui_today() -> Image.Image:
+    image = screen_base()
+    tab = tab_bar(image, 0)
+    draw = ImageDraw.Draw(image)
+    y = 64
+    draw.text((image.width / 2, y), "QUILLISSE", font=font(SANS_BOLD, 16), fill=INK, anchor="mt")
+    y += 28
+    draw.text((22, y), "WEDNESDAY", font=font(SANS_BOLD, 14), fill=OX)
+    y += 20
+    draw.text((22, y), "11 November", font=font(SERIF, 36), fill=INK)
+    y += 48
+    y = chips_row(image, (22, y), ["Work", "Casual", "Date", "Weekend", "Formal"], "Work")
+    rounded(image, (22, y, image.width - 22, y + 64), 16, CARD, LINE, 2)
+    draw.ellipse((40, y + 18, 62, y + 40), outline=OX, width=2)
+    draw.text((74, y + 10), "Mild", font=font(SERIF, 24), fill=INK)
+    draw.text((74, y + 36), "Autumn · chosen on this device", font=font(SANS, 14), fill=MUTED)
+    draw.text((image.width - 32, y + 32), "Change", font=font(SANS_BOLD, 16), fill=OX, anchor="rm")
+    y += 78
+    card_bottom = tab - 14
+    shadow_card(image, (18, y, image.width - 18, card_bottom), 22)
+    draw.text((36, y + 16), "SUGGESTED", font=font(SANS_BOLD, 13), fill=OX)
+    draw.text((image.width - 48, y + 12), "♡", font=font(SERIF, 28), fill=OX)
+    draw.text((36, y + 36), "Ivory blouse and", font=font(SERIF, 28), fill=INK)
+    draw.text((36, y + 70), "Camel trousers", font=font(SERIF, 28), fill=INK)
+    draw.text((36, y + 112), "A light layer for a mild day.", font=font(SERIF_ITALIC, 16), fill=MUTED)
+    draw.text((36, y + 134), "Fits a work day.", font=font(SERIF_ITALIC, 16), fill=MUTED)
+    names = ["seed-ivory-blouse", "seed-camel-trousers", "seed-black-blazer", "seed-black-loafers"]
+    captions = ["Blouse", "Trousers", "Blazer", "Loafers"]
+    gap = 10
+    tile_w = (image.width - 72 - gap * 3) / 4
+    ty = y + 164
+    for index, token in enumerate(names):
+        x = 36 + index * (tile_w + gap)
+        tile(image, token, (x, ty, x + tile_w, ty + tile_w))
+        draw.text((x, ty + tile_w + 4), captions[index], font=font(SANS, 13), fill=INK)
+    button = (36, card_bottom - 78, image.width - 36, card_bottom - 28)
+    rounded(image, button, 14, OX)
+    draw.text(((button[0] + button[2]) / 2, (button[1] + button[3]) / 2), "Wear this today", font=font(SANS_BOLD, 20), fill=CARD, anchor="mm")
+    home_indicator(image)
+    return image
+
+
+def ui_closet() -> Image.Image:
+    image = screen_base()
+    tab = tab_bar(image, 1)
+    draw = ImageDraw.Draw(image)
+    y = 62
+    draw.text((22, y), "WARDROBE", font=font(SANS_BOLD, 13), fill=OX)
+    draw.text((image.width - 28, y), "+", font=font(SANS_BOLD, 28), fill=INK, anchor="rt")
+    y += 22
+    draw.text((22, y), "Closet", font=font(SERIF, 36), fill=INK)
+    y += 50
+    y = chips_row(image, (22, y), ["All", "Top", "Bottom", "Dress", "Outerwear"], "All")
+    items = [
+        ("seed-cream-cardigan", "Cream cardigan", "SMART"),
+        ("seed-light-jeans", "Light jeans", "CASUAL"),
+        ("seed-ivory-blouse", "Ivory blouse", "SMART"),
+        ("seed-camel-trousers", "Camel trousers", "SMART"),
+        ("seed-black-blazer", "Black blazer", "SMART"),
+        ("seed-white-sneakers", "White sneakers", "CASUAL"),
+    ]
+    gap = 12
+    col_w = (image.width - 44 - gap) / 2
+    row_h = 168
+    for index, (token, title, formality) in enumerate(items):
+        col = index % 2
+        row = index // 2
+        x = 22 + col * (col_w + gap)
+        yy = y + row * (row_h + 8)
+        if yy + row_h > tab - 8:
+            break
+        rounded(image, (x, yy, x + col_w, yy + row_h), 14, CARD, LINE, 2)
+        still = thumb(token, int(col_w - 20))
+        still.thumbnail((int(col_w - 24), 108), Image.Resampling.LANCZOS)
+        image.paste(still, (int(x + (col_w - still.width) / 2), int(yy + 6)))
+        draw.text((x + 10, yy + 118), title, font=font(SERIF, 16), fill=INK)
+        draw.text((x + 10, yy + 140), formality, font=font(SANS_BOLD, 11), fill=MUTED)
+    home_indicator(image)
+    return image
+
+
+def ui_journal() -> Image.Image:
+    image = screen_base()
+    tab = tab_bar(image, 3)
+    draw = ImageDraw.Draw(image)
+    y = 62
+    draw.text((22, y), "WORN", font=font(SANS_BOLD, 13), fill=OX)
+    y += 20
+    draw.text((22, y), "Journal", font=font(SERIF, 36), fill=INK)
+    y += 52
+    draw.text((image.width / 2, y), "November 2026", font=font(SERIF, 22), fill=INK, anchor="mt")
+    y += 36
+    days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
+    cell = (image.width - 32) / 7
+    for index, label in enumerate(days):
+        draw.text((16 + cell * index + cell / 2, y), label, font=font(SANS_BOLD, 12), fill=MUTED, anchor="mt")
+    y += 22
+    number = 1
+    marks = {2, 5, 8, 10}
+    for row in range(5):
+        for col in range(7):
+            if number > 30:
+                break
+            x = 16 + col * cell
+            yy = y + row * 46
+            selected = number == 2
+            rounded(image, (x + 2, yy, x + cell - 2, yy + 40), 8, INK if selected else CARD, None if selected else LINE, 1)
+            draw.text((x + cell / 2, yy + 6), str(number), font=font(SERIF, 16), fill=CARD if selected else INK, anchor="mt")
+            if number in marks:
+                dot = (232, 186, 181) if selected else OX
+                draw.ellipse((x + cell / 2 - 3, yy + 28, x + cell / 2 + 3, yy + 34), fill=dot)
+            number += 1
+    y += 5 * 46 + 8
+    if y < tab - 150:
+        rounded(image, (18, y, image.width - 18, tab - 12), 16, CARD, LINE, 2)
+        draw.text((32, y + 12), "Monday 2 November", font=font(SERIF, 20), fill=INK)
+        draw.text((32, y + 40), "DATE", font=font(SANS_BOLD, 12), fill=OX)
+        tokens = ["seed-coral-dress", "seed-lavender-cardigan", "seed-nude-heels"]
+        labels = ["Coral dress", "Lavender layer", "Heels"]
+        tw = 96
+        for index, token in enumerate(tokens):
+            x = 32 + index * (tw + 10)
+            tile(image, token, (x, y + 64, x + tw, y + 64 + tw))
+            draw.text((x, y + 68 + tw), labels[index], font=font(SANS, 12), fill=INK)
+    home_indicator(image)
+    return image
+
+
+def ui_weather() -> Image.Image:
+    image = screen_base()
+    tab_bar(image, 0)
+    draw = ImageDraw.Draw(image)
+    y = 64
+    draw.text((22, y), "FOR TODAY", font=font(SANS_BOLD, 13), fill=OX)
+    y += 22
+    draw.text((22, y), "Weather", font=font(SERIF, 36), fill=INK)
+    y += 52
+    note = "The closet uses this choice. It does not need a network."
+    for line in wrap(draw, note, font(SERIF_ITALIC, 16), image.width - 44):
+        draw.text((22, y), line, font=font(SERIF_ITALIC, 16), fill=MUTED)
+        y += 22
+    y += 8
+    draw.text((22, y), "WEATHER", font=font(SANS_BOLD, 12), fill=MUTED)
+    y += 22
+    y = chips_row(image, (22, y), ["Hot", "Warm", "Mild", "Cool", "Cold", "Wet"], "Mild")
+    draw.text((22, y + 6), "Rain", font=font(SERIF, 22), fill=INK)
+    rounded(image, (image.width - 86, y + 4, image.width - 22, y + 36), 16, (220, 214, 206))
+    draw.ellipse((image.width - 82, y + 8, image.width - 58, y + 32), fill=CARD)
+    y += 52
+    draw.text((22, y), "SEASON", font=font(SANS_BOLD, 12), fill=MUTED)
+    y += 22
+    y = chips_row(image, (22, y), ["From the date", "Autumn", "Winter"], "From the date")
+    draw.line((22, y, image.width - 22, y), fill=LINE, width=2)
+    y += 16
+    draw.text((22, y), "Apple Weather", font=font(SERIF, 22), fill=INK)
+    rounded(image, (image.width - 86, y + 2, image.width - 22, y + 34), 16, (220, 214, 206))
+    draw.ellipse((image.width - 82, y + 6, image.width - 58, y + 30), fill=CARD)
+    y += 48
+    copy = "Location is used only if you turn this on. If it is denied or offline, the choice above stays."
+    for line in wrap(draw, copy, font(SANS, 15), image.width - 44):
+        draw.text((22, y), line, font=font(SANS, 15), fill=MUTED)
+        y += 20
+    y += 12
+    draw.text((22, y), "Using the weather you chose.", font=font(SERIF_ITALIC, 16), fill=INK)
+    home_indicator(image)
+    return image
+
+
+def ui_atelier() -> Image.Image:
+    image = screen_base()
+    tab = tab_bar(image, 2)
+    draw = ImageDraw.Draw(image)
+    y = 62
+    draw.text((22, y), "BY HAND", font=font(SANS_BOLD, 13), fill=OX)
+    y += 20
+    draw.text((22, y), "Atelier", font=font(SERIF, 36), fill=INK)
+    y += 48
+    draw.text((22, y), "A dress stands in for a top and a bottom.", font=font(SERIF_ITALIC, 15), fill=MUTED)
+    y += 28
+    rows = [
+        ("TOP", "Blouse", "seed-ivory-blouse", ["seed-ivory-blouse", "seed-white-tee", "seed-navy-knit"]),
+        ("BOTTOM", "Trousers", "seed-camel-trousers", ["seed-camel-trousers", "seed-light-jeans", "seed-charcoal-trousers"]),
+        ("OUTERWEAR", "Blazer", "seed-black-blazer", ["seed-black-blazer", "seed-camel-coat", "seed-cream-cardigan"]),
+        ("SHOES", "Loafers", "seed-black-loafers", ["seed-black-loafers", "seed-nude-heels", "seed-white-sneakers"]),
+    ]
+    for label, chosen, selected, options in rows:
+        if y > tab - 170:
+            break
+        draw.text((22, y), label, font=font(SANS_BOLD, 12), fill=MUTED)
+        draw.text((image.width - 22, y), chosen, font=font(SERIF, 15), fill=INK, anchor="rt")
+        y += 28
+        x = 22
+        side = 78
+        for token in options:
+            border = OX if token == selected else LINE
+            thick = 3 if token == selected else 2
+            rounded(image, (x, y, x + side, y + side), 12, CARD, border, thick)
+            still = thumb(token, side - 10)
+            image.paste(still, (x + 5, y + 5))
+            x += side + 8
+        y += side + 14
+        draw.line((22, y - 8, image.width - 22, y - 8), fill=LINE, width=1)
+    if y < tab - 120:
+        rounded(image, (22, y, image.width - 22, y + 48), 14, OX)
+        draw.text((image.width / 2, y + 24), "Wear this today", font=font(SANS_BOLD, 18), fill=CARD, anchor="mm")
+        y += 58
+        rounded(image, (22, y, image.width - 22, y + 46), 14, CARD, INK, 2)
+        draw.text((image.width / 2, y + 23), "Save look", font=font(SANS_BOLD, 18), fill=INK, anchor="mm")
+    home_indicator(image)
+    return image
+
+
+SCREENS = {
+    "today": ui_today,
+    "closet": ui_closet,
+    "journal": ui_journal,
+    "weather": ui_weather,
+    "atelier": ui_atelier,
+}
+
+SHOTS = [
+    {
+        "file": "01-today.png",
+        "kind": "today",
+        "model": "office",
+        "focus": (0.48, 0.32),
+        "headline": "Today, already\ndecided",
+        "sub": "A work look from your closet",
+    },
+    {
+        "file": "02-closet.png",
+        "kind": "closet",
+        "model": "weekend",
+        "focus": (0.50, 0.34),
+        "headline": "Every piece,\nin its place",
+        "sub": "Tagged and kept on this iPhone",
+    },
+    {
+        "file": "03-journal.png",
+        "kind": "journal",
+        "model": "evening",
+        "focus": (0.50, 0.30),
+        "headline": "A quiet record\nof what you wore",
+        "sub": "The same look can wait",
+    },
+    {
+        "file": "04-weather.png",
+        "kind": "weather",
+        "model": "winter",
+        "focus": (0.50, 0.32),
+        "headline": "Weather, then\nthe day",
+        "sub": "Offline, unless you ask Apple",
+    },
+    {
+        "file": "05-atelier.png",
+        "kind": "atelier",
+        "model": "office",
+        "focus": (0.52, 0.36),
+        "headline": "Or build the look\nyourself",
+        "sub": "Piece by piece, from the closet",
+    },
+]
+
+
+def render_shot(spec) -> Image.Image:
+    image = canvas_background().convert("RGBA")
+    draw = ImageDraw.Draw(image)
+    margin = 48
+    y = 46
+    face = font(SERIF_BOLD, 68)
+    for line in spec["headline"].split("\n"):
+        draw.text((margin, y), line, font=face, fill=CREAM)
+        y += 74
+    draw.text((margin, y + 4), spec["sub"], font=font(SANS, 28), fill=(255, 228, 204))
+    photo_box = (36, 248, SHOT[0] - 36, 1048)
+    photo = cover(MODELS[spec["model"]], (photo_box[2] - photo_box[0], photo_box[3] - photo_box[1]), spec["focus"])
+    mask = Image.new("L", photo.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, photo.width, photo.height), radius=36, fill=255)
+    image.paste(photo, (photo_box[0], photo_box[1]), mask)
+    screen = SCREENS[spec["kind"]]()
+    framed = phone_frame(screen)
+    shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))
+    sd = ImageDraw.Draw(shadow)
+    fx = (SHOT[0] - framed.width) // 2
+    fy = SHOT[1] - framed.height - 36
+    sd.rounded_rectangle((fx + 12, fy + 24, fx + framed.width + 8, fy + framed.height + 18), radius=78, fill=(60, 30, 16, 70))
+    shadow = shadow.filter(ImageFilter.GaussianBlur(18))
+    image.alpha_composite(shadow)
+    image.alpha_composite(framed, (fx, fy))
+    out = image.convert("RGB")
+    assert out.size == SHOT and out.mode == "RGB"
+    return out
 
 
 def main():
     copy_models()
     build_garments()
     save_icons()
-    scenes = ["today", "closet", "journal", "weather", "atelier"]
-    files = {
-        "today": "01-todays-look.png",
-        "closet": "02-closet.png",
-        "journal": "03-journal.png",
-        "weather": "04-weather.png",
-        "atelier": "05-atelier.png",
-    }
-    for folder, size in SIZES.items():
-        out = ART / "screenshots" / folder
-        out.mkdir(parents=True, exist_ok=True)
-        for kind in scenes:
-            image = render_ipad(size, kind) if folder == "ipad-13" else render_phone(size, kind)
-            assert image.size == size, (image.size, size)
-            assert image.mode == "RGB"
-            image.save(out / files[kind], "PNG")
-            print(folder, files[kind], image.size)
+    out = ART / "screenshots" / "iphone-1206x2622"
+    # Remove every previous size folder, including this one, then write only this size.
+    shot_root = ART / "screenshots"
+    if shot_root.exists():
+        for child in shot_root.iterdir():
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
+    out.mkdir(parents=True)
+    for spec in SHOTS:
+        image = render_shot(spec)
+        image.save(out / spec["file"], "PNG")
+        print(spec["file"], image.size, image.mode)
 
 
 if __name__ == "__main__":

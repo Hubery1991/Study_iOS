@@ -39,14 +39,14 @@ That suite checks the seed closet, day math, seasons, temperature bands, harmony
 - `APP_STORE_LISTING.md` — name, subtitle, promotional text, description, keywords, category, age-rating answers, App Privacy (Data Not Collected), review notes, and the submission checklist.
 - `NAME_UNIQUENESS.md` — iTunes Search API evidence. Quillisse had no exact `trackName` match on the US, UK, Japan, China, Germany, France, Canada, Australia, or South Korea storefronts on November 11, 2026.
 - `icon/AppIcon-1024.png` — 1024×1024 RGB marketing icon, no alpha. The full set is wired in `App/Assets.xcassets/AppIcon.appiconset`.
-- `models/` — the four original generated portraits used in the screenshots and on the website.
+- `models/` — the four approved portraits used in the screenshots and on the website: office, weekend, winter, and evening.
 - `garments/` — the illustrated stills that also ship in the asset catalog as the sample closet.
-- `screenshots/` — five images each at 1320×2868, 1284×2778, 1242×2688, and iPad 2064×2752.
+- `screenshots/iphone-1206x2622/` — five images, each exactly 1206×2622.
 - `website/` — `index.html`, `privacy.html`, `terms.html`, and `site.css`.
 
 ### Screenshots
 
-They were composed by `AppStore/render_art.py` (Pillow). Each one places a portrait with the Today suggestion, the closet grid, the journal, the weather sheet, or the Atelier, plus a headline. They are not captures from an iOS Simulator, because none is available in this environment. Regenerate with:
+They were composed by `AppStore/render_art.py` (Pillow). Each one is 1206×2622 and places one approved portrait with the Today suggestion, the closet grid, the journal, the weather sheet, or the Atelier inside an iPhone bezel, plus a headline. They are not captures from an iOS Simulator, because none is available in this environment. Regenerate with:
 
 ```bash
 python3 AppStore/render_art.py

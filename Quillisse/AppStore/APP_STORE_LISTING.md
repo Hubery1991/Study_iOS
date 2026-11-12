@@ -139,18 +139,15 @@ iPhone is portrait. iPad is portrait, including upside down. There is no account
 
 ## Screenshots to upload
 
-Five images in each folder under `AppStore/screenshots/`. Each one places an original generated portrait beside the app’s Today, Closet, Journal, weather, or Atelier screen, plus a short headline. The controls match the app: occasion chips, Wear this today, closet filters, the month grid, the weather bands, and the Atelier slots.
+Five images, one size only, in `AppStore/screenshots/iphone-1206x2622/`. Each file is exactly 1206 × 2622. Each one places an original generated portrait with the app’s Today, Closet, Journal, weather, or Atelier screen drawn inside an iPhone bezel, plus a short headline that sits above the phone. The controls match the app: occasion chips, Wear this today, closet filters, the month grid, the weather bands, and the Atelier slots.
 
 | Folder | Pixel size | App Store slot |
 | --- | --- | --- |
-| `iphone-6.9` | 1320 × 2868 | 6.9-inch iPhone |
-| `iphone-6.7` | 1284 × 2778 | 6.7-inch iPhone |
-| `iphone-6.5` | 1242 × 2688 | 6.5-inch iPhone |
-| `ipad-13` | 2064 × 2752 | 13-inch iPad |
+| `iphone-1206x2622` | 1206 × 2622 | iPhone 6.3-inch (1206 × 2622) |
 
-Order: 01 today’s look, 02 the closet, 03 the journal, 04 weather and occasion, 05 the atelier.
+Order: 01 today’s look, 02 the closet, 03 the journal, 04 weather, 05 the atelier.
 
-The portraits are original generated images made for this app, not photographs of real people. Copies are in `AppStore/models/`.
+The portraits are original generated images made for this app, not photographs of real people. Copies are in `AppStore/models/` (`model-office.jpg`, `model-weekend.jpg`, `model-winter.jpg`, `model-evening.jpg`).
 
 The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also in the Xcode asset catalog. It is RGB with no alpha channel.
 
@@ -162,7 +159,7 @@ The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also 
 - [ ] Confirm the 1024 marketing icon uploaded with the build.
 - [ ] Paste the name, subtitle, promotional text, description, and keywords from this file.
 - [ ] Category: Lifestyle. Secondary: Photo & Video.
-- [ ] Upload five screenshots for 6.9-inch, 6.7-inch, 6.5-inch, and 13-inch iPad from `AppStore/screenshots/`.
+- [ ] Upload the five 1206 × 2622 screenshots from `AppStore/screenshots/iphone-1206x2622/`.
 - [ ] Age rating: answer from the table above. Expect 4+. Do not enroll in Made for Kids.
 - [ ] Privacy Policy URL: the `privacy.html` page above, once Pages is on.
 - [ ] Support URL: the website index above.
