@@ -124,20 +124,21 @@ iPhone is portrait. iPad is portrait, including upside down. On a wide iPad the 
 
 ## Screenshots to upload
 
-Five images in each folder under `AppStore/screenshots/`. Each one places an original generated portrait beside the app’s studio or chair screen and adds a short headline. The controls match the app: Studio, Painting all five, Shape, Color, Finish, French, Fade, Decor, and the chair list.
+Five images, one size only, in `AppStore/screenshots/iphone-1206x2622/`. Each is exactly 1206 × 2622. That is the 6.3-inch iPhone display size. Upload this set for that slot. There are no other screenshot sizes in the kit.
 
-| Folder | Pixel size | App Store slot |
-| --- | --- | --- |
-| `iphone-6.9` | 1320 × 2868 | 6.9-inch iPhone |
-| `iphone-6.7` | 1284 × 2778 | 6.7-inch iPhone |
-| `iphone-6.5` | 1242 × 2688 | 6.5-inch iPhone |
-| `ipad-13` | 2064 × 2752 | 13-inch iPad |
+Each image places a headline and a short subhead above a portrait, then shows the Polquette studio, looks, or chair screen inside an iPhone frame with a Dynamic Island. The controls match the app.
 
-Order: 01 Blush Pearl, 02 Burgundy Foil, 03 Colorful Bloom, 04 Nude Gold Line, 05 today’s chair.
+| File | What it shows |
+| --- | --- |
+| `01-cherry-studio.png` | Studio, cherry color, paint all five |
+| `02-lavender-looks.png` | Looks: Blush Pearl, Colorful Bloom, Ivory French |
+| `03-gold-glitter.png` | Studio, glitter finish |
+| `04-french-tip.png` | Studio, French tip length and tip color |
+| `05-salon-chairs.png` | Today’s chair and the book of chairs |
 
-The portraits are original generated images made for this app, not photographs of real people. Copies are in `AppStore/models/`.
+The portraits are original generated images made for this app, not photographs of real people. Copies are in `AppStore/models/` (`model-red.jpg`, `model-floral.jpg`, `model-glitter.jpg`, `model-french.jpg`).
 
-The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also in the Xcode asset catalog. It is RGB with no alpha channel.
+The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also in the Xcode asset catalog. It is the approved full-bleed artwork, saved as RGB PNG with no alpha channel. The same artwork is the website favicon and the Apple touch icon.
 
 ## Submission checklist
 
@@ -147,7 +148,7 @@ The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also 
 - [ ] Confirm the 1024 marketing icon uploaded with the build.
 - [ ] Paste the name, subtitle, promotional text, description, and keywords from this file.
 - [ ] Category: Games, subcategory Simulation. Secondary: Lifestyle.
-- [ ] Upload five screenshots for 6.9-inch, 6.7-inch, 6.5-inch, and 13-inch iPad from `AppStore/screenshots/`.
+- [ ] Upload the five 1206 × 2622 screenshots from `AppStore/screenshots/iphone-1206x2622/` for the 6.3-inch iPhone slot.
 - [ ] Age rating: answer from the table above. Expect 4+. Do not enroll in Made for Kids.
 - [ ] Privacy Policy URL: the `privacy.html` page above, once Pages is on.
 - [ ] Support URL: the website index above.

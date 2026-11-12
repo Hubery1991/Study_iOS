@@ -10,11 +10,12 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 ROOT = Path(__file__).resolve().parents[1]
 STORE = ROOT / "AppStore"
 UPLOADS = Path("/home/ubuntu/.cursor/projects/workspace/uploads")
+ICON_SRC = UPLOADS / "polquette-icon_27cc.jpg"
 MODELS = {
-    "blush": UPLOADS / "model-1-blush_cb4a.jpg",
-    "burgundy": UPLOADS / "model-2-burgundy_a463.jpg",
-    "colorful": UPLOADS / "model-3-colorful_ba69.jpg",
-    "nude": UPLOADS / "model-4-nude_25e0.jpg",
+    "red": UPLOADS / "model-red_e6b9.jpg",
+    "floral": UPLOADS / "model-floral_a629.jpg",
+    "glitter": UPLOADS / "model-glitter_0124.jpg",
+    "french": UPLOADS / "model-french_9b9d.jpg",
 }
 
 SERIF = "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf"
@@ -58,12 +59,7 @@ COLORS = {
     "silver": (201, 205, 212),
 }
 
-DEVICES = {
-    "iphone-6.9": (1320, 2868),
-    "iphone-6.7": (1284, 2778),
-    "iphone-6.5": (1242, 2688),
-    "ipad-13": (2064, 2752),
-}
+SHOT = (1206, 2622)
 
 
 def font(path, size):
@@ -321,6 +317,25 @@ def nude_set():
     return nails
 
 
+def red_set():
+    return same_nail(shape="rounded", color="cherry", finish="gloss")
+
+
+def floral_set():
+    nails = same_nail(shape="oval", color="lilac", finish="gloss")
+    for nail in nails:
+        nail["decor"] = [{"kind": "flower", "color": "white", "x": 0.5, "y": 0.58, "scale": 0.95}]
+    return nails
+
+
+def glitter_set():
+    return same_nail(shape="almond", color="gold", finish="glitter")
+
+
+def french_set():
+    return same_nail(shape="rounded", color="ivory", finish="gloss", french=True, coverage=0.28, tip="white")
+
+
 def rounded_mask(image, radius):
     image = image.convert("RGBA")
     mask = Image.new("L", image.size, 0)
@@ -379,37 +394,57 @@ def studio_panel(size, scene):
     draw.rounded_rectangle(pill_box, radius=20, fill=INK)
     draw.text((pill_box[0] + 16, pill_box[1] + 8), pill, font=small, fill=WHITE)
 
-    hand_top = 160
-    tool_block = 210 if height > 700 else 170
+    hand_top = 148
+    tool_block = 300 if scene.get("tab") == "French" else 220
     hand_box = (width - 48, max(180, height - hand_top - tool_block - 24))
     hand = hand_image(scene["nails"], hand_box)
     image.alpha_composite(hand, (24, hand_top))
 
-    y = hand_top + hand_box[1] + 16
-    x = 24
-    chip_face = font(SANS_MED, max(15, width // 46))
+    y = hand_top + hand_box[1] + 12
+    x = 16
+    chip_face = font(SANS_MED, max(13, min(18, width // 42)))
     for label in ["Shape", "Color", "Finish", "French", "Fade", "Decor"]:
-        x, _ = draw_chip(draw, (x, y), label, chip_face, label == scene["tab"])
-    y += 62
+        if x > width - 70:
+            break
+        x, chip_h = draw_chip(draw, (x, y), label, chip_face, label == scene["tab"])
+    y += 54
     if scene["tab"] == "Color":
-        x = 24
-        for name in ["blush-veil", "rosewater", "petal", "ballet", "nude", "burgundy", "coral", "sage", "lilac", "ink", "gold", "white"]:
+        x = 16
+        for name in ["blush-veil", "petal", "nude", "cherry", "burgundy", "coral", "sage", "lilac", "gold", "white"]:
+            if x > width - 40:
+                break
             selected = name == scene.get("selected")
-            draw.ellipse([x, y, x + 36, y + 36], fill=COLORS[name], outline=GOLD if selected else WHITE, width=4 if selected else 2)
-            x += 48
+            draw.ellipse([x, y, x + 32, y + 32], fill=COLORS[name], outline=GOLD if selected else WHITE, width=4 if selected else 2)
+            x += 42
     elif scene["tab"] == "Finish":
-        x = 24
+        x = 16
         for label in ["Gloss", "Matte", "Cream", "Chrome", "Shimmer", "Glitter"]:
             x, _ = draw_chip(draw, (x, y), label, chip_face, label == scene.get("selected"))
     elif scene["tab"] == "Shape":
-        x = 24
+        x = 16
         for label in ["Almond", "Square", "Coffin", "Oval", "Stiletto", "Rounded"]:
+            if x > width - 80:
+                break
             x, _ = draw_chip(draw, (x, y), label, chip_face, label == scene.get("selected"))
     elif scene["tab"] == "Decor":
-        x = 24
-        for label in ["Daisy", "Blossom", "Pearl", "Flake", "Tip line", "Heart"]:
+        x = 16
+        for label in ["Daisy", "Blossom", "Pearl", "Flake", "Heart"]:
             x, _ = draw_chip(draw, (x, y), label, chip_face, label == scene.get("selected"))
-        draw.text((24, y + 58), "Tap a piece to place it. Up to four on a nail.", font=tiny, fill=MUTED)
+        draw.text((16, y + 50), "Tap a piece to place it. Up to four on a nail.", font=tiny, fill=MUTED)
+    elif scene["tab"] == "French":
+        draw.text((16, y), "French tip", font=chip_face, fill=INK)
+        toggle = [width - 78, y - 2, width - 20, y + 26]
+        draw.rounded_rectangle(toggle, radius=14, fill=ROSE)
+        draw.ellipse([toggle[2] - 24, toggle[1] + 3, toggle[2] - 4, toggle[3] - 3], fill=WHITE)
+        draw.text((16, y + 40), "Tip color", font=tiny, fill=MUTED)
+        x = 16
+        for name in ["white", "nude", "blush-veil", "gold"]:
+            selected = name == scene.get("selected")
+            draw.ellipse([x, y + 64, x + 28, y + 92], fill=COLORS[name], outline=INK if selected else WHITE, width=3 if selected else 1)
+            x += 38
+        draw.text((16, y + 104), "Length", font=tiny, fill=MUTED)
+        draw.rounded_rectangle([16, y + 128, width - 20, y + 136], radius=4, fill=(230, 214, 214))
+        draw.ellipse([width * 0.42, y + 122, width * 0.42 + 22, y + 144], fill=ROSE)
     return image
 
 
@@ -437,6 +472,9 @@ def challenge_panel(size):
         ("2. Burgundy Foil", "Elena, after six", 2, False),
         ("3. Colorful Bloom", "A guest from the garden", 0, False),
         ("4. Nude Gold Line", "A quiet afternoon", 0, True),
+        ("5. Midnight Chrome", "A late booking", 0, True),
+        ("6. Sage Cream", "A Saturday regular", 0, True),
+        ("7. Coral Glitter", "A birthday table", 0, True),
     ]
     y = 460
     for name, client, stars, locked in rows:
@@ -482,149 +520,235 @@ def draw_stars(draw, origin, filled):
         draw.polygon(points, fill=color)
 
 
-def compose(device, scene, photo):
-    width, height = DEVICES[device]
-    wide = device.startswith("ipad")
-    canvas = Image.new("RGBA", (width, height), scene["bg"] + (255,))
+def looks_panel(size):
+    width, height = size
+    image = Image.new("RGBA", (width, height), (*IVORY, 255))
+    draw = ImageDraw.Draw(image)
+    title = font(SERIF, max(26, width // 16))
+    body = font(SANS, max(13, width // 48))
+    semi = font(SANS_SEMI, max(14, width // 44))
+    draw.text((20, 8), "Looks", font=title, fill=INK)
+    cards = [
+        ("Blush Pearl", "Almond, blush veil, shimmer, and a pearl.", blush_set()),
+        ("Colorful Bloom", "A bright tip and a tiny flower on each nail.", bloom_set()),
+        ("Ivory French", "Rounded ivory nails with a classic white tip.", french_set()),
+    ]
+    y = 64
+    card_h = max(180, (height - y - 16) // len(cards) - 12)
+    for name, blurb, nails in cards:
+        if y + card_h > height - 8:
+            break
+        draw.rounded_rectangle([16, y, width - 16, y + card_h], radius=18, fill=PAPER, outline=(230, 220, 214), width=2)
+        draw.text((32, y + 12), name, font=font(SERIF, max(18, width // 28)), fill=INK)
+        draw.text((32, y + 42), blurb, font=body, fill=MUTED)
+        button_top = y + card_h - 48
+        hand_top = y + 68
+        hand_h = max(80, button_top - hand_top - 12)
+        hand = hand_image(nails, (width - 64, hand_h))
+        image.alpha_composite(hand, (32, hand_top))
+        draw.rounded_rectangle([32, button_top, 196, button_top + 32], radius=14, fill=INK)
+        draw.text((46, button_top + 6), "Use this look", font=semi, fill=WHITE)
+        y += card_h + 12
+    return image
+
+
+def lilac_canvas(size):
+    small = Image.new("RGB", (24, 48))
+    pix = small.load()
+    stops = [(214, 170, 216), (244, 176, 198), (246, 206, 186)]
+    for y in range(48):
+        for x in range(24):
+            t = x / 23 * 0.72 + y / 47 * 0.28
+            if t < 0.5:
+                u = t / 0.5
+                a, b = stops[0], stops[1]
+            else:
+                u = (t - 0.5) / 0.5
+                a, b = stops[1], stops[2]
+            pix[x, y] = tuple(int(a[i] + (b[i] - a[i]) * u) for i in range(3))
+    return small.resize(size, Image.Resampling.BICUBIC)
+
+
+def phone_frame(ui):
+    """Place the app UI in a flat-sided iPhone with a Dynamic Island."""
+    status_h = 86
+    screen_w = ui.width
+    screen_h = ui.height + status_h
+    screen = Image.new("RGBA", (screen_w, screen_h), (*PAPER, 255))
+    draw = ImageDraw.Draw(screen)
+    time_face = font(SANS_SEMI, 22)
+    draw.text((28, 28), "9:41", font=time_face, fill=INK)
+    battery = [screen_w - 58, 30, screen_w - 26, 48]
+    draw.rounded_rectangle(battery, radius=4, outline=INK, width=2)
+    draw.rectangle([battery[2] + 2, 36, battery[2] + 5, 42], fill=INK)
+    draw.rounded_rectangle([battery[0] + 3, battery[1] + 3, battery[0] + 22, battery[3] - 3], radius=2, fill=INK)
+    screen.alpha_composite(ui, (0, status_h))
+    island_w, island_h = int(screen_w * 0.34), 40
+    island = [(screen_w - island_w) // 2, 22, (screen_w + island_w) // 2, 22 + island_h]
+    draw.rounded_rectangle(island, radius=island_h / 2, fill=(12, 12, 14))
+    draw.ellipse([island[2] - 28, island[1] + 10, island[2] - 12, island[3] - 10], fill=(28, 32, 40))
+    draw.ellipse([island[2] - 23, island[1] + 15, island[2] - 17, island[3] - 15], fill=(70, 90, 120))
+
+    bezel = 14
+    body = Image.new("RGBA", (screen_w + bezel * 2 + 10, screen_h + bezel * 2), (0, 0, 0, 0))
+    bdraw = ImageDraw.Draw(body)
+    outer = [4, 0, body.width - 6, body.height - 1]
+    bdraw.rounded_rectangle(outer, radius=58, fill=(28, 28, 31))
+    bdraw.rounded_rectangle([outer[0] + 2, outer[1] + 2, outer[2] - 2, outer[3] - 2], radius=54, outline=(88, 88, 94), width=2)
+    # Side buttons sit on the metal edge.
+    bdraw.rounded_rectangle([0, 150, 6, 196], radius=2, fill=(64, 64, 70))
+    bdraw.rounded_rectangle([0, 230, 6, 310], radius=2, fill=(64, 64, 70))
+    bdraw.rounded_rectangle([0, 330, 6, 410], radius=2, fill=(64, 64, 70))
+    bdraw.rounded_rectangle([body.width - 6, 260, body.width - 1, 360], radius=2, fill=(64, 64, 70))
+    mask = Image.new("L", screen.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, screen_w - 1, screen_h - 1], radius=46, fill=255)
+    screen.putalpha(mask)
+    body.alpha_composite(screen, (bezel + 4, bezel))
+    return body
+
+
+def compose(scene, photo):
+    canvas = lilac_canvas(SHOT).convert("RGBA")
     draw = ImageDraw.Draw(canvas)
-    margin = 72 if wide else 56
-    kicker = font(SANS_SEMI, 28 if wide else 22)
-    headline = font(SERIF, 84 if wide else 68)
-    draw.text((margin, 78 if wide else 96), "POLQUETTE", font=kicker, fill=ROSE_DEEP)
-    y = 130 if wide else 146
+    margin = 52
+    headline = font(SERIF, 64)
+    sub = font(SANS, 30)
+    y = 64
     for line in scene["headline"].split("\n"):
         draw.text((margin, y), line, font=headline, fill=INK)
-        y += int(headline.size * 1.05)
-    content_top = y + 36
-    if wide:
-        photo_box = (int(width * 0.40), height - content_top - 72)
-        ui_origin = (margin + photo_box[0] + 36, content_top)
-        ui_size = (width - ui_origin[0] - margin, photo_box[1])
-        photo_origin = (margin, content_top)
-    else:
-        photo_h = int(height * 0.34)
-        photo_box = (width - margin * 2, photo_h)
-        photo_origin = (margin, content_top)
-        ui_origin = (margin, content_top + photo_h + 28)
-        ui_size = (width - margin * 2, height - ui_origin[1] - 48)
-    shot = cover(photo, photo_box, anchor=(0.5, scene.get("anchor", 0.46)))
-    shot = rounded_mask(shot, 36)
+        y += 72
+    draw.text((margin, y + 6), scene["sub"], font=sub, fill=(90, 58, 78))
+    y += 56
+    photo_h = 780
+    photo_box = (SHOT[0] - margin * 2, photo_h)
+    shot = cover(photo, photo_box, anchor=(0.5, scene.get("anchor", 0.5)))
+    shot = rounded_mask(shot, 32)
+    photo_origin = (margin, y)
     shadow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     ImageDraw.Draw(shadow).rounded_rectangle(
-        [photo_origin[0] + 8, photo_origin[1] + 14, photo_origin[0] + photo_box[0] + 8, photo_origin[1] + photo_box[1] + 14],
-        radius=36,
-        fill=(44, 36, 34, 40),
-    )
-    shadow = shadow.filter(ImageFilter.GaussianBlur(16))
-    canvas.alpha_composite(shadow)
-    canvas.alpha_composite(shot, photo_origin)
-    panel = studio_panel(ui_size, scene) if scene["kind"] == "studio" else challenge_panel(ui_size)
-    panel = rounded_mask(panel, 32)
-    ui_shadow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
-    ImageDraw.Draw(ui_shadow).rounded_rectangle(
-        [ui_origin[0] + 6, ui_origin[1] + 12, ui_origin[0] + ui_size[0] + 6, ui_origin[1] + ui_size[1] + 12],
+        [photo_origin[0] + 6, photo_origin[1] + 12, photo_origin[0] + photo_box[0] + 6, photo_origin[1] + photo_box[1] + 12],
         radius=32,
-        fill=(44, 36, 34, 36),
+        fill=(70, 40, 60, 46),
     )
-    ui_shadow = ui_shadow.filter(ImageFilter.GaussianBlur(14))
-    canvas.alpha_composite(ui_shadow)
-    canvas.alpha_composite(panel, ui_origin)
+    canvas.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(14)))
+    canvas.alpha_composite(shot, photo_origin)
+
+    ui_w = 760
+    phone_top_guess = photo_origin[1] + photo_box[1] + 22
+    ui_h = max(1080, SHOT[1] - phone_top_guess - 86 - 36 - 48)
+    if scene["kind"] == "studio":
+        panel = studio_panel((ui_w, ui_h), scene)
+    elif scene["kind"] == "looks":
+        panel = looks_panel((ui_w, ui_h))
+    else:
+        panel = challenge_panel((ui_w, ui_h))
+    phone = phone_frame(panel)
+    scale = min(1.0, (SHOT[1] - (photo_origin[1] + photo_box[1] + 28) - 36) / phone.height)
+    if scale < 1:
+        phone = phone.resize((int(phone.width * scale), int(phone.height * scale)), Image.Resampling.LANCZOS)
+    px = (SHOT[0] - phone.width) // 2
+    py = photo_origin[1] + photo_box[1] + 28
+    phone_shadow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+    ImageDraw.Draw(phone_shadow).rounded_rectangle(
+        [px + 16, py + 20, px + phone.width - 8, py + phone.height + 10],
+        radius=60,
+        fill=(60, 30, 50, 60),
+    )
+    canvas.alpha_composite(phone_shadow.filter(ImageFilter.GaussianBlur(18)))
+    canvas.alpha_composite(phone, (px, py))
     return canvas.convert("RGB")
 
 
 SCENES = [
     {
-        "file": "01-blush-pearl.png",
+        "file": "01-cherry-studio.png",
         "kind": "studio",
-        "headline": "Blush Pearl,\nin one tap",
-        "bg": (247, 226, 230),
-        "photo": "blush",
-        "anchor": 0.42,
+        "headline": "Cherry, on\nevery nail",
+        "sub": "Paint all five, or just one finger.",
+        "photo": "red",
+        "anchor": 0.58,
         "tab": "Color",
-        "selected": "blush-veil",
-        "nails": blush_set(),
+        "selected": "cherry",
+        "nails": red_set(),
     },
     {
-        "file": "02-burgundy-foil.png",
-        "kind": "studio",
-        "headline": "Burgundy, foil,\nand gold",
-        "bg": (243, 230, 204),
-        "photo": "burgundy",
-        "anchor": 0.50,
-        "tab": "Finish",
-        "selected": "Gloss",
-        "nails": burgundy_set(),
-    },
-    {
-        "file": "03-colorful-bloom.png",
-        "kind": "studio",
-        "headline": "A bloom on\nevery nail",
-        "bg": (232, 222, 242),
-        "photo": "colorful",
+        "file": "02-lavender-looks.png",
+        "kind": "looks",
+        "headline": "A look, in\none tap",
+        "sub": "Start from a set, then change any nail.",
+        "photo": "floral",
         "anchor": 0.62,
         "tab": "Decor",
         "selected": "Daisy",
-        "nails": bloom_set(),
+        "nails": floral_set(),
     },
     {
-        "file": "04-nude-gold-line.png",
+        "file": "03-gold-glitter.png",
         "kind": "studio",
-        "headline": "A thin gold line",
-        "bg": (214, 236, 228),
-        "photo": "nude",
+        "headline": "Gold glitter,\nheld up close",
+        "sub": "Gloss, cream, chrome, shimmer, or glitter.",
+        "photo": "glitter",
         "anchor": 0.52,
-        "tab": "Shape",
-        "selected": "Almond",
-        "nails": nude_set(),
+        "tab": "Finish",
+        "selected": "Glitter",
+        "nails": glitter_set(),
     },
     {
-        "file": "05-todays-chair.png",
+        "file": "04-french-tip.png",
+        "kind": "studio",
+        "headline": "A quiet\nFrench tip",
+        "sub": "Choose the tip color and how long it sits.",
+        "photo": "french",
+        "anchor": 0.48,
+        "tab": "French",
+        "selected": "white",
+        "nails": french_set(),
+    },
+    {
+        "file": "05-salon-chairs.png",
         "kind": "challenge",
         "headline": "Today’s chair\nis waiting",
-        "bg": (246, 239, 232),
-        "photo": "blush",
+        "sub": "Twelve appointments. Up to three stars.",
+        "photo": "red",
         "anchor": 0.42,
         "tab": "Color",
-        "selected": "blush-veil",
-        "nails": blush_set(),
+        "selected": "cherry",
+        "nails": french_set(),
     },
 ]
 
 
-def draw_icon(size):
-    image = Image.new("RGB", (size, size), IVORY)
-    draw = ImageDraw.Draw(image)
-    for y in range(size):
-        t = y / size
-        color = tuple(int(IVORY[i] + (BLUSH[i] - IVORY[i]) * t) for i in range(3))
-        draw.line([(0, y), (size, y)], fill=color)
-    nail = render_nail(
-        {
-            "shape": "almond",
-            "color": "blush-veil",
-            "finish": "plain",
-            "french": False,
-            "decor": [
-                {"kind": "line", "color": "gold", "x": 0.5, "y": 0.3, "scale": 1},
-                {"kind": "pearl", "color": "white", "x": 0.5, "y": 0.68, "scale": 1.1},
-            ],
-            "seed": 2,
-            "plain_base": True,
-        },
-        (int(size * 0.46), int(size * 0.70)),
-    )
-    image.paste(nail, (int(size * 0.27), int(size * 0.14)), nail)
-    return image
+def install_icon(master):
+    if master.mode != "RGB" or master.size != (1024, 1024):
+        master = master.convert("RGB").resize((1024, 1024), Image.Resampling.LANCZOS)
+    if master.mode != "RGB":
+        raise SystemExit(f"icon mode {master.mode}")
+    (STORE / "icon").mkdir(parents=True, exist_ok=True)
+    icon_path = STORE / "icon" / "AppIcon-1024.png"
+    master.save(icon_path, "PNG")
+    icon_set = ROOT / "App" / "Assets.xcassets" / "AppIcon.appiconset"
+    icon_set.mkdir(parents=True, exist_ok=True)
+    for side in [20, 29, 40, 58, 60, 76, 80, 87, 120, 152, 167, 180, 1024]:
+        resized = master if side == 1024 else master.resize((side, side), Image.Resampling.LANCZOS)
+        if resized.mode != "RGB":
+            resized = resized.convert("RGB")
+        resized.save(icon_set / f"icon-{side}.png", "PNG")
+    web = STORE / "website"
+    master.resize((32, 32), Image.Resampling.LANCZOS).save(web / "favicon-32.png", "PNG")
+    master.resize((180, 180), Image.Resampling.LANCZOS).save(web / "apple-touch-icon.png", "PNG")
+    return icon_path
 
 
 def copy_models():
     dest = STORE / "models"
     dest.mkdir(parents=True, exist_ok=True)
+    for old in dest.glob("*"):
+        old.unlink()
     names = {
-        "blush": "model-1-blush.jpg",
-        "burgundy": "model-2-burgundy.jpg",
-        "colorful": "model-3-colorful.jpg",
-        "nude": "model-4-nude.jpg",
+        "red": "model-red.jpg",
+        "floral": "model-floral.jpg",
+        "glitter": "model-glitter.jpg",
+        "french": "model-french.jpg",
     }
     copied = {}
     for key, filename in names.items():
@@ -636,28 +760,19 @@ def copy_models():
 
 def main():
     photos = copy_models()
-    icon = draw_icon(1024)
-    if icon.mode != "RGB":
-        raise SystemExit(f"icon mode {icon.mode}")
-    (STORE / "icon").mkdir(parents=True, exist_ok=True)
-    icon_path = STORE / "icon" / "AppIcon-1024.png"
-    icon.save(icon_path, "PNG")
-    icon_set = ROOT / "App" / "Assets.xcassets" / "AppIcon.appiconset"
-    icon_set.mkdir(parents=True, exist_ok=True)
-    sizes = [20, 29, 40, 58, 60, 76, 80, 87, 120, 152, 167, 180, 1024]
-    for side in sizes:
-        resized = icon if side == 1024 else icon.resize((side, side), Image.Resampling.LANCZOS)
-        resized.save(icon_set / f"icon-{side}.png", "PNG")
-    shutil.copyfile(icon_path, icon_set / "icon-1024.png")
-    for device, (width, height) in DEVICES.items():
-        folder = STORE / "screenshots" / device
-        folder.mkdir(parents=True, exist_ok=True)
-        for scene in SCENES:
-            image = compose(device, scene, photos[scene["photo"]])
-            if image.size != (width, height) or image.mode != "RGB":
-                raise SystemExit(f"bad screenshot {device} {image.size} {image.mode}")
-            image.save(folder / scene["file"], "PNG")
-            print(f"wrote {device}/{scene['file']} {image.size}")
+    icon = Image.open(ICON_SRC).convert("RGB")
+    icon_path = install_icon(icon)
+    shot_root = STORE / "screenshots"
+    if shot_root.exists():
+        shutil.rmtree(shot_root)
+    folder = shot_root / "iphone-1206x2622"
+    folder.mkdir(parents=True)
+    for scene in SCENES:
+        image = compose(scene, photos[scene["photo"]])
+        if image.size != SHOT or image.mode != "RGB":
+            raise SystemExit(f"bad screenshot {image.size} {image.mode}")
+        image.save(folder / scene["file"], "PNG")
+        print(f"wrote iphone-1206x2622/{scene['file']} {image.size} {image.mode}")
     print(f"wrote {icon_path}")
 
 

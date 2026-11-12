@@ -34,14 +34,14 @@ That suite checks the palette, five-nail edits, clamps, the decoration cap, undo
 
 - `APP_STORE_LISTING.md` — name, subtitle, promotional text, description, keywords, category, age-rating answers, App Privacy (Data Not Collected), review notes, and the submission checklist.
 - `NAME_UNIQUENESS.md` — iTunes Search API evidence. Polquette had no exact `trackName` match on the US, UK, Japan, China, Germany, France, Canada, Australia, or South Korea storefronts on November 11, 2026.
-- `icon/AppIcon-1024.png` — 1024×1024 RGB marketing icon, no alpha. The full set is wired in `App/Assets.xcassets/AppIcon.appiconset`.
-- `models/` — the four original generated portraits used in the screenshots and on the website.
-- `screenshots/` — five images each at 1320×2868, 1284×2778, 1242×2688, and iPad 2064×2752.
-- `website/` — `index.html`, `privacy.html`, `terms.html`, and `site.css`.
+- `icon/AppIcon-1024.png` — 1024×1024 RGB marketing icon, no alpha, the approved full-bleed artwork. The same image is scaled into `App/Assets.xcassets/AppIcon.appiconset` and into the website favicon and Apple touch icon.
+- `models/` — four original generated portraits: cherry red, lavender flowers, gold glitter, and French tips. They are used in the screenshots and on the website.
+- `screenshots/iphone-1206x2622/` — five images, each exactly 1206×2622. No other screenshot sizes are included.
+- `website/` — `index.html`, `privacy.html`, `terms.html`, `site.css`, `favicon-32.png`, and `apple-touch-icon.png`.
 
 ### Screenshots
 
-They were composed by `AppStore/render_art.py` (Pillow). Each one places a portrait with the studio hand, the color, finish, shape, or decoration controls, or the chair list, plus a headline. They are not captures from an iOS Simulator, because none is available in this environment. Regenerate with:
+They were composed by `AppStore/render_art.py` (Pillow). Each one puts a headline and subhead above one of the portraits, then draws the studio, the looks list, or the chair list inside an iPhone frame. They are not captures from an iOS Simulator, because none is available in this environment. Regenerate with:
 
 ```bash
 python3 AppStore/render_art.py
