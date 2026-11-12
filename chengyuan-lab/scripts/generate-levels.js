@@ -373,7 +373,7 @@ function serialize(data) {
   lines.push("'use strict';");
   lines.push('');
   lines.push('/**');
-  lines.push(' * 咕嘟果冻铺 · 200 关固定关卡');
+  lines.push(' * 澄渊实验室 · 200 关固定关卡');
   lines.push(' * 由 scripts/generate-levels.js 生成，请勿手改。');
   lines.push(' * seed = ' + data.seed + '，同一关对所有玩家完全一致，且带可回放的合法解。');
   lines.push(' */');

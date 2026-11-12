@@ -10,7 +10,7 @@ var levels = require('../data/levels');
 var solutions = require('../data/solutions');
 
 var root = path.join(__dirname, '..');
-canvasLib.GlobalFonts.registerFromPath(path.join(root, 'fonts', 'ZCOOLKuaiLe-subset.ttf'), 'ZCOOL KuaiLe');
+canvasLib.GlobalFonts.registerFromPath(path.join(root, 'fonts', 'lab-sans-subset.ttf'), 'Chengyuan Sans');
 
 function mulberry32(seed) {
   var a = seed >>> 0;
@@ -37,8 +37,8 @@ function render(state, filename) {
     safeBottom: 34,
     bannerH: 0,
     time: state.clock || 1280,
-    displayFont: '"ZCOOL KuaiLe"',
-    bodyFont: '"ZCOOL KuaiLe"',
+    displayFont: '"Chengyuan Sans"',
+    bodyFont: '"Chengyuan Sans"',
   }, state);
   var file = path.join(root, 'screenshots', filename);
   fs.writeFileSync(file, canvas.toBuffer('image/png'));
@@ -121,8 +121,10 @@ render({
   scrollY: 0,
 }, '02-levels.png');
 
-render(playState(3, { selected: 1, moves: 1, undo: [[]] }), '03-early-level.png');
-render(playState(200, { moves: 6, undosLeft: 8, hintsLeft: 1 }), '04-hard-level.png');
+render(playState(3, { selected: 0, moves: 1, undo: [[]] }), '03-early-level.png');
+var hard = playState(200, { moves: 6, undosLeft: 8, hintsLeft: 1 });
+hard.save.colorAssist = true;
+render(hard, '04-hard-level.png');
 
 var winLevel = levels.levels[3];
 var solved = rules.replay(winLevel.tubes, winLevel.capacity, solutions[3]);

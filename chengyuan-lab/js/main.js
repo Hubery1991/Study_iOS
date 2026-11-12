@@ -23,7 +23,7 @@ function boot() {
   var bodyFont = 'sans-serif';
   try {
     if (wx.loadFont) {
-      var loaded = wx.loadFont('fonts/ZCOOLKuaiLe-subset.ttf');
+      var loaded = wx.loadFont('fonts/lab-sans-subset.ttf');
       if (loaded) {
         displayFont = loaded;
         bodyFont = loaded;
@@ -170,12 +170,12 @@ function boot() {
     var tube = state.tubes[index];
     if (!tube) return;
     if (!tube.length) {
-      toast('这是空瓶');
+      toast('这是空管');
       audio.play('error');
       return;
     }
     if (rules.isComplete(tube, state.level.capacity)) {
-      toast('这瓶已经封好啦');
+      toast('这管已经封好了');
       audio.play('tap');
       return;
     }
@@ -204,9 +204,10 @@ function boot() {
         return;
       }
       state.shake = { index: to, until: state.clock + 280 };
+      state.flash = { index: to, kind: 'bad', until: state.clock + 560 };
       audio.play('error');
       vibrate('medium');
-      toast('只能倒进同色果冻，或倒进空瓶');
+      toast('只能倒进同色液体，或倒进空管');
       return;
     }
     state.undo.push(before);
@@ -302,7 +303,7 @@ function boot() {
       state.tubes.push([]);
       state.added = true;
       state.selected = -1;
-      if (!(viaDev && config.devRewardToast)) toast('得到一个空瓶');
+      if (!(viaDev && config.devRewardToast)) toast('得到一支空管');
       audio.play('cap');
       return;
     }
@@ -348,7 +349,7 @@ function boot() {
 
   function share() {
     var levelId = state.levelId || save.current || 1;
-    var title = '我在咕嘟果冻铺闯到第 ' + levelId + ' 关，来一起分装彩虹果冻！';
+    var title = '我在澄渊实验室清到第 ' + levelId + ' 关，来帮我分开这片深海。';
     try {
       wx.shareAppMessage({
         title: title,
@@ -402,6 +403,12 @@ function boot() {
       save.vibration = !save.vibration;
       persist();
       vibrate('light');
+      return;
+    }
+    if (target.id === 'toggle-assist') {
+      save.colorAssist = !save.colorAssist;
+      persist();
+      audio.play('button');
       return;
     }
     if (target.id === 'modal-skip' || target.id === 'skip') {
@@ -508,7 +515,7 @@ function boot() {
     wx.onShareAppMessage && wx.onShareAppMessage(function () {
       var levelId = state.levelId || save.current || 1;
       return {
-        title: '我在咕嘟果冻铺闯到第 ' + levelId + ' 关，来一起分装彩虹果冻！',
+        title: '我在澄渊实验室清到第 ' + levelId + ' 关，来帮我分开这片深海。',
         query: 'from=share&level=' + levelId,
       };
     });
@@ -540,6 +547,7 @@ function boot() {
         var anim = state.anim;
         state.anim = null;
         if (anim.capped) {
+          state.flash = { index: anim.to, kind: 'ok', until: state.clock + 720 };
           audio.play('cap');
           var box = draw.layoutPlay(view(), state).bottles[anim.to];
           if (box) {
@@ -567,8 +575,8 @@ function boot() {
 }
 
 function themeColor(id) {
-  var palette = ['#FF4B6A', '#FF8C1A', '#FFD000', '#37C94A', '#12CFC4', '#3B86FF', '#7B59FF', '#FF59B4', '#C4843C', '#2E3C9A', '#B6D63A', '#D83BD0'];
-  return palette[(id - 1) % palette.length];
+  var theme = require('./render/theme');
+  return theme.colorOf(id).base;
 }
 
 if (typeof wx !== 'undefined' && wx.createCanvas) boot();

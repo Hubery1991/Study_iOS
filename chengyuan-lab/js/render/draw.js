@@ -60,29 +60,28 @@ function hit(rect, x, y) {
   return !!rect && x >= rect.x && y >= rect.y && x <= rect.x + rect.w && y <= rect.y + rect.h;
 }
 
-function layoutBottles(view, count, selected, locked) {
-  var top = view.safeTop + 118;
-  var bottomLimit = view.h - Math.max(view.safeBottom, 8) - (view.bannerH || 0) - 118;
-  var availW = view.w - 16;
-  var availH = Math.max(120, bottomLimit - top);
-  var rows = count > 6 ? 2 : 1;
-  var cols = Math.ceil(count / rows);
-  var gapY = rows > 1 ? 18 : 0;
-  var slotW = availW / cols;
-  var slotH = (availH - gapY) / rows;
-  var bw = Math.min(slotW - (count > 10 ? 6 : 10), 84);
-  var bh = Math.min(slotH - 10, bw / 0.36, 248);
-  bw = Math.min(bw, bh * 0.4);
-  if (bw < 28) {
-    bw = 28;
-    bh = Math.min(slotH - 8, bw / 0.36);
+function layoutBottles(view, count, selected, locked, coach) {
+  var top = view.safeTop + (coach ? 96 : 62);
+  var bar = toolbarRect(view);
+  var bottomLimit = bar.y - 10;
+  var availW = view.w - 8;
+  var availH = Math.max(180, bottomLimit - top);
+  var rows = count > 5 ? 2 : 1;
+  if (rows === 2 && count >= 11 && availW / Math.ceil(count / 2) / ((availH - 12) / 2) < 0.24) {
+    rows = 3;
   }
+  var cols = Math.ceil(count / rows);
+  var gapY = rows > 1 ? 12 : 0;
+  var slotW = availW / cols;
+  var slotH = (availH - gapY * (rows - 1)) / rows;
+  var bh = slotH - 4;
+  if (rows === 1) bh = Math.min(bh, Math.max(300, availH * 0.92));
+  var inset = count > 10 ? 3 : 6;
+  var bw = Math.min(slotW - inset, rows === 1 ? 88 : bh * 0.46);
+  if (bw < 26) bw = Math.max(22, slotW - 2);
   var bottles = [];
-  var minX = Infinity;
-  var minY = Infinity;
-  var maxX = 0;
-  var maxY = 0;
-  var gridTop = top + Math.max(0, (availH - (rows * bh + gapY)) / 2);
+  var gridH = rows * bh + gapY * (rows - 1);
+  var gridTop = top + Math.max(0, (availH - gridH) / 2);
   for (var i = 0; i < count; i++) {
     var row = Math.floor(i / cols);
     var col = i % cols;
@@ -91,20 +90,12 @@ function layoutBottles(view, count, selected, locked) {
     var rowX = (view.w - rowWidth) / 2;
     var x = rowX + col * slotW + (slotW - bw) / 2;
     var y = gridTop + row * (bh + gapY);
-    if (!locked && selected === i) y -= Math.min(14, bh * 0.08);
     bottles.push({ x: x, y: y, w: bw, h: bh, index: i });
-    minX = Math.min(minX, x);
-    minY = Math.min(minY, y);
-    maxX = Math.max(maxX, x + bw);
-    maxY = Math.max(maxY, y + bh);
   }
-  var tray = {
-    x: minX - 12,
-    y: minY - 16,
-    w: maxX - minX + 24,
-    h: maxY - minY + 28,
+  return {
+    bottles: bottles,
+    tray: { x: 10, y: top, w: view.w - 20, h: bottomLimit - top },
   };
-  return { bottles: bottles, tray: tray };
 }
 
 function toolbarRect(view) {
@@ -116,7 +107,7 @@ function toolbarRect(view) {
 function layoutPlay(view, state) {
   var count = state.tubes.length;
   var locked = !!(state.anim || state.scene === 'win');
-  var grid = layoutBottles(view, count, state.selected, locked);
+  var grid = layoutBottles(view, count, state.selected, locked, state.coach && state.scene === 'play');
   var bar = toolbarRect(view);
   var gap = 8;
   var bw = (bar.w - gap * 3) / 4;
@@ -199,7 +190,7 @@ function layoutSelect(view, state) {
 
 function layoutModal(view, state) {
   var w = Math.min(320, view.w - 40);
-  var h = state.modal && state.modal.kind === 'settings' ? 360 : 280;
+  var h = state.modal && state.modal.kind === 'settings' ? 430 : 280;
   if (state.modal && state.modal.kind === 'privacy') h = 300;
   var rect = { x: (view.w - w) / 2, y: (view.h - h) / 2, w: w, h: h };
   var primary = { id: 'modal-primary', x: rect.x + 22, y: rect.y + rect.h - 112, w: rect.w - 44, h: 48 };
@@ -208,10 +199,19 @@ function layoutModal(view, state) {
     primary = { id: 'modal-primary', x: rect.x + 22, y: rect.y + rect.h - 70, w: rect.w - 44, h: 48 };
     secondary = null;
   }
-  var sound = { id: 'toggle-sound', x: rect.x + rect.w - 86, y: rect.y + 92, w: 64, h: 32 };
-  var vibration = { id: 'toggle-vibration', x: rect.x + rect.w - 86, y: rect.y + 140, w: 64, h: 32 };
-  var skip = { id: 'modal-skip', x: rect.x + 22, y: rect.y + 196, w: rect.w - 44, h: 44 };
-  return { card: rect, primary: primary, secondary: secondary, sound: sound, vibration: vibration, skip: skip };
+  var sound = { id: 'toggle-sound', x: rect.x + rect.w - 86, y: rect.y + 78, w: 64, h: 32 };
+  var vibration = { id: 'toggle-vibration', x: rect.x + rect.w - 86, y: rect.y + 126, w: 64, h: 32 };
+  var assist = { id: 'toggle-assist', x: rect.x + rect.w - 86, y: rect.y + 174, w: 64, h: 32 };
+  var skip = { id: 'modal-skip', x: rect.x + 22, y: rect.y + 230, w: rect.w - 44, h: 44 };
+  return {
+    card: rect,
+    primary: primary,
+    secondary: secondary,
+    sound: sound,
+    vibration: vibration,
+    assist: assist,
+    skip: skip,
+  };
 }
 
 function drawFrame(ctx, view, state) {
@@ -227,49 +227,53 @@ function drawFrame(ctx, view, state) {
 }
 
 function drawHome(ctx, view, state, font) {
-  var title = '咕嘟果冻铺';
+  var title = '澄渊实验室';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.lineJoin = 'round';
-  var titleSize = fitSize(ctx, title, view.w - 48, 48, font.display, 400);
+  var titleSize = fitSize(ctx, title, view.w - 36, 40, font.display, 400);
   setFont(ctx, titleSize, font.display, 400);
-  ctx.lineWidth = 8;
-  ctx.strokeStyle = '#FF6B9D';
-  ctx.strokeText(title, view.w / 2, view.safeTop + 78);
-  ctx.fillStyle = '#FFFDFE';
-  ctx.fillText(title, view.w / 2, view.safeTop + 78);
+  ctx.fillStyle = theme.TEXT;
+  ctx.fillText(title, view.w / 2, view.safeTop + 58);
+  setFont(ctx, 13, font.body, 400);
+  ctx.fillStyle = theme.TEXT_DIM;
+  ctx.fillText('同色液体归入同一支试管', view.w / 2, view.safeTop + 88);
+  ctx.fillStyle = theme.PRIMARY;
+  ctx.fillRect(view.w / 2 - 28, view.safeTop + 104, 56, 2);
 
-  setFont(ctx, 15, font.body, 400);
-  ctx.fillStyle = '#7A4560';
-  ctx.fillText('把同色果冻倒进同一个瓶子', view.w / 2, view.safeTop + 118);
-
-  theme.drawMascot(ctx, view.w / 2, view.h * 0.4, 1.15, view.time || 0, 'idle');
-  drawMiniBottle(ctx, 42, view.h * 0.36, 46, 128, [3, 3, 3, 3]);
-  drawMiniBottle(ctx, view.w - 88, view.h * 0.38, 42, 116, [6, 6, 6, 6]);
+  var samples = [
+    { tube: [1, 1, 1, 1], x: 36 },
+    { tube: [2, 2, 2, 2], x: view.w / 2 - 26 },
+    { tube: [6, 6, 6, 6], x: view.w - 88 },
+  ];
+  for (var s = 0; s < samples.length; s++) {
+    theme.drawBottle(ctx, { x: samples[s].x, y: view.h * 0.22, w: 52, h: 168 }, samples[s].tube, 4, {
+      assist: !!(state.save && state.save.colorAssist),
+    });
+  }
 
   var stars = totalStars(state.save);
   var cleared = clearedCount(state.save);
   var ui = layoutHome(view);
   var card = ui.card;
-  paintCard(ctx, card, 20);
-  theme.drawStar(ctx, card.x + 36, card.y + 36, 11, '#FFC857', '#FFB703');
+  paintCard(ctx, card, 16);
+  theme.drawStar(ctx, card.x + 28, card.y + 36, 9, theme.WARNING, '#D97706');
   setFont(ctx, 16, font.body, 400);
-  ctx.fillStyle = '#8A4B68';
+  ctx.fillStyle = theme.TEXT;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
-  ctx.fillText('已通过 ' + cleared + ' / 200 关', card.x + 58, card.y + 26);
+  ctx.fillText('已通过 ' + cleared + ' / 200 关', card.x + 50, card.y + 26);
   setFont(ctx, 13, font.body, 400);
-  ctx.fillStyle = '#B06B88';
-  ctx.fillText('星星 ' + stars + ' / 600', card.x + 58, card.y + 48);
+  ctx.fillStyle = theme.TEXT_DIM;
+  ctx.fillText('记录 ' + stars + ' / 600', card.x + 50, card.y + 48);
 
   var continueLabel = homePrimaryLabel(state.save);
-  paintButton(ctx, ui.start, continueLabel, 'primary', font, 22);
-  paintButton(ctx, ui.select, '选择关卡', 'ghost', font, 18);
+  paintButton(ctx, ui.start, continueLabel, 'primary', font, 20);
+  paintButton(ctx, ui.select, '选择关卡', 'ghost', font, 17);
   paintButton(ctx, ui.settings, '设置', 'glass', font, 15);
   paintButton(ctx, ui.share, '分享', 'glass', font, 15);
 
   setFont(ctx, 12, font.body, 400);
-  ctx.fillStyle = 'rgba(122, 69, 96, 0.8)';
+  ctx.fillStyle = theme.TEXT_DIM;
   ctx.textAlign = 'center';
   ctx.fillText('进度只保存在这台设备上', view.w / 2, view.h - Math.max(view.safeBottom, 8) - 8);
 }
@@ -279,13 +283,6 @@ function homePrimaryLabel(save) {
   if (!started) return '开始游戏';
   var level = Math.min(save.current || save.unlocked || 1, save.unlocked || 1);
   return '继续第 ' + level + ' 关';
-}
-
-function drawMiniBottle(ctx, x, y, w, h, tube) {
-  ctx.save();
-  ctx.translate(0, Math.sin((x + y) / 40) * 0);
-  theme.drawBottle(ctx, { x: x, y: y, w: w, h: h }, tube, tube.length, {});
-  ctx.restore();
 }
 
 function drawSelect(ctx, view, state, font) {
@@ -301,29 +298,29 @@ function drawSelect(ctx, view, state, font) {
   }
   ctx.restore();
 
-  var header = ctx.createLinearGradient(0, 0, 0, view.safeTop + 64);
-  header.addColorStop(0, 'rgba(143, 214, 255, 0.96)');
-  header.addColorStop(1, 'rgba(255, 243, 210, 0.0)');
+  var header = ctx.createLinearGradient(0, 0, 0, view.safeTop + 70);
+  header.addColorStop(0, 'rgba(11,18,32,0.96)');
+  header.addColorStop(1, 'rgba(11,18,32,0)');
   ctx.fillStyle = header;
-  ctx.fillRect(0, 0, view.w, view.safeTop + 66);
+  ctx.fillRect(0, 0, view.w, view.safeTop + 72);
 
   paintCircleButton(ctx, ui.back, 'back');
-  setFont(ctx, 22, font.display, 400);
-  ctx.fillStyle = '#7A3050';
+  setFont(ctx, 20, font.display, 400);
+  ctx.fillStyle = theme.TEXT;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText('选择关卡', view.w / 2, view.safeTop + 30);
   setFont(ctx, 12, font.body, 400);
-  ctx.fillStyle = '#9A5874';
+  ctx.fillStyle = theme.TEXT_DIM;
   ctx.textAlign = 'right';
-  ctx.fillText(totalStars(state.save) + ' 颗星', view.w - 16, view.safeTop + 30);
+  ctx.fillText(totalStars(state.save) + ' 记录', view.w - 16, view.safeTop + 30);
 }
 
 function drawLevelCell(ctx, cell, font) {
   paintCard(ctx, cell, 14);
   if (cell.current && !cell.locked) {
-    ctx.strokeStyle = '#FF6B9D';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = theme.PRIMARY;
+    ctx.lineWidth = 2;
     theme.roundRect(ctx, cell.x + 1.5, cell.y + 1.5, cell.w - 3, cell.h - 3, 12);
     ctx.stroke();
   }
@@ -331,13 +328,13 @@ function drawLevelCell(ctx, cell, font) {
   ctx.textBaseline = 'middle';
   if (cell.locked) {
     setFont(ctx, 16, font.display, 400);
-    ctx.fillStyle = '#C8A8B6';
+    ctx.fillStyle = '#64748B';
     ctx.fillText(String(cell.levelId), cell.x + cell.w / 2, cell.y + cell.h * 0.38);
     drawLock(ctx, cell.x + cell.w / 2, cell.y + cell.h * 0.68, 1);
     return;
   }
   setFont(ctx, Math.max(14, cell.w * 0.32), font.display, 400);
-  ctx.fillStyle = cell.stars ? '#E24B84' : '#7A4560';
+  ctx.fillStyle = cell.stars ? theme.TEXT : theme.TEXT_DIM;
   ctx.fillText(String(cell.levelId), cell.x + cell.w / 2, cell.y + (cell.stars ? cell.h * 0.4 : cell.h * 0.5));
   if (cell.stars > 0) {
     drawStarRow(ctx, cell.x + cell.w / 2, cell.y + cell.h * 0.74, cell.stars, Math.max(4, cell.w * 0.09), true);
@@ -361,20 +358,32 @@ function drawPlay(ctx, view, state, font) {
     dir = toBox.x >= fromBox.x ? 1 : -1;
   }
 
+  var assist = !!(state.save && state.save.colorAssist);
   for (var i = 0; i < ui.bottles.length; i++) {
     if (anim && i === anim.from) continue;
     var hintRole = hintRoleFor(state, view, i);
     var shake = shakeOffset(state, view, i);
+    var chosen = state.selected === i && state.scene === 'play';
+    var invalid = false;
+    if (state.scene === 'play' && !anim && state.selected >= 0 && state.selected !== i) {
+      invalid = rules.pourAmount(state.tubes, cap, state.selected, i) === 0;
+    }
+    var flash = null;
+    if (state.flash && state.flash.index === i && view.time < state.flash.until) flash = state.flash.kind;
     theme.drawBottle(ctx, ui.bottles[i], visual[i], cap, {
-      selected: state.selected === i && state.scene !== 'win',
+      selected: chosen,
+      invalid: invalid,
       hint: hintRole,
       shake: shake,
+      assist: assist,
+      flash: flash,
+      time: view.time,
     });
   }
 
   if (anim && anim.kind === 'pour') {
     var box = ui.bottles[anim.from];
-    theme.drawBottle(ctx, box, visual[anim.from], cap, { tilt: dir * tilt });
+    theme.drawBottle(ctx, box, visual[anim.from], cap, { tilt: dir * tilt, assist: assist });
     drawStream(ctx, ui, state, dir * tilt, visual);
   }
 
@@ -388,7 +397,7 @@ function drawPlay(ctx, view, state, font) {
   paintCircleButton(ctx, ui.gear, 'gear');
   if (state.scene === 'play') {
     setFont(ctx, 12, font.body, 400);
-    ctx.fillStyle = 'rgba(122, 69, 96, 0.85)';
+    ctx.fillStyle = theme.TEXT_DIM;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('看视频跳过本关', ui.skip.x + ui.skip.w / 2, ui.skip.y + 10);
@@ -468,13 +477,29 @@ function rotatePoint(x, y, px, py, angle) {
 }
 
 function drawPlayHeader(ctx, view, state, font, ui) {
-  var levelRect = { x: 14, y: view.safeTop + 10, w: 108, h: 40 };
+  var levelRect = { x: 14, y: view.safeTop + 8, w: 108, h: 40 };
   paintCard(ctx, levelRect, 20);
-  fillCenter(ctx, '第 ' + state.level.id + ' 关', levelRect, 16, font.display, '#7A3050', 400);
-  var moveRect = { x: 130, y: view.safeTop + 10, w: view.w - 196, h: 40 };
+  fillCenter(ctx, '第 ' + state.level.id + ' 关', levelRect, 15, font.display, theme.TEXT, 400);
+  var moveRect = { x: 130, y: view.safeTop + 8, w: view.w - 196, h: 40 };
   paintCard(ctx, moveRect, 20);
   var goal = state.level.goal;
-  fillCenter(ctx, state.moves + ' 步 · 目标 ' + goal, moveRect, 14, font.body, '#8A4B68', 400);
+  setFont(ctx, 13, font.body, 400);
+  ctx.textBaseline = 'middle';
+  var movesLabel = state.moves + ' 步';
+  var dot = ' · ';
+  var goalLabel = '目标 ' + goal;
+  var yText = moveRect.y + moveRect.h / 2;
+  var w1 = ctx.measureText(movesLabel).width;
+  var w2 = ctx.measureText(dot).width;
+  var w3 = ctx.measureText(goalLabel).width;
+  var startX = moveRect.x + (moveRect.w - (w1 + w2 + w3)) / 2;
+  ctx.textAlign = 'left';
+  ctx.fillStyle = theme.TEXT;
+  ctx.fillText(movesLabel, startX, yText);
+  ctx.fillStyle = theme.TEXT_DIM;
+  ctx.fillText(dot, startX + w1, yText);
+  ctx.fillStyle = theme.WARNING;
+  ctx.fillText(goalLabel, startX + w1 + w2, yText);
   if (ui && ui.gear) {
     /* gear drawn by caller */
   }
@@ -482,45 +507,39 @@ function drawPlayHeader(ctx, view, state, font, ui) {
 
 function drawCoach(ctx, view, font) {
   var rect = { x: 28, y: view.safeTop + 58, w: view.w - 56, h: 48 };
-  ctx.fillStyle = 'rgba(255,255,255,0.92)';
-  theme.roundRect(ctx, rect.x, rect.y, rect.w, rect.h, 16);
-  ctx.fill();
+  paintCard(ctx, rect, 12);
   setFont(ctx, 13, font.body, 400);
-  ctx.fillStyle = '#8A4B68';
+  ctx.fillStyle = theme.TEXT_DIM;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  var lines = wrapText(ctx, '点一个瓶子，再点另一个。同色或空瓶才能倒入。', rect.w - 20);
+  var lines = wrapText(ctx, '点一支试管，再点另一支。同色或空管才能倒入。', rect.w - 20);
   for (var i = 0; i < lines.length; i++) {
     ctx.fillText(lines[i], view.w / 2, rect.y + 16 + i * 16);
   }
 }
 
 function drawWin(ctx, view, state, font) {
-  ctx.fillStyle = 'rgba(90, 40, 70, 0.28)';
+  ctx.fillStyle = 'rgba(11, 18, 32, 0.72)';
   ctx.fillRect(0, 0, view.w, view.h);
-  var card = { x: 28, y: view.h * 0.18, w: view.w - 56, h: view.h * 0.6 };
-  paintCard(ctx, card, 28);
-  theme.drawMascot(ctx, card.x + card.w / 2, card.y + 78, 0.72, view.time || 0, 'happy');
+  var card = winCard(view);
+  paintCard(ctx, card, 20);
+  theme.drawSeal(ctx, card.x + card.w / 2, card.y + 78, 28);
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   setFont(ctx, 28, font.display, 400);
-  ctx.fillStyle = '#E24B84';
-  theme.drawStar(ctx, card.x + 42, card.y + 158, 7, '#FFD56A', '#FFB703');
-  theme.drawStar(ctx, card.x + card.w - 42, card.y + 172, 6, '#FF8FB8', '#FF6B9D');
-  theme.drawStar(ctx, card.x + 58, card.y + 206, 4, '#8EDEFF', '#5EBEFF');
-  ctx.fillStyle = '#E24B84';
-  ctx.fillText(state.skipped ? '先去下一关吧' : '分装完成！', card.x + card.w / 2, card.y + 168);
+  ctx.fillStyle = theme.TEXT;
+  ctx.fillText(state.skipped ? '先去下一关' : '分离完成', card.x + card.w / 2, card.y + 148);
   var shown = shownStars(state, view);
-  drawStarRow(ctx, card.x + card.w / 2, card.y + 214, shown, 16, true);
+  drawStarRow(ctx, card.x + card.w / 2, card.y + 196, shown, 16, true);
   setFont(ctx, 15, font.body, 400);
-  ctx.fillStyle = '#8A4B68';
+  ctx.fillStyle = theme.TEXT;
   var line = state.skipped
     ? '已跳过第 ' + state.level.id + ' 关，获得 1 星'
     : '第 ' + state.level.id + ' 关  ·  用了 ' + state.moves + ' 步';
-  ctx.fillText(line, card.x + card.w / 2, card.y + 258);
-  ctx.fillStyle = '#B06B88';
+  ctx.fillText(line, card.x + card.w / 2, card.y + 240);
+  ctx.fillStyle = theme.WARNING;
   setFont(ctx, 13, font.body, 400);
-  ctx.fillText('三星目标 ' + state.level.goal + ' 步', card.x + card.w / 2, card.y + 282);
+  ctx.fillText('三星目标 ' + state.level.goal + ' 步', card.x + card.w / 2, card.y + 266);
 
   var ui = layoutWin(view, card, state);
   paintButton(ctx, ui.next, state.level.id >= 200 ? '回到首页' : '下一关', 'primary', font, 20);
@@ -537,6 +556,11 @@ function shownStars(state, view) {
   if (age > 460) return Math.min(stars, 2);
   if (age > 240) return Math.min(stars, 1);
   return 0;
+}
+
+function winCard(view) {
+  var h = Math.min(500, view.h * 0.6);
+  return { x: 24, y: (view.h - h) / 2 - 8, w: view.w - 48, h: h };
 }
 
 function layoutWin(view, card, state) {
@@ -561,10 +585,10 @@ function drawModal(ctx, view, state, font) {
   ctx.textBaseline = 'middle';
   if (modal.kind === 'privacy') {
     setFont(ctx, 22, font.display, 400);
-    ctx.fillStyle = '#E24B84';
-    ctx.fillText('温馨提示', ui.card.x + ui.card.w / 2, ui.card.y + 48);
+    ctx.fillStyle = theme.TEXT;
+    ctx.fillText('实验说明', ui.card.x + ui.card.w / 2, ui.card.y + 48);
     setFont(ctx, 15, font.body, 400);
-    ctx.fillStyle = '#7A4560';
+    ctx.fillStyle = theme.TEXT_DIM;
     var lines = wrapText(ctx, '关卡进度、音效和震动开关只保存在这台设备上，不会上传个人信息。', ui.card.w - 48);
     for (var i = 0; i < lines.length; i++) {
       ctx.fillText(lines[i], ui.card.x + ui.card.w / 2, ui.card.y + 100 + i * 24);
@@ -574,21 +598,22 @@ function drawModal(ctx, view, state, font) {
   }
   if (modal.kind === 'settings') {
     setFont(ctx, 22, font.display, 400);
-    ctx.fillStyle = '#E24B84';
-    ctx.fillText('设置', ui.card.x + ui.card.w / 2, ui.card.y + 42);
+    ctx.fillStyle = theme.TEXT;
+    ctx.fillText('设置', ui.card.x + ui.card.w / 2, ui.card.y + 40);
     drawToggleRow(ctx, ui, '音效', state.save.sound, ui.sound, font);
     drawToggleRow(ctx, ui, '震动', state.save.vibration, ui.vibration, font);
+    drawToggleRow(ctx, ui, '色弱辅助', !!state.save.colorAssist, ui.assist, font);
     if (state.scene === 'play') paintButton(ctx, ui.skip, '看视频跳过本关', 'ghost', font, 15);
     paintButton(ctx, ui.secondary, '关闭', 'primary', font, 16);
     return;
   }
   if (modal.kind === 'restart') {
     setFont(ctx, 22, font.display, 400);
-    ctx.fillStyle = '#E24B84';
+    ctx.fillStyle = theme.TEXT;
     ctx.fillText('重开本关？', ui.card.x + ui.card.w / 2, ui.card.y + 64);
     setFont(ctx, 15, font.body, 400);
-    ctx.fillStyle = '#7A4560';
-    var restartLines = wrapText(ctx, '当前步数会清空，加过的空瓶也会收回。', ui.card.w - 48);
+    ctx.fillStyle = theme.TEXT_DIM;
+    var restartLines = wrapText(ctx, '当前步数会清空，加过的空管也会收回。', ui.card.w - 48);
     for (var r = 0; r < restartLines.length; r++) {
       ctx.fillText(restartLines[r], ui.card.x + ui.card.w / 2, ui.card.y + 112 + r * 24);
     }
@@ -598,10 +623,10 @@ function drawModal(ctx, view, state, font) {
   }
   if (modal.kind === 'ad') {
     setFont(ctx, 22, font.display, 400);
-    ctx.fillStyle = '#E24B84';
+    ctx.fillStyle = theme.TEXT;
     ctx.fillText('看个小视频', ui.card.x + ui.card.w / 2, ui.card.y + 58);
     setFont(ctx, 15, font.body, 400);
-    ctx.fillStyle = '#7A4560';
+    ctx.fillStyle = theme.TEXT_DIM;
     var copy = adCopy(modal.reward);
     var adLines = wrapText(ctx, copy, ui.card.w - 48);
     for (var a = 0; a < adLines.length; a++) {
@@ -613,7 +638,7 @@ function drawModal(ctx, view, state, font) {
 }
 
 function adCopy(reward) {
-  if (reward === 'tube') return '看完后，本关多一个空瓶，用来周转果冻。';
+  if (reward === 'tube') return '看完后，本关多一支空试管，用来周转。';
   if (reward === 'undo') return '看完后，增加 5 次撤销。';
   if (reward === 'hint') return '看完后，获得 1 次提示。';
   if (reward === 'skip') return '看完后跳过本关，按 1 星结算并解锁下一关。';
@@ -622,15 +647,18 @@ function adCopy(reward) {
 
 function drawToggleRow(ctx, ui, label, on, rect, font) {
   setFont(ctx, 16, font.body, 400);
-  ctx.fillStyle = '#7A4560';
+  ctx.fillStyle = theme.TEXT;
   ctx.textAlign = 'left';
   ctx.textBaseline = 'middle';
   ctx.fillText(label, ui.card.x + 28, rect.y + rect.h / 2);
   ctx.textAlign = 'center';
   theme.roundRect(ctx, rect.x, rect.y, rect.w, rect.h, 16);
-  ctx.fillStyle = on ? '#FF6B9D' : '#E7D5DE';
+  ctx.fillStyle = on ? theme.PRIMARY : theme.PANEL_2;
   ctx.fill();
-  ctx.fillStyle = '#fff';
+  ctx.strokeStyle = 'rgba(230,241,255,0.2)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.fillStyle = on ? theme.INK : theme.TEXT_DIM;
   ctx.beginPath();
   ctx.arc(on ? rect.x + rect.w - 16 : rect.x + 16, rect.y + rect.h / 2, 11, 0, Math.PI * 2);
   ctx.fill();
@@ -641,10 +669,12 @@ function drawToast(ctx, view, state, font) {
   setFont(ctx, 14, font.body, 400);
   var width = Math.min(view.w - 48, ctx.measureText(text).width + 36);
   var rect = { x: (view.w - width) / 2, y: view.h * 0.46, w: width, h: 40 };
-  ctx.fillStyle = 'rgba(90, 40, 70, 0.88)';
+  ctx.fillStyle = theme.PANEL;
   theme.roundRect(ctx, rect.x, rect.y, rect.w, rect.h, 20);
   ctx.fill();
-  ctx.fillStyle = '#fff';
+  ctx.strokeStyle = 'rgba(230,241,255,0.16)';
+  ctx.stroke();
+  ctx.fillStyle = theme.TEXT;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(text, view.w / 2, rect.y + 21);
@@ -652,16 +682,11 @@ function drawToast(ctx, view, state, font) {
 
 function paintCard(ctx, rect, radius) {
   ctx.save();
-  ctx.shadowColor = 'rgba(140, 70, 110, 0.16)';
-  ctx.shadowBlur = 18;
-  ctx.shadowOffsetY = 8;
-  ctx.fillStyle = 'rgba(255,255,255,0.94)';
+  ctx.fillStyle = theme.PANEL;
   theme.roundRect(ctx, rect.x, rect.y, rect.w, rect.h, radius);
   ctx.fill();
-  ctx.shadowColor = 'transparent';
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = 'rgba(255,255,255,0.98)';
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(230,241,255,0.12)';
+  ctx.lineWidth = 1;
   theme.roundRect(ctx, rect.x, rect.y, rect.w, rect.h, radius);
   ctx.stroke();
   ctx.restore();
@@ -672,36 +697,36 @@ function paintButton(ctx, rect, text, kind, font, size) {
   theme.roundRect(ctx, rect.x, rect.y, rect.w, rect.h, rect.h / 2);
   if (kind === 'primary') {
     var g = ctx.createLinearGradient(rect.x, rect.y, rect.x, rect.y + rect.h);
-    g.addColorStop(0, '#FF8FB8');
-    g.addColorStop(1, '#FF5C93');
+    g.addColorStop(0, theme.PRIMARY);
+    g.addColorStop(1, theme.PRIMARY_DOWN);
     ctx.fillStyle = g;
     ctx.fill();
-    fillCenter(ctx, text, rect, size, font.display, '#fff', 400);
+    fillCenter(ctx, text, rect, size, font.display, theme.INK, 400);
   } else if (kind === 'ghost') {
-    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.fillStyle = theme.PANEL_2;
     ctx.fill();
-    ctx.strokeStyle = '#FF8FB8';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(230,241,255,0.18)';
+    ctx.lineWidth = 1;
     ctx.stroke();
-    fillCenter(ctx, text, rect, size, font.body, '#E24B84', 400);
+    fillCenter(ctx, text, rect, size, font.body, theme.TEXT, 400);
   } else {
-    ctx.fillStyle = 'rgba(255,255,255,0.88)';
+    ctx.fillStyle = theme.PANEL_2;
     ctx.fill();
-    fillCenter(ctx, text, rect, size, font.body, '#A14B70', 400);
+    fillCenter(ctx, text, rect, size, font.body, theme.TEXT_DIM, 400);
   }
   ctx.restore();
 }
 
 function paintCircleButton(ctx, rect, glyph) {
   ctx.save();
-  ctx.fillStyle = 'rgba(255,255,255,0.92)';
+  ctx.fillStyle = theme.PANEL_2;
   ctx.beginPath();
   var cx = rect.x + rect.w / 2;
   var cy = rect.y + rect.h / 2;
   ctx.arc(cx, cy, rect.w / 2, 0, Math.PI * 2);
   ctx.fill();
-  ctx.strokeStyle = '#E24B84';
-  ctx.fillStyle = '#E24B84';
+  ctx.strokeStyle = theme.TEXT;
+  ctx.fillStyle = theme.TEXT;
   ctx.lineWidth = 2.4;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
@@ -730,23 +755,23 @@ function paintCircleButton(ctx, rect, glyph) {
 function paintTool(ctx, rect, label, icon, font, disabled, badge) {
   ctx.save();
   theme.roundRect(ctx, rect.x, rect.y, rect.w, rect.h, 18);
-  ctx.fillStyle = disabled ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.94)';
+  ctx.fillStyle = disabled ? '#121C2E' : theme.PANEL_2;
   ctx.fill();
-  ctx.strokeStyle = disabled ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,1)';
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(230,241,255,0.12)';
+  ctx.lineWidth = 1;
   ctx.stroke();
-  drawIcon(ctx, icon, rect.x + rect.w / 2, rect.y + 24, disabled ? '#CDB0BE' : '#E24B84');
+  drawIcon(ctx, icon, rect.x + rect.w / 2, rect.y + 24, disabled ? '#64748B' : theme.PRIMARY);
   setFont(ctx, 12, font.body, 400);
-  ctx.fillStyle = disabled ? '#CDB0BE' : '#8A4B68';
+  ctx.fillStyle = disabled ? '#64748B' : theme.TEXT_DIM;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(label, rect.x + rect.w / 2, rect.y + 52);
   if (badge) {
-    ctx.fillStyle = '#FF6B9D';
+    ctx.fillStyle = theme.PRIMARY;
     ctx.beginPath();
     ctx.arc(rect.x + rect.w - 12, rect.y + 12, 9, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = theme.INK;
     ctx.font = '10px sans-serif';
     ctx.fillText(badge, rect.x + rect.w - 12, rect.y + 13);
   }
@@ -806,8 +831,8 @@ function drawIcon(ctx, icon, x, y, color) {
 function drawLock(ctx, x, y, s) {
   ctx.save();
   ctx.translate(x, y);
-  ctx.strokeStyle = '#C9A8B8';
-  ctx.fillStyle = '#F3E4EC';
+  ctx.strokeStyle = theme.TEXT_DIM;
+  ctx.fillStyle = theme.PANEL_2;
   ctx.lineWidth = 2;
   theme.roundRect(ctx, -8 * s, -2 * s, 16 * s, 12 * s, 3);
   ctx.fill();
@@ -828,7 +853,7 @@ function drawStarRow(ctx, cx, cy, filled, radius, placeholders) {
   var start = cx - ((count - 1) * gap) / 2;
   for (var i = 0; i < count; i++) {
     var on = i < filled;
-    theme.drawStar(ctx, start + i * gap, cy, radius, on ? '#FFC857' : '#F3D5E2', on ? '#FFB703' : '#E7C3D2');
+    theme.drawStar(ctx, start + i * gap, cy, radius, on ? theme.WARNING : '#1E2F4A', on ? '#D97706' : 'rgba(148,163,184,0.45)');
   }
 }
 
@@ -881,6 +906,7 @@ function pick(view, state, x, y) {
     if (state.modal.kind === 'settings') {
       if (hit(modal.sound, x, y)) return { id: 'toggle-sound' };
       if (hit(modal.vibration, x, y)) return { id: 'toggle-vibration' };
+      if (hit(modal.assist, x, y)) return { id: 'toggle-assist' };
       if (state.scene === 'play' && hit(modal.skip, x, y)) return { id: 'modal-skip' };
       if (modal.secondary && hit(modal.secondary, x, y)) return { id: 'modal-secondary' };
       if (!hit(modal.card, x, y)) return { id: 'modal-dismiss' };
@@ -909,8 +935,7 @@ function pick(view, state, x, y) {
     return { id: 'scroll-area', maxScroll: select.maxScroll };
   }
   if (state.scene === 'win') {
-    var fakeCard = { x: 28, y: view.h * 0.18, w: view.w - 56, h: view.h * 0.6 };
-    var win = layoutWin(view, fakeCard, state);
+    var win = layoutWin(view, winCard(view), state);
     if (hit(win.next, x, y)) return win.next;
     if (hit(win.replay, x, y)) return win.replay;
     if (hit(win.levels, x, y)) return win.levels;

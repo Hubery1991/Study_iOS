@@ -1,5 +1,5 @@
 {
-  "description": "咕嘟果冻铺 - 倒水排序微信小游戏。appid 请换成正式小游戏 AppID，开发可保持 touristappid。",
+  "description": "澄渊实验室 - 深海分液微信小游戏。appid 请换成正式小游戏 AppID，开发可保持 touristappid。",
   "packOptions": {
     "ignore": [
       { "type": "folder", "value": "screenshots" },
@@ -42,7 +42,7 @@
   "compileType": "game",
   "libVersion": "3.6.6",
   "appid": "touristappid",
-  "projectname": "gudu-guodongpu",
+  "projectname": "chengyuan-lab",
   "condition": {},
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},

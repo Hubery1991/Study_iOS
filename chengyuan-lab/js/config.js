@@ -5,7 +5,7 @@
  * 上线前只改这个文件：换成真实 AppID 对应的广告位 ID。
  */
 module.exports = {
-  appName: '咕嘟果冻铺',
+  appName: '澄渊实验室',
 
   /**
    * 正式 AppID 写在 project.config.json 的 appid 字段。
@@ -40,5 +40,5 @@ module.exports = {
   interstitialEvery: 4,
   interstitialMinLevel: 10,
 
-  shareTitle: '咕嘟果冻铺：帮我把彩虹果冻分装好！',
+  shareTitle: '澄渊实验室：来帮我把这片深海分开。',
 };

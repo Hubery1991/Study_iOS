@@ -1,7 +1,7 @@
 {
-  "name": "gudu-guodongpu",
+  "name": "chengyuan-lab",
   "private": true,
-  "description": "咕嘟果冻铺 · 微信小游戏。测试与截图脚本只在开发时使用。",
+  "description": "澄渊实验室 · 微信小游戏。测试与截图脚本只在开发时使用。",
   "scripts": {
     "test": "node --test test/*.test.js",
     "validate": "node scripts/validate-levels.js",

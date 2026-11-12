@@ -1,6 +1,6 @@
 'use strict';
 
-var KEY = 'gudu_guodongpu_v1';
+var KEY = 'chengyuan_lab_v1';
 
 function defaults() {
   return {
@@ -12,6 +12,7 @@ function defaults() {
     sound: true,
     vibration: true,
     privacy: false,
+    colorAssist: false,
     clearsSinceAd: 0,
   };
 }
@@ -24,6 +25,7 @@ function normalize(raw) {
   save.sound = raw.sound !== false;
   save.vibration = raw.vibration !== false;
   save.privacy = !!raw.privacy;
+  save.colorAssist = !!raw.colorAssist;
   save.clearsSinceAd = clampInt(raw.clearsSinceAd, 0, 99);
   save.stars = normalizeMap(raw.stars, 0, 3);
   save.best = normalizeMap(raw.best, 0, 999);

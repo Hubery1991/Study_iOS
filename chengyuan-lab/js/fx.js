@@ -1,6 +1,6 @@
 'use strict';
 
-var CONFETTI_COLORS = ['#FF4D6A', '#FFD21F', '#3DCE4A', '#3B8BFF', '#FF5BB8', '#7A5CFF', '#FF8A1F', '#18D0C4'];
+var CONFETTI_COLORS = ['#3B82F6', '#1FC2DB', '#34D399', '#E6BC13', '#FB923C', '#F87171', '#A78BFA', '#F472B6'];
 
 function spawnConfetti(x, y, rng, count) {
   rng = rng || Math.random;
