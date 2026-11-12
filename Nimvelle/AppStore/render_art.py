@@ -164,334 +164,378 @@ def write_icons():
         raise SystemExit(f"icon must be 1024 RGB, got {master.mode} {master.size}")
 
 
-def leaf_mark(draw, cx, cy, scale, color):
-    r = 11 * scale
-    draw.ellipse((cx - r, cy - r * 0.2, cx + r * 0.15, cy + r), fill=color)
-    draw.polygon([(cx, cy - r * 1.15), (cx + r * 0.85, cy + r * 0.15), (cx - r * 0.1, cy + r * 0.15)], fill=color)
+# iPhone 16 Pro logical size, drawn at @3x: 402×874 pt → 1206×2622 px.
+NATIVE = (1206, 2622)
 
 
-def nav_bar(draw, rect, title, scale, trailing=True):
-    x0, y0, x1, _ = rect
-    pad = 28 * scale
-    leaf_mark(draw, x0 + pad + 8 * scale, y0 + 28 * scale, scale, SAGE_DEEP)
-    text(draw, ((x0 + x1) / 2, y0 + 10 * scale), title, font(SERIF_REG, 30 * scale), INK, anchor="mt")
-    if trailing:
-        text(draw, (x1 - pad, y0 + 6 * scale), "+", font(SANS, 36 * scale), SAGE_DEEP, anchor="rt")
-    return y0 + 64 * scale
+def pt(value: float) -> int:
+    return int(round(value * 3))
 
 
-def tab_glyph(draw, kind, cx, cy, scale, color):
-    s = 10 * scale
-    width = max(2, int(2 * scale))
-    if kind == "today":
-        draw.ellipse((cx - s, cy - s, cx + s, cy + s), outline=color, width=width)
-    elif kind == "month":
-        draw.rounded_rectangle((cx - s, cy - s * 0.8, cx + s, cy + s), radius=2, outline=color, width=width)
-        draw.line((cx - s, cy - s * 0.2, cx + s, cy - s * 0.2), fill=color, width=width)
-    elif kind == "shelf":
-        draw.rounded_rectangle((cx - s, cy - s * 0.7, cx + s, cy + s * 0.9), radius=2, outline=color, width=width)
-    else:
-        draw.line((cx - s, cy - s * 0.5, cx + s, cy - s * 0.5), fill=color, width=width)
-        draw.line((cx - s, cy, cx + s * 0.65, cy), fill=color, width=width)
-        draw.line((cx - s, cy + s * 0.5, cx + s, cy + s * 0.5), fill=color, width=width)
+class Screen:
+    """A full iPhone screen in points. 1 pt = 3 px."""
+
+    def __init__(self):
+        self.im = Image.new("RGBA", NATIVE, PAPER + (255,))
+        self.draw = ImageDraw.Draw(self.im)
+
+    def refresh(self):
+        self.draw = ImageDraw.Draw(self.im)
+
+    def f(self, path, points):
+        return font(path, max(10, pt(points)))
+
+    def t(self, x, y, content, face, fill, anchor="lt"):
+        self.draw.text((pt(x), pt(y)), content, font=face, fill=fill, anchor=anchor)
+
+    def rrect(self, x0, y0, x1, y1, radius, fill, outline=None, width=0):
+        rounded(
+            self.im,
+            (pt(x0), pt(y0), pt(x1), pt(y1)),
+            pt(radius),
+            fill,
+            outline,
+            max(1, pt(width)) if width else 0,
+        )
+        self.refresh()
+
+    def line(self, x0, y0, x1, y1, fill, width=1):
+        self.draw.line([(pt(x0), pt(y0)), (pt(x1), pt(y1))], fill=fill, width=max(1, pt(width)))
+
+    def ellipse(self, x0, y0, x1, y1, fill=None, outline=None, width=1):
+        self.draw.ellipse((pt(x0), pt(y0), pt(x1), pt(y1)), fill=fill, outline=outline, width=max(1, pt(width)) if outline else 1)
+
+    def clip_text(self, content, face, width_pt):
+        limit = pt(width_pt)
+        if self.draw.textlength(content, font=face) <= limit:
+            return content
+        trimmed = content
+        while trimmed and self.draw.textlength(trimmed + "...", font=face) > limit:
+            trimmed = trimmed[:-1]
+        return (trimmed + "...") if trimmed else content
 
 
-def tab_bar(base, rect, active, scale):
-    x0, _, x1, y1 = rect
-    height = 92 * scale
-    top = y1 - height
-    rounded(base, (x0, top, x1, y1), 0, CARD, LINE, 1)
-    draw = ImageDraw.Draw(base)
-    labels = [("Today", "today"), ("Month", "month"), ("Shelf", "shelf"), ("Journal", "journal")]
-    width = (x1 - x0) / 4
-    for index, (label, kind) in enumerate(labels):
-        cx = x0 + width * index + width / 2
+def chrome(ui: Screen, title: str, active: int, plus: bool = True):
+    """Status bar, navigation bar, tab bar, and home indicator. Returns the content band in points."""
+    ui.rrect(138, 11, 264, 48, 18, (12, 12, 14))
+    ui.t(28, 22, "9:41", ui.f(SANS_BOLD, 16), INK)
+    # Minimal signal and battery, kept clear of the island.
+    for index, height in enumerate((5, 7, 9, 11)):
+        x = 318 + index * 5
+        ui.rrect(x, 32 - height, x + 3, 32, 1, INK if index < 3 else LINE)
+    ui.rrect(344, 22, 368, 33, 3, None if False else INK, INK, 1)
+    ui.rrect(346, 24, 362, 31, 1, INK)
+
+    ui.t(201, 64, title, ui.f(SERIF_REG, 17), INK, anchor="mt")
+    # Leaf
+    ui.ellipse(18, 66, 32, 80, fill=SAGE_DEEP)
+    ui.draw.polygon([(pt(25), pt(60)), (pt(34), pt(74)), (pt(22), pt(74))], fill=SAGE_DEEP)
+    if plus:
+        ui.t(378, 58, "+", ui.f(SANS, 28), SAGE_DEEP, anchor="mt")
+
+    ui.line(0, 791, 402, 791, LINE, 0.6)
+    labels = ["Today", "Month", "Shelf", "Journal"]
+    for index, label in enumerate(labels):
+        cx = 50.25 + index * 100.5
         color = SAGE_DEEP if index == active else MUTED
-        tab_glyph(draw, kind, cx, top + 24 * scale, scale, color)
-        text(draw, (cx, top + 48 * scale), label, font(SANS, 16 * scale), color, anchor="mt")
-    return top
+        y = 804
+        if index == 0:
+            ui.ellipse(cx - 8, y, cx + 8, y + 16, outline=color, width=1.6)
+        elif index == 1:
+            ui.rrect(cx - 8, y, cx + 8, y + 16, 2, None, color, 1.4)
+            ui.line(cx - 8, y + 5, cx + 8, y + 5, color, 1.2)
+        elif index == 2:
+            ui.rrect(cx - 8, y + 1, cx + 8, y + 16, 2, None, color, 1.4)
+        else:
+            ui.line(cx - 8, y + 3, cx + 8, y + 3, color, 1.4)
+            ui.line(cx - 8, y + 8, cx + 5, y + 8, color, 1.4)
+            ui.line(cx - 8, y + 13, cx + 8, y + 13, color, 1.4)
+        ui.t(cx, 824, label, ui.f(SANS_BOLD if index == active else SANS, 10), color, anchor="mt")
+    ui.rrect(134, 858, 268, 863, 3, (90, 86, 80))
+    return 108, 784
 
 
-def check_row(draw, x, y, width, scale, title, detail, detail_color, checked):
-    radius = 14 * scale
-    cx = x + radius
-    cy = y + 18 * scale
-    if checked:
-        draw.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), fill=SAGE)
-        draw.line((cx - radius * 0.45, cy, cx - radius * 0.08, cy + radius * 0.38), fill=WHITE, width=max(2, int(2.4 * scale)))
-        draw.line((cx - radius * 0.08, cy + radius * 0.38, cx + radius * 0.5, cy - radius * 0.38), fill=WHITE, width=max(2, int(2.4 * scale)))
+def check_mark(ui: Screen, cx, cy, on: bool):
+    r = 11
+    if on:
+        ui.ellipse(cx - r, cy - r, cx + r, cy + r, fill=SAGE)
+        ui.line(cx - 5, cy, cx - 1, cy + 4, WHITE, 2)
+        ui.line(cx - 1, cy + 4, cx + 6, cy - 5, WHITE, 2)
     else:
-        draw.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), outline=LINE, width=max(2, int(2 * scale)))
-    text_x = x + radius * 2 + 14 * scale
-    text(draw, (text_x, y), title, font(SERIF_REG, 26 * scale), INK)
-    end = draw_wrapped(draw, detail, font(SANS, 18 * scale), detail_color, (text_x, y + 30 * scale), width - (text_x - x))
-    return max(end, y + 64 * scale) + 6 * scale
+        ui.ellipse(cx - r, cy - r, cx + r, cy + r, outline=LINE, width=1.6)
 
 
-def paint_today(base, rect, scale):
-    draw = ImageDraw.Draw(base)
-    x0, y0, x1, _ = rect
-    pad = 22 * scale
-    y = nav_bar(draw, rect, "Today", scale)
-    bottom = tab_bar(base, rect, 0, scale)
-    draw = ImageDraw.Draw(base)
-    text(draw, (x0 + pad, y), "Wednesday, November 11", font(SANS, 18 * scale), MUTED)
-    y += 28 * scale
-    text(draw, (x0 + pad, y), "Good morning", font(SERIF_REG, 44 * scale), INK)
-    y += 58 * scale
-    capsule = (x0 + pad, y, x0 + pad + 168 * scale, y + 34 * scale)
-    rounded(base, capsule, 17 * scale, (236, 214, 206), None, 0)
-    text(draw, (capsule[0] + 14 * scale, capsule[1] + 7 * scale), "5-day streak", font(SANS_BOLD, 16 * scale), SAGE_DEEP)
-    y += 50 * scale
-    seg_w = x1 - x0 - pad * 2
-    seg_h = 40 * scale
-    rounded(base, (x0 + pad, y, x0 + pad + seg_w, y + seg_h), 10 * scale, (236, 230, 222), None, 0)
-    half = seg_w / 2
-    rounded(base, (x0 + pad + 3, y + 3, x0 + pad + half - 2, y + seg_h - 3), 8 * scale, CARD, None, 0)
-    text(draw, (x0 + pad + half / 2, y + 9 * scale), "Morning", font(SANS_BOLD, 16 * scale), INK, anchor="mt")
-    text(draw, (x0 + pad + half * 1.5, y + 9 * scale), "Evening", font(SANS, 16 * scale), MUTED, anchor="mt")
-    y += seg_h + 16 * scale
-    text(draw, (x0 + pad, y), "3 of 5", font(SERIF_REG, 32 * scale), INK)
-    y += 44 * scale
-    rounded(base, (x0 + pad, y, x1 - pad, y + 8 * scale), 4 * scale, LINE, None, 0)
-    rounded(base, (x0 + pad, y, x0 + pad + (x1 - x0 - pad * 2) * 0.6, y + 8 * scale), 4 * scale, SAGE, None, 0)
-    y += 22 * scale
-    rows = [
+def step_row(ui: Screen, x, y, width, height, title, detail, detail_color, checked):
+    check_mark(ui, x + 12, y + height / 2, checked)
+    title_face = ui.f(SERIF_REG, 17)
+    detail_face = ui.f(SANS, 13)
+    ui.t(x + 32, y + 8, title, title_face, INK)
+    ui.t(x + 32, y + 30, ui.clip_text(detail, detail_face, width - 36), detail_face, detail_color)
+    ui.line(x, y + height - 0.5, x + width, y + height - 0.5, LINE, 0.5)
+
+
+def paint_today(_portrait=None) -> Image.Image:
+    ui = Screen()
+    top, bottom = chrome(ui, "Today", 0, plus=True)
+    height = bottom - top
+    # Header block, then morning (5) and evening (3) rows share the rest.
+    header = 118
+    morning_label = 36
+    evening_label = 36
+    rows_h = height - header - morning_label - evening_label
+    row_h = rows_h / 8
+    y = top
+    ui.t(20, y, "Wednesday, November 11", ui.f(SANS, 15), MUTED)
+    y += 22
+    ui.t(20, y, "Good morning", ui.f(SERIF_REG, 34), INK)
+    y += 46
+    ui.rrect(20, y, 148, y + 28, 14, (236, 214, 206))
+    ui.t(34, y + 5, "5-day streak", ui.f(SANS_BOLD, 13), SAGE_DEEP)
+    y += 40
+    ui.t(20, y, "Morning", ui.f(SANS_BOLD, 13), SAGE_DEEP)
+    ui.t(382, y, "3 of 5", ui.f(SANS_BOLD, 13), INK, anchor="rt")
+    y += 20
+    ui.rrect(20, y, 382, y + 6, 3, LINE)
+    ui.rrect(20, y, 20 + 362 * 0.6, y + 6, 3, SAGE)
+    y += 16
+    morning = [
         ("Cleanse", "Cloud Milk Cleanser", MUTED, True),
         ("Tone", "Rice Water Toner", MUTED, True),
         ("Serum", "Dawn C Serum", MUTED, True),
         ("Moisturize", "Veil Cream · 10 days left in the open-jar window", AMBER, False),
         ("Sunscreen", "Daily Veil SPF 50", MUTED, False),
     ]
-    width = x1 - x0 - pad * 2
-    for title, detail, color, checked in rows:
-        if y > bottom - 40 * scale:
-            break
-        y = check_row(draw, x0 + pad, y, width, scale, title, detail, color, checked)
-
-
-def paint_month(base, rect, scale):
-    draw = ImageDraw.Draw(base)
-    x0, y0, x1, _ = rect
-    pad = 18 * scale
-    y = nav_bar(draw, rect, "Month", scale, trailing=False)
-    bottom = tab_bar(base, rect, 1, scale)
-    draw = ImageDraw.Draw(base)
-    text(draw, ((x0 + x1) / 2, y), "November 2026", font(SERIF_REG, 30 * scale), INK, anchor="mt")
-    text(draw, (x0 + pad, y + 2 * scale), "<", font(SANS, 26 * scale), SAGE_DEEP)
-    text(draw, (x1 - pad, y + 2 * scale), ">", font(SANS, 26 * scale), SAGE_DEEP, anchor="rt")
-    y += 58 * scale
-    text(draw, (x0 + pad, y), "5-day streak · longest 21", font(SANS, 16 * scale), MUTED)
-    y += 30 * scale
-    col_w = (x1 - x0 - pad * 2) / 7
-    for index, label in enumerate("SMTWTFS"):
-        text(draw, (x0 + pad + col_w * index + col_w / 2, y), label, font(SANS_BOLD, 14 * scale), MUTED, anchor="mt")
-    y += 28 * scale
-    weeks = [
-        [(1, "C"), (2, "C"), (3, "C"), (4, "-"), (5, "P"), (6, "C"), (7, "C")],
-        [(8, "C"), (9, "C"), (10, "C"), (11, "P"), (12, "-"), (13, "-"), (14, "-")],
-        [(15, "-"), (16, "-"), (17, "-"), (18, "-"), (19, "-"), (20, "-"), (21, "-")],
-        [(22, "-"), (23, "-"), (24, "-"), (25, "-"), (26, "-"), (27, "-"), (28, "-")],
-        [(29, "-"), (30, "-")],
-    ]
-    row_h = 52 * scale
-    for week in weeks:
-        if y + row_h > bottom - 150 * scale:
-            break
-        for index, (day, mark) in enumerate(week):
-            cx = x0 + pad + col_w * index + col_w / 2
-            if day == 11:
-                r = 13 * scale
-                draw.ellipse((cx - r, y, cx + r, y + r * 2), outline=SAGE_DEEP, width=max(2, int(1.6 * scale)))
-            text(draw, (cx, y + 2 * scale), str(day), font(SERIF_REG, 16 * scale), INK, anchor="mt")
-            dot = y + 32 * scale
-            if mark == "C":
-                draw.ellipse((cx - 4 * scale, dot, cx + 4 * scale, dot + 8 * scale), fill=SAGE)
-            elif mark == "P":
-                draw.ellipse((cx - 4 * scale, dot, cx + 4 * scale, dot + 8 * scale), outline=CLAY, width=max(2, int(1.6 * scale)))
+    for title, detail, color, done in morning:
+        step_row(ui, 20, y, 362, row_h, title, detail, color, done)
         y += row_h
-    y += 6 * scale
-    text(draw, (x0 + pad, y), "Wednesday, November 11", font(SERIF_REG, 22 * scale), INK)
-    y += 30 * scale
-    text(draw, (x0 + pad, y), "Morning 3 of 5 · Evening 0 of 3", font(SANS, 15 * scale), MUTED)
+    y += 8
+    ui.t(20, y, "Evening", ui.f(SANS_BOLD, 13), SAGE_DEEP)
+    ui.t(382, y, "0 of 3", ui.f(SANS_BOLD, 13), INK, anchor="rt")
+    y += 20
+    ui.rrect(20, y, 382, y + 6, 3, LINE)
+    y += 16
+    evening = [
+        ("Cleanse", "Cloud Milk Cleanser", MUTED, False),
+        ("Tone", "Rice Water Toner", MUTED, False),
+        ("Night cream", "Night Repair Cream · 40 days past the open-jar window", ROSE, False),
+    ]
+    for title, detail, color, done in evening:
+        step_row(ui, 20, y, 362, row_h, title, detail, color, done)
+        y += row_h
+    return ui.im
 
 
-def product_card(base, box, scale, name, brand, fill_label, fraction, opened, status, status_color):
-    x0, y0, x1, y1 = box
-    rounded(base, box, 16 * scale, CARD, LINE, 1)
-    draw = ImageDraw.Draw(base)
-    pad = 14 * scale
-    text(draw, (x0 + pad, y0 + 12 * scale), name, font(SERIF_REG, 22 * scale), INK)
-    text(draw, (x1 - pad, y0 + 16 * scale), fill_label, font(SANS_BOLD, 12 * scale), SAGE_DEEP, anchor="rt")
-    text(draw, (x0 + pad, y0 + 40 * scale), brand, font(SANS, 14 * scale), MUTED)
-    bar_y = y0 + 66 * scale
-    rounded(base, (x0 + pad, bar_y, x1 - pad, bar_y + 7 * scale), 3 * scale, LINE, None, 0)
-    rounded(base, (x0 + pad, bar_y, x0 + pad + (x1 - x0 - pad * 2) * fraction, bar_y + 7 * scale), 3 * scale, CLAY, None, 0)
-    text(draw, (x0 + pad, bar_y + 14 * scale), opened, font(SANS, 13 * scale), MUTED)
-    text(draw, (x0 + pad, bar_y + 34 * scale), status, font(SANS_BOLD, 14 * scale), status_color)
+def paint_month(_portrait=None) -> Image.Image:
+    ui = Screen()
+    top, bottom = chrome(ui, "Month", 1, plus=False)
+    y = top
+    ui.t(28, y + 4, "<", ui.f(SANS, 22), SAGE_DEEP)
+    ui.t(374, y + 4, ">", ui.f(SANS, 22), SAGE_DEEP, anchor="rt")
+    ui.t(201, y, "November 2026", ui.f(SERIF_REG, 22), INK, anchor="mt")
+    y += 36
+    ui.t(20, y, "5-day streak   ·   longest 21   ·   8 complete days", ui.f(SANS, 13), MUTED)
+    y += 28
+    col = 362 / 7
+    for index, label in enumerate("SMTWTFS"):
+        ui.t(20 + col * index + col / 2, y, label, ui.f(SANS_BOLD, 12), MUTED, anchor="mt")
+    y += 22
+    summary_top = bottom - 248
+    row_h = (summary_top - 8 - y) / 5
+    weeks = [
+        [(1, "C", True), (2, "C", True), (3, "C", True), (4, "-", True), (5, "P", True), (6, "C", True), (7, "C", True)],
+        [(8, "C", True), (9, "C", True), (10, "C", True), (11, "P", True), (12, "-", True), (13, "-", True), (14, "-", True)],
+        [(15, "-", True), (16, "-", True), (17, "-", True), (18, "-", True), (19, "-", True), (20, "-", True), (21, "-", True)],
+        [(22, "-", True), (23, "-", True), (24, "-", True), (25, "-", True), (26, "-", True), (27, "-", True), (28, "-", True)],
+        [(29, "-", True), (30, "-", True), (1, "-", False), (2, "-", False), (3, "-", False), (4, "-", False), (5, "-", False)],
+    ]
+    for week in weeks:
+        for index, (day, mark, in_month) in enumerate(week):
+            cx = 20 + col * index + col / 2
+            num_y = y + 4
+            color = INK if in_month else (186, 178, 168)
+            if day == 11 and in_month:
+                ui.ellipse(cx - 14, num_y - 2, cx + 14, num_y + 26, outline=SAGE_DEEP, width=1.6)
+            ui.t(cx, num_y, str(day), ui.f(SERIF_REG, 17), color, anchor="mt")
+            dot_y = y + row_h - 16
+            if mark == "C":
+                ui.ellipse(cx - 4, dot_y, cx + 4, dot_y + 8, fill=SAGE)
+            elif mark == "P":
+                ui.ellipse(cx - 4, dot_y, cx + 4, dot_y + 8, outline=CLAY, width=2)
+        y += row_h
+    y = summary_top
+    ui.rrect(16, y, 386, bottom - 8, 16, CARD, LINE, 1)
+    ui.t(28, y + 12, "Wednesday, November 11", ui.f(SERIF_REG, 18), INK)
+    ui.t(28, y + 38, "Morning 3 of 5  ·  Evening 0 of 3", ui.f(SANS, 13), MUTED)
+    items = [
+        ("Moisturize", "Veil Cream · 10 days left", AMBER, False),
+        ("Sunscreen", "Daily Veil SPF 50", MUTED, False),
+        ("Night cream", "Past the open-jar window", ROSE, False),
+    ]
+    iy = y + 64
+    row_left = (bottom - 16 - iy) / 3
+    for title, detail, color, done in items:
+        step_row(ui, 28, iy, 340, row_left, title, detail, color, done)
+        iy += row_left
+    return ui.im
 
 
-def paint_shelf(base, rect, scale):
-    draw = ImageDraw.Draw(base)
-    x0, _, x1, _ = rect
-    pad = 18 * scale
-    y = nav_bar(draw, rect, "Shelf", scale)
-    bottom = tab_bar(base, rect, 2, scale)
-    draw = ImageDraw.Draw(base)
+def paint_shelf(_portrait=None) -> Image.Image:
+    ui = Screen()
+    top, bottom = chrome(ui, "Shelf", 2, plus=True)
+    y = top
+    face = ui.f(SANS, 13)
     y = draw_wrapped(
-        draw,
+        ui.draw,
         "A period after opening is the maker's guide for an opened jar. It is not a medical date.",
-        font(SANS, 15 * scale),
+        face,
         MUTED,
-        (x0 + pad, y),
-        x1 - x0 - pad * 2,
-    )
-    y += 10 * scale
-    banner_h = 58 * scale
-    rounded(base, (x0 + pad, y, x1 - pad, y + banner_h), 14 * scale, (236, 214, 206), None, 0)
-    draw_wrapped(
-        draw,
-        "1 jar is past its open-jar window, and 1 is close.",
-        font(SANS_BOLD, 15 * scale),
-        INK,
-        (x0 + pad + 12 * scale, y + 12 * scale),
-        x1 - x0 - pad * 2 - 24 * scale,
-    )
-    y += banner_h + 12 * scale
-    cards = [
+        (pt(20), pt(y)),
+        pt(362),
+    ) / 3 + 8
+    banner_h = 52
+    ui.rrect(16, y, 386, y + banner_h, 14, (236, 214, 206))
+    ui.t(28, y + 8, "1 jar is past its open-jar window,", ui.f(SANS_BOLD, 14), INK)
+    ui.t(28, y + 28, "and 1 is close.", ui.f(SANS_BOLD, 14), INK)
+    y += banner_h + 10
+    products = [
         ("Night Repair Cream", "Hearth & Co. · Moisturizer", "Almost empty", 0.12, "Opened Oct 2, 2025 · 12 months", "40 days past the open-jar window", ROSE),
         ("Veil Cream", "Hearth & Co. · Moisturizer", "About a quarter", 0.25, "Opened Nov 21, 2025 · 12 months", "10 days left in the open-jar window", AMBER),
         ("Cloud Milk Cleanser", "Hearth & Co. · Cleanser", "About three quarters", 0.75, "Opened Oct 2, 2026 · 12 months", "325 days left in the open-jar window", SAGE_DEEP),
+        ("Rice Water Toner", "Hearth & Co. · Toner", "About half", 0.5, "Opened Oct 2, 2026 · 12 months", "325 days left in the open-jar window", SAGE_DEEP),
+        ("Dawn C Serum", "Lumen Atelier · Serum", "About three quarters", 0.75, "Opened Sep 22, 2026 · 6 months", "131 days left in the open-jar window", SAGE_DEEP),
+        ("Daily Veil SPF 50", "Lumen Atelier · Sunscreen", "About half", 0.5, "Opened Aug 23, 2026 · 12 months", "285 days left in the open-jar window", SAGE_DEEP),
     ]
-    card_h = 128 * scale
-    for card in cards:
-        if y + card_h > bottom - 8 * scale:
-            break
-        product_card(base, (x0 + pad, y, x1 - pad, y + card_h), scale, *card)
-        y += card_h + 10 * scale
+    gap = 8
+    card_h = (bottom - y - gap * (len(products) - 1)) / len(products)
+    name_face = ui.f(SERIF_REG, 16)
+    small = ui.f(SANS, 12)
+    status_face = ui.f(SANS_BOLD, 12)
+    for name, brand, fill_label, fraction, opened, status, color in products:
+        ui.rrect(16, y, 386, y + card_h - 1, 14, CARD, LINE, 1)
+        ui.t(26, y + 8, ui.clip_text(name, name_face, 210), name_face, INK)
+        ui.t(376, y + 10, fill_label, ui.f(SANS_BOLD, 11), SAGE_DEEP, anchor="rt")
+        ui.t(26, y + 30, brand, small, MUTED)
+        bar_y = y + 50
+        ui.rrect(26, bar_y, 376, bar_y + 6, 3, LINE)
+        ui.rrect(26, bar_y, 26 + 350 * fraction, bar_y + 6, 3, CLAY)
+        ui.t(26, y + 60, opened, small, MUTED)
+        ui.t(26, y + 78, ui.clip_text(status, status_face, 340), status_face, color)
+        y += card_h + gap
+    return ui.im
 
 
-def paint_notes(base, rect, scale):
-    draw = ImageDraw.Draw(base)
-    x0, _, x1, _ = rect
-    pad = 18 * scale
-    y = nav_bar(draw, rect, "Journal", scale, trailing=False)
-    bottom = tab_bar(base, rect, 3, scale)
-    draw = ImageDraw.Draw(base)
-    seg_w = x1 - x0 - pad * 2
-    seg_h = 38 * scale
-    rounded(base, (x0 + pad, y, x0 + pad + seg_w, y + seg_h), 10 * scale, (236, 230, 222), None, 0)
-    half = seg_w / 2
-    rounded(base, (x0 + pad + 3, y + 3, x0 + pad + half - 2, y + seg_h - 3), 8 * scale, CARD, None, 0)
-    text(draw, (x0 + pad + half / 2, y + 9 * scale), "Notes", font(SANS_BOLD, 15 * scale), INK, anchor="mt")
-    text(draw, (x0 + pad + half * 1.5, y + 9 * scale), "Progress", font(SANS, 15 * scale), MUTED, anchor="mt")
-    y += seg_h + 12 * scale
+def paint_notes(_portrait=None) -> Image.Image:
+    ui = Screen()
+    top, bottom = chrome(ui, "Journal", 3, plus=False)
+    y = top
+    ui.rrect(16, y, 386, y + 32, 10, (236, 230, 222))
+    ui.rrect(18, y + 2, 200, y + 30, 8, CARD)
+    ui.t(109, y + 7, "Notes", ui.f(SANS_BOLD, 13), INK, anchor="mt")
+    ui.t(293, y + 7, "Progress", ui.f(SANS, 13), MUTED, anchor="mt")
+    y += 42
     y = draw_wrapped(
-        draw,
-        "A personal note. Nimvelle does not assess your skin.",
-        font(SANS, 15 * scale),
+        ui.draw,
+        "A personal note for dryness, spots, mood, and sleep. Nimvelle does not assess your skin.",
+        ui.f(SANS, 13),
         MUTED,
-        (x0 + pad, y),
-        x1 - x0 - pad * 2,
-    )
-    y += 8 * scale
-    text(draw, (x0 + pad, y), "Last 14 days", font(SERIF_REG, 24 * scale), INK)
-    y += 34 * scale
+        (pt(20), pt(y)),
+        pt(362),
+    ) / 3 + 6
+    ui.t(20, y, "Last 14 days", ui.f(SERIF_REG, 20), INK)
+    y += 28
     series = [
         ("Dryness", CLAY, [None, 3, None, 2, None, 4, None, 3, 2, 3, 2, 1, 3, None]),
         ("Mood", SAGE, [None, 4, None, 4, None, 3, None, 4, 5, 4, 4, 5, 4, None]),
         ("Sleep", DUSK, [None, 3, None, 4, None, 2, None, 4, 5, 3, 4, 4, 4, None]),
     ]
-    chart_h = 52 * scale
-    gap = 4 * scale
-    count = 14
-    bar_w = ((x1 - x0 - pad * 2) - gap * (count - 1)) / count
+    chart_block = 64
     for label, color, values in series:
-        if y + chart_h > bottom - 90 * scale:
-            break
-        text(draw, (x0 + pad, y), label, font(SANS_BOLD, 13 * scale), MUTED)
-        y += 18 * scale
+        ui.t(20, y, label, ui.f(SANS_BOLD, 12), MUTED)
+        y += 16
+        bar_h = 40
+        gap = 4
+        count = len(values)
+        bar_w = (362 - gap * (count - 1)) / count
         for index, value in enumerate(values):
-            bx = x0 + pad + index * (bar_w + gap)
+            bx = 20 + index * (bar_w + gap)
             if value is None:
-                bh, fill = 4 * scale, LINE
+                bh, fill = 4, LINE
             else:
-                bh, fill = max(8 * scale, chart_h * (value / 5)), color
-            draw.rounded_rectangle((bx, y + chart_h - bh, bx + bar_w, y + chart_h), radius=2, fill=fill)
-        y += chart_h + 8 * scale
-    if y < bottom - 36 * scale:
-        text(draw, (x0 + pad, y), "9 noted days. 2 days with spots in this window.", font(SANS, 14 * scale), MUTED)
+                bh, fill = max(8, bar_h * (value / 5)), color
+            ui.rrect(bx, y + bar_h - bh, bx + bar_w, y + bar_h, 2, fill)
+        y += bar_h + 8
+    ui.t(20, y, "9 noted days. 2 days with spots in this window.", ui.f(SANS, 12), MUTED)
+    y += 22
+    ui.t(20, y, "Recent", ui.f(SERIF_REG, 18), INK)
+    y += 26
+    notes = [
+        ("Nov 10, 2026", "Dry · spots none · bright · sleep sound", "A bit dry by evening."),
+        ("Nov 9, 2026", "Comfortable · spots none · light · sleep sound", "Felt comfortable all day."),
+        ("Nov 7, 2026", "Dry · spots a little · bright · sleep okay", "One small spot on the chin."),
+    ]
+    gap = 8
+    card_h = (bottom - y - gap * (len(notes) - 1)) / len(notes)
+    for date, summary, body in notes:
+        ui.rrect(16, y, 386, y + card_h - 1, 14, CARD, LINE, 1)
+        ui.t(26, y + 8, date, ui.f(SANS_BOLD, 12), SAGE_DEEP)
+        ui.t(26, y + 28, ui.clip_text(summary, ui.f(SANS, 13), 340), ui.f(SANS, 13), INK)
+        ui.t(26, y + 48, body, ui.f(SANS, 13), MUTED)
+        y += card_h + gap
+    return ui.im
 
 
-def paint_progress(base, rect, scale, portrait: Path):
-    draw = ImageDraw.Draw(base)
-    x0, _, x1, _ = rect
-    pad = 18 * scale
-    y = nav_bar(draw, rect, "Journal", scale, trailing=False)
-    bottom = tab_bar(base, rect, 3, scale)
-    draw = ImageDraw.Draw(base)
-    seg_w = x1 - x0 - pad * 2
-    seg_h = 38 * scale
-    rounded(base, (x0 + pad, y, x0 + pad + seg_w, y + seg_h), 10 * scale, (236, 230, 222), None, 0)
-    half = seg_w / 2
-    rounded(base, (x0 + pad + half + 2, y + 3, x0 + pad + seg_w - 3, y + seg_h - 3), 8 * scale, CARD, None, 0)
-    text(draw, (x0 + pad + half / 2, y + 9 * scale), "Notes", font(SANS, 15 * scale), MUTED, anchor="mt")
-    text(draw, (x0 + pad + half * 1.5, y + 9 * scale), "Progress", font(SANS_BOLD, 15 * scale), INK, anchor="mt")
-    y += seg_h + 12 * scale
+def paint_progress(portrait: Path) -> Image.Image:
+    ui = Screen()
+    top, bottom = chrome(ui, "Journal", 3, plus=False)
+    y = top
+    ui.rrect(16, y, 386, y + 32, 10, (236, 230, 222))
+    ui.rrect(202, y + 2, 384, y + 30, 8, CARD)
+    ui.t(109, y + 7, "Notes", ui.f(SANS, 13), MUTED, anchor="mt")
+    ui.t(293, y + 7, "Progress", ui.f(SANS_BOLD, 13), INK, anchor="mt")
+    y += 42
     y = draw_wrapped(
-        draw,
-        "Once a week is plenty. Photos stay on this device.",
-        font(SANS, 15 * scale),
+        ui.draw,
+        "Once a week is plenty. Photos stay on this device unless you save a copy to Photos.",
+        ui.f(SANS, 13),
         MUTED,
-        (x0 + pad, y),
-        x1 - x0 - pad * 2,
-    )
-    y += 12 * scale
-    frame_h = min(280 * scale, bottom - y - 78 * scale)
-    gap = 10 * scale
-    frame_w = (x1 - x0 - pad * 2 - gap) / 2
-    earlier = cover(portrait, (int(frame_w), int(frame_h)), focus=(0.42, 0.30))
-    later = cover(portrait, (int(frame_w), int(frame_h)), focus=(0.62, 0.42))
-    for index, (shot, caption, when) in enumerate((
-        (earlier, "Earlier", "Nov 4"),
-        (later, "Later", "Nov 11"),
-    )):
-        fx = x0 + pad + index * (frame_w + gap)
+        (pt(20), pt(y)),
+        pt(362),
+    ) / 3 + 8
+    list_h = 132
+    button_h = 44
+    caption_h = 36
+    photo_h = bottom - y - caption_h - button_h - list_h - 16
+    frame_w = 174
+    earlier = cover(portrait, (pt(frame_w), pt(photo_h)), focus=(0.42, 0.32))
+    later = cover(portrait, (pt(frame_w), pt(photo_h)), focus=(0.62, 0.40))
+    for index, shot in enumerate((earlier, later)):
+        fx = 20 + index * (frame_w + 14)
         mask = Image.new("L", shot.size, 0)
-        ImageDraw.Draw(mask).rounded_rectangle((0, 0, frame_w, frame_h), radius=int(14 * scale), fill=255)
-        base.paste(shot.convert("RGBA"), (int(fx), int(y)), mask)
-        text(draw, (fx, y + frame_h + 6 * scale), caption, font(SANS_BOLD, 13 * scale), MUTED)
-        text(draw, (fx, y + frame_h + 24 * scale), when, font(SANS, 14 * scale), INK)
-    button_y = y + frame_h + 52 * scale
-    if button_y + 42 * scale < bottom:
-        rounded(base, (x0 + pad, button_y, x1 - pad, button_y + 42 * scale), 12 * scale, SAGE_DEEP, None, 0)
-        text(draw, ((x0 + x1) / 2, button_y + 10 * scale), "Add a photo", font(SANS_BOLD, 16 * scale), CARD, anchor="mt")
-
-
-def render_screen(size, painter, scale) -> Image.Image:
-    screen = Image.new("RGBA", size, PAPER + (255,))
-    width, height = size
-    island_w = int(width * 0.31)
-    island_h = max(28, int(height * 0.034))
-    island_top = int(height * 0.014)
-    content_top = island_top + island_h + int(height * 0.008)
-    painter(screen, (0, content_top, width, height), scale)
-    draw = ImageDraw.Draw(screen)
-    ix = (width - island_w) / 2
-    draw.rounded_rectangle(
-        (ix, island_top, ix + island_w, island_top + island_h),
-        radius=island_h / 2,
-        fill=(12, 12, 14),
-    )
-    text(draw, (int(width * 0.08), island_top + island_h * 0.08), "9:41", font(SANS_BOLD, max(12, int(width * 0.038))), INK)
-    return screen
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, shot.size[0], shot.size[1]), radius=pt(14), fill=255)
+        ui.im.paste(shot.convert("RGBA"), (pt(fx), pt(y)), mask)
+        ui.refresh()
+    y += photo_h + 6
+    ui.t(20, y, "Earlier", ui.f(SANS_BOLD, 12), MUTED)
+    ui.t(20, y + 16, "Nov 4, 2026", ui.f(SANS, 13), INK)
+    ui.t(208, y, "Later", ui.f(SANS_BOLD, 12), MUTED)
+    ui.t(208, y + 16, "Nov 11, 2026", ui.f(SANS, 13), INK)
+    y += caption_h
+    ui.rrect(16, y, 386, y + button_h, 12, SAGE_DEEP)
+    ui.t(201, y + 12, "Add a photo", ui.f(SANS_BOLD, 16), CARD, anchor="mt")
+    y += button_h + 12
+    ui.t(20, y, "On this device", ui.f(SERIF_REG, 16), INK)
+    y += 24
+    ui.t(20, y, "Nov 4  ·  earlier", ui.f(SANS, 14), INK)
+    ui.t(20, y + 20, "Nov 11  ·  later", ui.f(SANS, 14), INK)
+    ui.t(20, y + 48, "Nothing is uploaded.", ui.f(SANS, 13), MUTED)
+    return ui.im
 
 
 def phone_frame(canvas: Image.Image, origin, screen_image: Image.Image):
     x, y = origin
     sw, sh = screen_image.size
-    bezel = 14
-    radius = 54
+    bezel = max(12, int(sw * 0.022))
+    radius = max(36, int(sw * 0.115))
     outer = (x - bezel, y - bezel, x + sw + bezel, y + sh + bezel)
     shadow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     ImageDraw.Draw(shadow).rounded_rectangle(
@@ -524,33 +568,40 @@ def gradient_canvas() -> Image.Image:
     return image.convert("RGBA")
 
 
+
 def compose(model: Path, focus, kicker, title, subtitle, painter) -> Image.Image:
     canvas = gradient_canvas()
-    photo_h = 900
+    photo_h = 640
     photo = cover(model, (CANVAS[0], photo_h), focus).convert("RGBA")
     canvas.paste(photo, (0, 0))
-    fade_h = 120
+    fade_h = 90
     fade = Image.new("RGBA", (CANVAS[0], fade_h), (0, 0, 0, 0))
     fade_draw = ImageDraw.Draw(fade)
     for row in range(fade_h):
-        alpha = int(255 * (row / (fade_h - 1)) ** 1.4)
+        alpha = int(255 * (row / (fade_h - 1)) ** 1.35)
         fade_draw.line((0, row, CANVAS[0], row), fill=(214, 236, 228, alpha))
     canvas.alpha_composite(fade, (0, photo_h - fade_h))
     draw = ImageDraw.Draw(canvas)
-    y = photo_h + 18
-    text(draw, (56, y), kicker, font(SANS_BOLD, 18), MINT_DEEP)
-    y += 28
-    for line in wrap(draw, title, font(SERIF, 52), CANVAS[0] - 120):
-        text(draw, (56, y), line, font(SERIF, 52), MINT_DEEP)
-        y += 58
-    y = draw_wrapped(draw, subtitle, font(SANS, 24), (70, 104, 98), (56, y + 2), CANVAS[0] - 140)
-    screen_w = 700
-    bezel = 14
-    bottom_margin = 28
-    top = y + 22
-    screen_h = CANVAS[1] - top - bezel - bottom_margin
-    scale = screen_w / 980
-    screen = render_screen((screen_w, screen_h), painter, scale)
+    y = photo_h + 16
+    text(draw, (48, y), kicker, font(SANS_BOLD, 16), MINT_DEEP)
+    y += 24
+    for line in wrap(draw, title, font(SERIF, 46), CANVAS[0] - 100):
+        text(draw, (48, y), line, font(SERIF, 46), MINT_DEEP)
+        y += 52
+    y = draw_wrapped(draw, subtitle, font(SANS, 22), (70, 104, 98), (48, y + 2), CANVAS[0] - 100)
+    bezel_guess = 16
+    bottom_margin = 22
+    top = int(y + 18)
+    avail = CANVAS[1] - top - bottom_margin
+    screen_h = int(avail - 2 * bezel_guess)
+    screen_w = int(screen_h * NATIVE[0] / NATIVE[1])
+    if screen_w + 48 > CANVAS[0]:
+        screen_w = CANVAS[0] - 48
+        screen_h = int(screen_w * NATIVE[1] / NATIVE[0])
+    native = painter()
+    if native.size != NATIVE:
+        raise SystemExit(f"native screen {native.size}")
+    screen = native.resize((screen_w, screen_h), Image.Resampling.LANCZOS)
     origin = ((CANVAS[0] - screen_w) // 2, top)
     phone_frame(canvas, origin, screen)
     out = canvas.convert("RGB")
@@ -576,11 +627,11 @@ def main():
     clear_old_shots()
     SHOT_DIR.mkdir(parents=True, exist_ok=True)
     screens = [
-        ("01-today.png", "serum", (0.48, 0.42), "TODAY", "The morning, already laid out", "Check off the steps you actually use.", lambda b, r, s: paint_today(b, r, s)),
-        ("02-month.png", "cream", (0.50, 0.42), "MONTH", "A month of small check-ins", "Complete days build a streak. Today can still be open.", lambda b, r, s: paint_month(b, r, s)),
-        ("03-shelf.png", "jar", (0.48, 0.50), "SHELF", "Before a jar overstays", "An open-jar window is a storage guide, not a medical date.", lambda b, r, s: paint_shelf(b, r, s)),
-        ("04-notes.png", "cleanse", (0.50, 0.44), "NOTES", "Notes for you, not a diagnosis", "Dryness, spots, mood, and sleep. Nothing is assessed.", lambda b, r, s: paint_notes(b, r, s)),
-        ("05-progress.png", "serum", (0.42, 0.40), "PROGRESS", "A week, side by side", "Optional photos stay on this iPhone.", lambda b, r, s: paint_progress(b, r, s, models["serum"])),
+        ("01-today.png", "serum", (0.48, 0.42), "TODAY", "The morning, already laid out", "Check off the steps you actually use.", paint_today),
+        ("02-month.png", "cream", (0.50, 0.42), "MONTH", "A month of small check-ins", "Complete days build a streak. Today can still be open.", paint_month),
+        ("03-shelf.png", "jar", (0.48, 0.50), "SHELF", "Before a jar overstays", "An open-jar window is a storage guide, not a medical date.", paint_shelf),
+        ("04-notes.png", "cleanse", (0.50, 0.44), "NOTES", "Notes for you, not a diagnosis", "Dryness, spots, mood, and sleep. Nothing is assessed.", paint_notes),
+        ("05-progress.png", "serum", (0.42, 0.40), "PROGRESS", "A week, side by side", "Optional photos stay on this iPhone.", lambda: paint_progress(models["serum"])),
     ]
     for name, key, focus, kicker, title, subtitle, painter in screens:
         image = compose(models[key], focus, kicker, title, subtitle, painter)
