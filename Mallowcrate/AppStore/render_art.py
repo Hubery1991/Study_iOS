@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Render the App Store icon set and screenshots.
+"""Render the App Store icon set and marketing screenshots.
 
-This environment has no Xcode or iOS Simulator. The pictures are drawn with
-Pillow from the same palette, copy, level geometry, and screen layout as the
-SwiftUI views. They are not device captures.
+Icons are resized from the approved artwork at AppStore/icon/approved-source.jpg.
+They stay full-bleed squares. iOS applies the rounded mask.
+
+Screenshots are composed at 1206×2622, then the same layout is scaled for the
+other required sizes and adapted for iPad. Each shot places the SwiftUI-matching
+screen inside an iPhone bezel. This environment has no iOS Simulator.
 
     python3 Mallowcrate/AppStore/render_art.py
 """
@@ -44,13 +47,15 @@ BOARD = (255, 241, 212)
 BOARD_RIM = (226, 181, 106)
 WHITE = (255, 255, 255)
 
-# pixels, points = pixels / scale, safe top, safe bottom
-DEVICES = [
-    ("iphone-6.9", 1320, 2868, 3, 62, 34),
-    ("iphone-6.7", 1284, 2778, 3, 47, 34),
-    ("iphone-6.5", 1242, 2688, 3, 44, 34),
-    ("ipad-13", 2064, 2752, 2, 24, 20),
+# Folder, pixel size, layout. iphone-1206 is the source composition.
+SHOT_SIZES = [
+    ("iphone-1206", 1206, 2622, "phone"),
+    ("iphone-6.9", 1320, 2868, "phone"),
+    ("iphone-6.7", 1284, 2778, "phone"),
+    ("iphone-6.5", 1242, 2688, "phone"),
+    ("ipad-13", 2064, 2752, "pad"),
 ]
+ICON_SOURCE = ROOT / "AppStore" / "icon" / "approved-source.jpg"
 
 
 def font(kind: str, points: float, scale: float) -> ImageFont.FreeTypeFont:
@@ -541,43 +546,18 @@ def first_goal_prefix(level):
     return best or level["solution"][:1]
 
 
-def render_screens():
-    level_play = next(level for level in LEVELS if level["index"] == 22)
-    # Stop a few steps before the end so the screen is mid-puzzle.
-    play_moves = level_play["solution"][: max(4, len(level_play["solution"]) // 3)]
-    level_spark = next(level for level in LEVELS if level["index"] == 17)
-    spark_moves = first_goal_prefix(level_spark)
-    level_win = next(level for level in LEVELS if level["index"] == 9)
-    out = ROOT / "AppStore" / "screenshots"
-    scenes = [
-        ("01-home", screen_home),
-        ("02-gameplay", lambda c, t, b: screen_play(c, t, b, level_play, play_moves)),
-        ("03-sparkle", lambda c, t, b: screen_play(c, t, b, level_spark, spark_moves, sparkle=True)),
-        ("04-cleared", lambda c, t, b: screen_win(c, t, b, level_win)),
-        ("05-levels", screen_levels),
-    ]
-    for folder, width, height, scale, top, bottom in DEVICES:
-        dest = out / folder
-        dest.mkdir(parents=True, exist_ok=True)
-        for name, painter in scenes:
-            canvas = Canvas(width, height, scale)
-            painter(canvas, top, bottom)
-            path = dest / f"{name}.png"
-            canvas.image.save(path, "PNG")
-            print(f"{path.relative_to(ROOT)} {canvas.image.size} {canvas.image.mode}")
+def load_icon_master() -> Image.Image:
+    if not ICON_SOURCE.exists():
+        raise SystemExit(f"missing approved icon: {ICON_SOURCE}")
+    image = Image.open(ICON_SOURCE).convert("RGB")
+    if image.size != (1024, 1024):
+        image = image.resize((1024, 1024), Image.Resampling.LANCZOS)
+    return image
 
 
-def render_icon(size):
-    canvas = Canvas(size, size, size / 1024)
-    canvas.meadow()
-    canvas.daisy(150, 620, 250)
-    canvas.mallow(250, 180, 560)
-    canvas.crate(620, 560, 280)
-    return canvas.image.convert("RGB")
-
-
-def render_icons():
-    master = render_icon(1024)
+def render_icons() -> None:
+    """Install the approved artwork. Do not redraw it."""
+    master = load_icon_master()
     icon_dir = ROOT / "AppStore" / "icon"
     icon_dir.mkdir(parents=True, exist_ok=True)
     master.save(icon_dir / "AppIcon-1024.png", "PNG")
@@ -601,38 +581,171 @@ def render_icons():
     for pixels, name in sizes.items():
         image = master if pixels == 1024 else master.resize((pixels, pixels), Image.Resampling.LANCZOS)
         image.convert("RGB").save(catalog / name, "PNG")
-    images = [
-        ("20x20", "iphone", "icon-40.png", "2x"),
-        ("20x20", "iphone", "icon-60.png", "3x"),
-        ("29x29", "iphone", "icon-58.png", "2x"),
-        ("29x29", "iphone", "icon-87.png", "3x"),
-        ("40x40", "iphone", "icon-80.png", "2x"),
-        ("40x40", "iphone", "icon-120.png", "3x"),
-        ("60x60", "iphone", "icon-120.png", "2x"),
-        ("60x60", "iphone", "icon-180.png", "3x"),
-        ("20x20", "ipad", "icon-20.png", "1x"),
-        ("20x20", "ipad", "icon-40.png", "2x"),
-        ("29x29", "ipad", "icon-29.png", "1x"),
-        ("29x29", "ipad", "icon-58.png", "2x"),
-        ("40x40", "ipad", "icon-40.png", "1x"),
-        ("40x40", "ipad", "icon-80.png", "2x"),
-        ("76x76", "ipad", "icon-76.png", "1x"),
-        ("76x76", "ipad", "icon-152.png", "2x"),
-        ("83.5x83.5", "ipad", "icon-167.png", "2x"),
-        ("1024x1024", "ios-marketing", "icon-1024.png", "1x"),
+    website = ROOT / "AppStore" / "website"
+    master.resize((32, 32), Image.Resampling.LANCZOS).save(website / "favicon.png", "PNG")
+    master.resize((180, 180), Image.Resampling.LANCZOS).save(website / "apple-touch-icon.png", "PNG")
+    master.resize((64, 64), Image.Resampling.LANCZOS).save(website / "icon-64.png", "PNG")
+    print("icons", master.mode, master.size, "no-alpha")
+
+
+def render_ui(painter) -> Image.Image:
+    """iPhone 16 logical screen, rendered at 3x so the bezel stays sharp."""
+    width, height = 393 * 3, 852 * 3
+    canvas = Canvas(width, height, 3)
+    painter(canvas, 59, 34)
+    image = canvas.image.convert("RGBA")
+    draw = ImageDraw.Draw(image)
+    island_w = int(width * 0.30)
+    island_h = int(width * 0.088)
+    ix = (width - island_w) // 2
+    iy = int(height * 0.016)
+    draw.rounded_rectangle(
+        (ix, iy, ix + island_w, iy + island_h),
+        radius=island_h // 2,
+        fill=(0, 0, 0, 255),
+    )
+    return image
+
+
+def build_phone(ui: Image.Image) -> Image.Image:
+    screen_w, screen_h = ui.size
+    bezel = max(18, int(screen_w * 0.034))
+    outer_w = screen_w + bezel * 2
+    outer_h = screen_h + bezel * 2
+    protrude = max(8, int(screen_w * 0.015))
+    image = Image.new("RGBA", (outer_w + protrude * 2, outer_h), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(image)
+    x0 = protrude
+    metal = (38, 38, 42, 255)
+    button = (78, 78, 84, 255)
+    # Silent switch and volume on the left, power on the right.
+    draw.rounded_rectangle((2, int(outer_h * 0.16), x0 + 3, int(outer_h * 0.21)), radius=4, fill=button)
+    draw.rounded_rectangle((2, int(outer_h * 0.24), x0 + 3, int(outer_h * 0.32)), radius=4, fill=button)
+    draw.rounded_rectangle((2, int(outer_h * 0.34), x0 + 3, int(outer_h * 0.42)), radius=4, fill=button)
+    right = x0 + outer_w - 3
+    draw.rounded_rectangle((right, int(outer_h * 0.28), image.width - 2, int(outer_h * 0.40)), radius=4, fill=button)
+    radius = int(outer_w * 0.155)
+    draw.rounded_rectangle((x0, 0, x0 + outer_w, outer_h), radius=radius, fill=metal)
+    draw.rounded_rectangle(
+        (x0, 0, x0 + outer_w, outer_h),
+        radius=radius,
+        outline=(168, 168, 176, 255),
+        width=max(3, screen_w // 200),
+    )
+    mask = Image.new("L", ui.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        (0, 0, screen_w - 1, screen_h - 1),
+        radius=int(screen_w * 0.125),
+        fill=255,
+    )
+    image.paste(ui, (x0 + bezel, bezel), mask)
+    return image
+
+
+def candy_background(width: int, height: int) -> Image.Image:
+    column = Image.new("RGB", (1, height))
+    pixels = column.load()
+    top = (255, 112, 64)
+    mid = (232, 48, 104)
+    bottom = (148, 18, 122)
+    for y in range(height):
+        t = y / max(1, height - 1)
+        if t < 0.45:
+            color = lerp(top, mid, t / 0.45)
+        else:
+            color = lerp(mid, bottom, (t - 0.45) / 0.55)
+        pixels[0, y] = color
+    image = column.resize((width, height), Image.Resampling.BILINEAR)
+    draw = ImageDraw.Draw(image)
+    sun = int(width * 0.42)
+    draw.ellipse((width - int(sun * 0.72), int(-sun * 0.28), width + int(sun * 0.15), int(sun * 0.62)), fill=(255, 196, 72))
+    return image
+
+
+def fit_font(draw: ImageDraw.ImageDraw, text: str, target: int, max_width: int, kind: str) -> ImageFont.FreeTypeFont:
+    size = target
+    while size > 18:
+        face = font(kind, size, 1)
+        box = draw.textbbox((0, 0), text, font=face)
+        if box[2] - box[0] <= max_width:
+            return face
+        size -= 2
+    return font(kind, size, 1)
+
+
+def paint_marketing(width: int, height: int, layout: str, headline: str, subhead: str, phone: Image.Image) -> Image.Image:
+    image = candy_background(width, height)
+    draw = ImageDraw.Draw(image)
+    if layout == "pad":
+        phone_h = int(height * 0.70)
+        text_block = int(height * 0.16)
+    else:
+        phone_h = int(height * 0.745)
+        text_block = int(height * 0.145)
+    phone_w = int(phone_h * phone.width / phone.height)
+    max_w = int(width * (0.50 if layout == "pad" else 0.90))
+    if phone_w > max_w:
+        phone_w = max_w
+        phone_h = int(phone_w * phone.height / phone.width)
+    fitted = phone.resize((phone_w, phone_h), Image.Resampling.LANCZOS)
+    text_top = max(36, int(height * 0.035))
+    center = width / 2
+    head_size = int(width * (0.062 if layout == "pad" else 0.072))
+    sub_size = int(width * (0.026 if layout == "pad" else 0.031))
+    head_font = fit_font(draw, headline, head_size, int(width * 0.88), "bold")
+    sub_font = fit_font(draw, subhead, sub_size, int(width * 0.86), "semi")
+    head_y = text_top + int(text_block * 0.28)
+    sub_y = head_y + int(head_size * 1.15)
+    for dx, dy in ((0, 4), (0, 0)):
+        fill = (120, 18, 64) if dy else (255, 255, 255)
+        draw.text((center + dx, head_y + dy), headline, font=head_font, fill=fill, anchor="mm")
+    draw.text((center, sub_y), subhead, font=sub_font, fill=(255, 236, 186), anchor="mm")
+    px = (width - phone_w) // 2
+    py = height - phone_h - int(height * 0.028)
+    shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).ellipse(
+        (px + int(phone_w * 0.12), py + phone_h - int(phone_h * 0.02), px + int(phone_w * 0.88), py + phone_h + int(height * 0.018)),
+        fill=(90, 10, 50, 90),
+    )
+    image = Image.alpha_composite(image.convert("RGBA"), shadow).convert("RGB")
+    image.paste(fitted, (px, py), fitted)
+    return image
+
+
+def render_screens() -> None:
+    level_play = next(level for level in LEVELS if level["index"] == 22)
+    play_moves = level_play["solution"][: max(4, len(level_play["solution"]) // 3)]
+    level_undo = next(level for level in LEVELS if level["index"] == 9)
+    level_win = level_undo
+    scenes = [
+        ("01-home", "Meet Mallow", "A marshmallow courier on a daisy meadow.", lambda c, t, b: screen_home(c, t, b)),
+        ("02-nudge", "Nudge one crate", "Swipe or tap. Only one crate moves.", lambda c, t, b: screen_play(c, t, b, level_play, play_moves)),
+        ("03-undo", "Undo the oops", "Step back, or start the meadow over.", lambda c, t, b: screen_play(c, t, b, level_undo, "LU")),
+        ("04-levels", "Pick a meadow", "Six worlds, thirty-six puzzles, stars to chase.", lambda c, t, b: screen_levels(c, t, b)),
+        ("05-cleared", "All tucked in", "Three stars if you stay close to par.", lambda c, t, b: screen_win(c, t, b, level_win)),
     ]
-    contents = {
-        "images": [
-            {"size": size, "idiom": idiom, "filename": filename, "scale": scale}
-            for size, idiom, filename, scale in images
-        ],
-        "info": {"version": 1, "author": "xcode"},
-    }
-    (catalog / "Contents.json").write_text(json.dumps(contents, indent=2) + "\n")
-    print("icons", master.mode, master.size)
+    phones = []
+    for name, headline, subhead, painter in scenes:
+        phones.append((name, headline, subhead, build_phone(render_ui(painter))))
+        print(f"ui {name}")
+    out = ROOT / "AppStore" / "screenshots"
+    for folder, width, height, layout in SHOT_SIZES:
+        dest = out / folder
+        dest.mkdir(parents=True, exist_ok=True)
+        for name, headline, subhead, phone in phones:
+            image = paint_marketing(width, height, layout, headline, subhead, phone)
+            path = dest / f"{name}.png"
+            image.convert("RGB").save(path, "PNG")
+            print(f"{path.relative_to(ROOT)} {image.size}")
+    # Drop the previous unframed filenames so the kit only has the new set.
+    for stale in ("02-gameplay.png", "03-sparkle.png", "04-cleared.png", "05-levels.png"):
+        for folder, *_ in SHOT_SIZES:
+            old = out / folder / stale
+            if old.exists():
+                old.unlink()
 
 
-def main():
+def main() -> None:
     render_icons()
     render_screens()
 

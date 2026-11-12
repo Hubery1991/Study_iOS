@@ -101,6 +101,26 @@ Data Not Collected.
 - Privacy Nutrition Label: Data Not Collected
 - The privacy manifest (`App/PrivacyInfo.xcprivacy`) declares no tracking and no collected data types
 
+## Screenshots
+
+Five marketing shots. The source set is exactly 1206×2622 in `AppStore/screenshots/iphone-1206/`. The same compositions are also exported for the other required slots:
+
+| Folder | Pixels | Use |
+|---|---|---|
+| `screenshots/iphone-1206/` | 1206×2622 | Primary marketing set |
+| `screenshots/iphone-6.9/` | 1320×2868 | 6.9-inch iPhone |
+| `screenshots/iphone-6.7/` | 1284×2778 | 6.7-inch iPhone |
+| `screenshots/iphone-6.5/` | 1242×2688 | 6.5-inch iPhone |
+| `screenshots/ipad-13/` | 2064×2752 | 13-inch iPad, same layout with a wider margin |
+
+Each file shows the game inside an iPhone bezel, with a short headline above the phone.
+
+1. `01-home.png` — Meet Mallow
+2. `02-nudge.png` — Nudge one crate
+3. `03-undo.png` — Undo the oops
+4. `04-levels.png` — Pick a meadow
+5. `05-cleared.png` — All tucked in
+
 ## Review notes
 
 Mallowcrate is a complete offline puzzle. No sign-in, no purchase, and no network is required.

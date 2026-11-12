@@ -46,13 +46,13 @@ python3 AppStore/solve_levels.py
 
 - `APP_STORE_LISTING.md` — name, subtitle, promotional text, description, keywords, category, age-rating answers, URLs, App Privacy (Data Not Collected), and review notes.
 - `NAME_UNIQUENESS.md` — iTunes Search API evidence. Mallowcrate had `resultCount: 0` on the US, UK, Japan, and China storefronts (and several others) on November 10, 2026.
-- `icon/AppIcon-1024.png` — 1024×1024 RGB marketing icon, no alpha. The full set is wired in `App/Assets.xcassets/AppIcon.appiconset`.
-- `screenshots/` — five images each at 1320×2868, 1284×2778, 1242×2688, and iPad 2064×2752.
+- `icon/approved-source.jpg` — the approved candy-crate artwork. `icon/AppIcon-1024.png` is that file as a 1024×1024 RGB PNG with no alpha. The same pixels fill `App/Assets.xcassets/AppIcon.appiconset`, plus the website favicon.
+- `screenshots/iphone-1206/` — five marketing shots at 1206×2622, the source size. The same compositions are in `iphone-6.9` (1320×2868), `iphone-6.7` (1284×2778), `iphone-6.5` (1242×2688), and `ipad-13` (2064×2752, adapted so the phone is not stretched).
 - `website/` — `index.html`, `privacy.html`, `terms.html`, and `site.css`. No external assets. Cross-linked and readable on a phone.
 
 ### Screenshots
 
-They were drawn by `AppStore/render_art.py` (Pillow) from the same palette, copy, level maps, and layout as the SwiftUI screens. They are not captures from an iOS Simulator, because none is available in this environment. Regenerate with:
+Each shot is the game UI inside an iPhone bezel, with a headline and a one-line subhead on a coral-to-magenta background. `AppStore/render_art.py` draws the UI from the same palette, copy, and level maps as the SwiftUI screens, then frames it. They are not captures from an iOS Simulator, because none is available in this environment. The 1206×2622 set is the master. Regenerate with:
 
 ```bash
 python3 AppStore/render_art.py
@@ -76,7 +76,7 @@ The same policy and terms are inside the app, under About.
 - [ ] Confirm the 1024 marketing icon uploaded with the build.
 - [ ] Paste the name, subtitle, promotional text, description, and keywords from `AppStore/APP_STORE_LISTING.md`.
 - [ ] Category: Games. Subcategory: Puzzle.
-- [ ] Upload five screenshots for 6.9-inch, 6.7-inch, 6.5-inch, and 13-inch iPad from `AppStore/screenshots/`.
+- [ ] Upload the five 1206×2622 screenshots from `AppStore/screenshots/iphone-1206/`, plus the matching sets in `iphone-6.9`, `iphone-6.7`, `iphone-6.5`, and `ipad-13`.
 - [ ] Age rating: answer from the table in the listing. Expect 4+. Do not enroll in Made for Kids.
 - [ ] Privacy Policy URL: the `privacy.html` page above, once Pages is on.
 - [ ] Support URL: the website index above.
