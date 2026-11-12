@@ -79,7 +79,7 @@ Suggested rating: 4+
 | Medical or treatment information | None. The app stores the user’s own cosmetic notes and a maker’s period-after-opening. It does not provide medical or treatment information. |
 | Alcohol, tobacco, or drug use or references | None |
 | Simulated gambling | None |
-| Sexual content or nudity | None. Marketing portraits are modest editorial portraits of people in robes or everyday clothes. Progress photos are the user’s own and are never shared. |
+| Sexual content or nudity | None. Marketing portraits are modest editorial portraits in everyday clothes. Progress photos are the user’s own and are never shared. |
 | Graphic sexual content and nudity | None |
 | Contests | None |
 | Unrestricted web access | No. About can open this app’s own privacy page, terms page, and the project issues page. It does not browse the open web. |
@@ -142,22 +142,19 @@ iPhone is portrait. iPad is portrait, including upside down. There is no account
 
 ## Screenshots to upload
 
-Five images in each folder under `AppStore/screenshots/`. Each one places an original generated portrait beside the app’s Today, Month, Shelf, progress, or notes screen, plus a short headline. The controls match the app: the morning checklist, the November grid, the shelf warning, the side-by-side photos, and the two-week chart. The sample numbers match a first launch on November 11, 2026: a 5-day streak, morning 3 of 5, Veil Cream with 10 days left, Night Repair Cream 40 days past its window.
+Five images, one size only, in `AppStore/screenshots/1206x2622/`. Each is exactly 1206 × 2622. Each places one of the approved portraits above a modern iPhone frame (Dynamic Island) showing Today, the month, the shelf, notes, or progress, plus a short headline. The controls match the app: the morning checklist, the November grid, the shelf warning, the two-week chart, and the side-by-side photos. The sample numbers match a first launch on November 11, 2026: a 5-day streak, morning 3 of 5, Veil Cream with 10 days left, Night Repair Cream 40 days past its window.
 
-The progress screenshot places the same generated portrait in both compare frames, with two crops, so the layout reads as one person a week apart. The app itself does not ship those portraits as the user’s photos. After a real photo is added, that screen uses the picture stored on the device.
+The progress image uses two crops of the same portrait inside the phone, so the compare reads as one person a week apart. The app itself does not ship those portraits as the user’s photos. After a real photo is added, that screen uses the picture stored on the device.
 
 | Folder | Pixel size | App Store slot |
 | --- | --- | --- |
-| `iphone-6.9` | 1320 × 2868 | 6.9-inch iPhone |
-| `iphone-6.7` | 1284 × 2778 | 6.7-inch iPhone |
-| `iphone-6.5` | 1242 × 2688 | 6.5-inch iPhone |
-| `ipad-13` | 2064 × 2752 | 13-inch iPad |
+| `1206x2622` | 1206 × 2622 | 6.3-inch iPhone (iPhone 16 Pro) |
 
-Order: 01 today, 02 the month, 03 the shelf, 04 progress, 05 notes.
+Order: 01 today, 02 the month, 03 the shelf, 04 notes, 05 progress.
 
-The portraits are original generated images made for this app, not photographs of real people. Copies are in `AppStore/models/`.
+The portraits are the approved generated images for this app, not photographs of real people. Copies are in `AppStore/models/` (`model-serum.jpg`, `model-cream.jpg`, `model-jar.jpg`, `model-cleanse.jpg`).
 
-The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also in the Xcode asset catalog. It is RGB with no alpha channel.
+The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png`. It is the approved artwork, converted to PNG, full bleed, RGB, with no alpha and no extra rounded mask. The same image is in the Xcode asset catalog.
 
 ## Submission checklist
 
@@ -167,7 +164,7 @@ The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also 
 - [ ] Confirm the 1024 marketing icon uploaded with the build.
 - [ ] Paste the name, subtitle, promotional text, description, and keywords from this file.
 - [ ] Category: Health & Fitness. Secondary: Lifestyle.
-- [ ] Upload five screenshots for 6.9-inch, 6.7-inch, 6.5-inch, and 13-inch iPad from `AppStore/screenshots/`.
+- [ ] Upload the five 1206 × 2622 screenshots from `AppStore/screenshots/1206x2622/`.
 - [ ] Age rating: answer from the table above. Expect 4+. Do not enroll in Made for Kids.
 - [ ] Privacy Policy URL: the `privacy.html` page above, once Pages is on.
 - [ ] Support URL: the website index above.

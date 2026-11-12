@@ -1,12 +1,12 @@
 :root {
-  --paper: #f6f2ec;
-  --card: #fdfaf6;
-  --ink: #2a2622;
-  --muted: #6e655c;
-  --line: #dad0c3;
-  --sage: #3e5344;
-  --blush: #e4c7be;
-  --clay: #c4a48a;
+  --paper: #e7f4ef;
+  --card: #f7fffc;
+  --ink: #1c3330;
+  --muted: #5c726c;
+  --line: #c9e3db;
+  --sage: #2f6f62;
+  --blush: #d5efe8;
+  --clay: #8fbfb4;
   --max: 1080px;
 }
 
@@ -130,7 +130,7 @@ article h3 {
 article p, .prose p, .prose li { color: var(--ink); }
 
 .note {
-  background: #f3ddd6;
+  background: #d7efe8;
   border-radius: 18px;
   padding: 16px 18px;
   margin: 18px 0 28px;

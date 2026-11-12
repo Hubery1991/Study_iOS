@@ -38,14 +38,14 @@ That suite checks day and month arithmetic, the open-jar window (including the 3
 
 - `APP_STORE_LISTING.md` — name, subtitle, promotional text, description, keywords, category, age-rating answers, App Privacy (Data Not Collected), review notes, and the submission checklist.
 - `NAME_UNIQUENESS.md` — iTunes Search API evidence. Nimvelle had no results on the US, UK, Japan, China, Germany, France, Canada, Australia, or South Korea storefronts on November 11, 2026.
-- `icon/AppIcon-1024.png` — 1024×1024 RGB marketing icon, no alpha. The full set is wired in `App/Assets.xcassets/AppIcon.appiconset`.
-- `models/` — the four original generated portraits used in the screenshots and on the website.
-- `screenshots/` — five images each at 1320×2868, 1284×2778, 1242×2688, and iPad 2064×2752.
+- `icon/AppIcon-1024.png` — the approved 1024×1024 artwork, saved as RGB PNG with no alpha and no extra rounded mask. The full set is wired in `App/Assets.xcassets/AppIcon.appiconset`. The website uses the same image as its favicon and apple touch icon.
+- `models/` — the four approved portraits used in the screenshots and on the website: `model-serum.jpg`, `model-cream.jpg`, `model-jar.jpg`, `model-cleanse.jpg`.
+- `screenshots/1206x2622/` — five images, each exactly 1206×2622. No other screenshot sizes are included.
 - `website/` — `index.html`, `privacy.html`, `terms.html`, and `site.css`.
 
 ### Screenshots
 
-They were composed by `AppStore/render_art.py` (Pillow). Each one places a portrait with Today’s checklist, the month, the shelf, the progress compare, or the notes chart, plus a headline. They are not captures from an iOS Simulator, because none is available in this environment. The controls and the sample numbers match the app: a 5-day streak, morning 3 of 5, Veil Cream with 10 days left, Night Repair Cream 40 days past its open-jar window. Regenerate with:
+They were composed by `AppStore/render_art.py` (Pillow). Each one is 1206×2622 and places an approved portrait above an iPhone frame with Today’s checklist, the month, the shelf, the notes chart, or the progress compare, plus a headline. They are not captures from an iOS Simulator, because none is available in this environment. The controls and the sample numbers match the app: a 5-day streak, morning 3 of 5, Veil Cream with 10 days left, Night Repair Cream 40 days past its open-jar window. Regenerate with:
 
 ```bash
 python3 AppStore/render_art.py
