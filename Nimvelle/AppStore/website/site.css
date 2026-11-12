@@ -1,0 +1,155 @@
+:root {
+  --paper: #e7f4ef;
+  --card: #f7fffc;
+  --ink: #1c3330;
+  --muted: #5c726c;
+  --line: #c9e3db;
+  --sage: #2f6f62;
+  --blush: #d5efe8;
+  --clay: #8fbfb4;
+  --max: 1080px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  line-height: 1.55;
+}
+
+a { color: var(--sage); }
+
+.wrap {
+  width: min(var(--max), calc(100% - 40px));
+  margin: 0 auto;
+}
+
+header.site {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 0 8px;
+}
+
+.brand {
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+nav a {
+  margin-left: 18px;
+  text-decoration: none;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 36px;
+  align-items: center;
+  padding: 28px 0 12px;
+}
+
+.hero img {
+  width: 100%;
+  height: 640px;
+  object-fit: cover;
+  border-radius: 28px;
+}
+
+.kicker {
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  color: var(--sage);
+  margin: 0 0 10px;
+}
+
+h1 {
+  font-weight: 500;
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1.02;
+  margin: 0 0 16px;
+}
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--muted);
+  margin: 0 0 18px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  padding: 28px 0 10px;
+}
+
+.row img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+section { padding: 18px 0 8px; }
+
+h2 {
+  font-weight: 500;
+  font-size: 2rem;
+  margin: 8px 0 12px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+article {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 20px 22px 8px;
+}
+
+article h3 {
+  margin: 0 0 6px;
+  font-weight: 500;
+  font-size: 1.35rem;
+}
+
+article p, .prose p, .prose li { color: var(--ink); }
+
+.note {
+  background: #d7efe8;
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin: 18px 0 28px;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 22px 0 40px;
+  color: var(--muted);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 0.92rem;
+}
+
+.prose { max-width: 740px; padding-bottom: 20px; }
+
+.prose h1 { font-size: 2.6rem; }
+
+@media (max-width: 860px) {
+  .hero, .grid, .row { grid-template-columns: 1fr; }
+  .hero img { height: 460px; }
+  nav a { margin-left: 12px; }
+}
