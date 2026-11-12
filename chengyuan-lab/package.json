@@ -1,0 +1,15 @@
+{
+  "name": "chengyuan-lab",
+  "private": true,
+  "description": "澄渊实验室 · 微信小游戏。测试与截图脚本只在开发时使用。",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "validate": "node scripts/validate-levels.js",
+    "generate": "node scripts/generate-levels.js",
+    "audio": "node scripts/gen-audio.js",
+    "screenshots": "node scripts/render-screenshots.js"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "0.1.80"
+  }
+}
