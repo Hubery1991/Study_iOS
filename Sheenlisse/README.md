@@ -36,14 +36,15 @@ That suite checks blending, the four looks, region geometry, shape and tone band
 
 - `APP_STORE_LISTING.md` — name, subtitle, promotional text, description, keywords, category, age-rating answers, App Privacy (Data Not Collected), review notes, and the submission checklist.
 - `NAME_UNIQUENESS.md` — iTunes Search API evidence. Sheenlisse had no exact `trackName` match on the US, UK, Japan, China, Germany, France, Canada, Australia, or South Korea storefronts on November 11, 2026.
-- `icon/AppIcon-1024.png` — 1024×1024 RGB marketing icon, no alpha. The full set is wired in `App/Assets.xcassets/AppIcon.appiconset`.
-- `models/` — the four original generated portraits used in the screenshots and on the website.
-- `screenshots/` — five images each at 1320×2868, 1284×2778, 1242×2688, and iPad 2064×2752.
+- `icon/AppIcon-1024.png` — 1024×1024 RGB marketing icon, no alpha, full-bleed. It is the approved artwork, also scaled into `App/Assets.xcassets/AppIcon.appiconset` and the website favicon.
+- `icon/sheenlisse-icon.jpg` — the approved square source for that icon.
+- `models/` — the four approved portraits used in the screenshots and on the website: lipstick, blush, eyeshadow, and a finished look.
+- `screenshots/` — five images, each exactly 1206×2622. No other sizes.
 - `website/` — `index.html`, `privacy.html`, `terms.html`, and `site.css`.
 
 ### Screenshots
 
-They were composed by `AppStore/render_art.py` (Pillow). Each one places a portrait inside the mirror’s look chips, shade row, intensity slider, compare divider, or suggestion card, plus a headline. They are not captures from an iOS Simulator, because none is available in this environment. Regenerate with:
+They were composed by `AppStore/render_art.py` (Pillow). Each canvas is 1206×2622, with a headline above an iPhone bezel. The approved portrait is the face in the mirror, and the controls match the app. They are not captures from an iOS Simulator, because none is available in this environment. Regenerate icons and screenshots with:
 
 ```bash
 python3 AppStore/render_art.py

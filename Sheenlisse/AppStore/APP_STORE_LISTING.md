@@ -129,20 +129,23 @@ iPhone is portrait. iPad is portrait, including upside down. There is no account
 
 ## Screenshots to upload
 
-Five images in each folder under `AppStore/screenshots/`. Each one places an original generated portrait inside the mirror UI and adds a short headline. The controls match the app: look chips, region tabs, shade row, intensity, compare, and the suggestion card.
+Five images, one size only, in `AppStore/screenshots/`. Each file is exactly 1206 × 2622. There are no other screenshot sizes in the kit.
 
-| Folder | Pixel size | App Store slot |
+Each image is a marketing canvas in blush, champagne, and rose. A headline and a one-line subhead sit above a modern iPhone with a Dynamic Island. Inside the screen is the Sheenlisse mirror: look chips, the region tabs, the shade row, intensity, and Compare, Save, and Capture. One of the approved portraits fills the camera. The copy sits outside the phone so it does not cover the controls.
+
+| File | Pixel size | What it shows |
 | --- | --- | --- |
-| `iphone-6.9` | 1320 × 2868 | 6.9-inch iPhone |
-| `iphone-6.7` | 1284 × 2778 | 6.7-inch iPhone |
-| `iphone-6.5` | 1242 × 2688 | 6.5-inch iPhone |
-| `ipad-13` | 2064 × 2752 | 13-inch iPad |
+| `01-mirror.png` | 1206 × 2622 | Live mirror, Natural, Petal |
+| `02-lipstick.png` | 1206 × 2622 | Lipstick shades, Rosewater |
+| `03-blush.png` | 1206 × 2622 | Blush, Baby Pink |
+| `04-eyes.png` | 1206 × 2622 | Eyeshadow, Soft Taupe |
+| `05-compare.png` | 1206 × 2622 | Before-and-after divider |
 
-Order: 01 live Natural, 02 Evening shades, 03 before and after, 04 intensity, 05 a look for your face.
+Upload this set for the iPhone screenshot slot that accepts 1206 × 2622. Do not look for 6.9-inch, 6.7-inch, 6.5-inch, or iPad 13-inch folders. Those sizes are not part of this kit.
 
-The portraits are original generated images made for this app, not photographs of real people. Copies are in `AppStore/models/`.
+The portraits are the approved generated images in `AppStore/models/` (`model-lipstick.jpg`, `model-blush.jpg`, `model-eyeshadow.jpg`, `model-finished.jpg`). They are not photographs of real people.
 
-The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also in the Xcode asset catalog. It is RGB with no alpha channel.
+The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png`. It is the approved full-bleed artwork, converted to PNG with no extra mask and no alpha. The same artwork is scaled into `App/Assets.xcassets/AppIcon.appiconset` and into the website favicon and apple-touch icon.
 
 ## Submission checklist
 
@@ -152,7 +155,7 @@ The 1024 × 1024 marketing icon is `AppStore/icon/AppIcon-1024.png` and is also 
 - [ ] Confirm the 1024 marketing icon uploaded with the build.
 - [ ] Paste the name, subtitle, promotional text, description, and keywords from this file.
 - [ ] Category: Lifestyle. Secondary: Photo & Video.
-- [ ] Upload five screenshots for 6.9-inch, 6.7-inch, 6.5-inch, and 13-inch iPad from `AppStore/screenshots/`.
+- [ ] Upload the five 1206 × 2622 screenshots from `AppStore/screenshots/`. No other screenshot sizes are required.
 - [ ] Age rating: answer from the table above. Expect 4+. Do not enroll in Made for Kids.
 - [ ] Privacy Policy URL: the `privacy.html` page above, once Pages is on.
 - [ ] Support URL: the website index above.
