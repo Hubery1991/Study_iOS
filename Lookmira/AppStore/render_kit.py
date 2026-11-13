@@ -6,7 +6,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
-ART = Path("/opt/cursor/artifacts/assets")
+INCOMING = ROOT / "AppStore" / "incoming"
 MODELS = ROOT / "AppStore" / "models"
 SAMPLES = ROOT / "App" / "SamplePhotos"
 ICON_DIR = ROOT / "AppStore" / "icon"
@@ -87,21 +87,13 @@ def pill(draw, xy, fill, outline=None):
     draw.rounded_rectangle(xy, radius=999, fill=fill, outline=outline)
 
 
-def make_icons(everyday):
+def make_icons(icon_path):
+    """Scale the approved full-bleed icon. The word Lookmira is already in the artwork."""
     ICON_DIR.mkdir(parents=True, exist_ok=True)
     APPICON.mkdir(parents=True, exist_ok=True)
-    plate = cover(everyday, 1024, 1024, bias=0.36)
-    draw = ImageDraw.Draw(plate)
-    word = "Lookmira"
-    size = 150
-    fnt = font(SERIF, size)
-    while text_w(draw, word, fnt) > 900 and size > 80:
-        size -= 4
-        fnt = font(SERIF, size)
-    tw = text_w(draw, word, fnt)
-    x = (1024 - tw) / 2
-    y = 860
-    draw.text((x, y), word, font=fnt, fill=INK)
+    plate = Image.open(icon_path).convert("RGB")
+    if plate.size != (1024, 1024):
+        plate = plate.resize((1024, 1024), Image.Resampling.LANCZOS)
     plate = plate.convert("RGB")
     assert plate.mode == "RGB" and plate.getbands() == ("R", "G", "B")
     kit = ICON_DIR / "AppIcon-1024.png"
@@ -354,24 +346,23 @@ def compose(screen, headline, sub, out):
 
 
 def main():
-    everyday = ART / "lookmira-everyday.jpg"
-    evening = ART / "lookmira-evening.jpg"
-    work = ART / "lookmira-work.jpg"
-    for path in (everyday, evening, work):
+    icon = INCOMING / "icon.jpg"
+    everyday = INCOMING / "hero-everyday.jpg"
+    evening = INCOMING / "evening.jpg"
+    work = INCOMING / "work.jpg"
+    for path in (icon, everyday, evening, work):
         if not path.exists():
-            raise SystemExit(f"missing portrait {path}")
+            raise SystemExit(f"missing approved artwork {path}")
     MODELS.mkdir(parents=True, exist_ok=True)
     SAMPLES.mkdir(parents=True, exist_ok=True)
-    mapping = {
-        everyday: ("everyday.jpg", "sample-everyday.jpg"),
-        evening: ("evening.jpg", "sample-evening.jpg"),
-        work: ("work.jpg", "sample-work.jpg"),
-    }
-    for src, (model_name, sample_name) in mapping.items():
-        im = Image.open(src).convert("RGB")
-        im.save(MODELS / model_name, "JPEG", quality=92)
-        im.save(SAMPLES / sample_name, "JPEG", quality=92)
-    make_icons(everyday)
+    # Keep the approved JPEG bytes. Do not re-encode or substitute another face.
+    (MODELS / "everyday.jpg").write_bytes(everyday.read_bytes())
+    (MODELS / "evening.jpg").write_bytes(evening.read_bytes())
+    (MODELS / "work.jpg").write_bytes(work.read_bytes())
+    (SAMPLES / "sample-everyday.jpg").write_bytes(everyday.read_bytes())
+    (SAMPLES / "sample-evening.jpg").write_bytes(evening.read_bytes())
+    (SAMPLES / "sample-work.jpg").write_bytes(work.read_bytes())
+    make_icons(icon)
     SHOTS.mkdir(parents=True, exist_ok=True)
     # Remove anything that is not one of the five final shots.
     for old in SHOTS.glob("*"):
