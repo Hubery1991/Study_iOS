@@ -1,0 +1,335 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9F0A8AECDEDE65A9DEC5C363 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513EB6E245B6E9EA5157CEF3 /* AboutView.swift */; };
+		BBA21BFE1DD1001453D30308 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8249F860DADCA1F7BFCC2F /* Components.swift */; };
+		FDCC42A61FA6733D59E60190 /* DrawerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29EFE404AB5B5AAF1F41A3A7 /* DrawerModel.swift */; };
+		884EE70ABDAE114BF9DEFE95 /* PhotoCabinet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98901197B0B97FC9D2616470 /* PhotoCabinet.swift */; };
+		8A12CA27379471351DEB692D /* PicksScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3392636AFDE3CA9CDFE26DA0 /* PicksScreen.swift */; };
+		3B28388AB6F59F79B3CE51AA /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31233EDED29AFC91B772AE4 /* RootView.swift */; };
+		961F340803EDC5EFC8AEE51C /* ShadeDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FD5C2D9C3AF38A1F30617F /* ShadeDetailView.swift */; };
+		42BCFF1EDAF67BF35B92F578 /* ShadeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E196BEB0334159B1EC64EA6 /* ShadeEditor.swift */; };
+		B59377ACBEA86250510A62C1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C924863241BFEB0B8AB013 /* Theme.swift */; };
+		B12C2F0BA51558CD41F32898 /* VermessaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFB223322F6692A054F1113 /* VermessaApp.swift */; };
+		EC2D655982B175A9269B18AC /* WardrobeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CA8FC76D33CBE51DE853C55 /* WardrobeScreen.swift */; };
+		4379D7B922C883FC09DD9B8C /* WishScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36D6DF231751ECC43E0BF09 /* WishScreen.swift */; };
+		B747AC6441CB34A2477DDCFB /* WornScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 699BC1F38942CE38A5063460 /* WornScreen.swift */; };
+		1B2FAA1F11095612EA360C1D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C06E17840801FECAC533008 /* Assets.xcassets */; };
+		DC968EDE662F368229A77FD9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E2515AA68745B0FAE7ED338A /* PrivacyInfo.xcprivacy */; };
+		EB7FF0694D2E22139C318AC3 /* VermessaCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2772F2C75E34DBB627D74590 /* VermessaCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		513EB6E245B6E9EA5157CEF3 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		1E8249F860DADCA1F7BFCC2F /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		29EFE404AB5B5AAF1F41A3A7 /* DrawerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerModel.swift; sourceTree = "<group>"; };
+		98901197B0B97FC9D2616470 /* PhotoCabinet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCabinet.swift; sourceTree = "<group>"; };
+		3392636AFDE3CA9CDFE26DA0 /* PicksScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicksScreen.swift; sourceTree = "<group>"; };
+		D31233EDED29AFC91B772AE4 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		E4FD5C2D9C3AF38A1F30617F /* ShadeDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeDetailView.swift; sourceTree = "<group>"; };
+		0E196BEB0334159B1EC64EA6 /* ShadeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadeEditor.swift; sourceTree = "<group>"; };
+		54C924863241BFEB0B8AB013 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		1CFB223322F6692A054F1113 /* VermessaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VermessaApp.swift; sourceTree = "<group>"; };
+		1CA8FC76D33CBE51DE853C55 /* WardrobeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WardrobeScreen.swift; sourceTree = "<group>"; };
+		E36D6DF231751ECC43E0BF09 /* WishScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WishScreen.swift; sourceTree = "<group>"; };
+		699BC1F38942CE38A5063460 /* WornScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WornScreen.swift; sourceTree = "<group>"; };
+		4C06E17840801FECAC533008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E2515AA68745B0FAE7ED338A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		87CDA8E3584501FD585EB132 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F3B6EDB3B60E9A94767CF3F /* Vermessa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vermessa.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		64776EB33CCD06A66F3DEAD6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB7FF0694D2E22139C318AC3 /* VermessaCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CBAAC3A987F50B776101335F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				513EB6E245B6E9EA5157CEF3 /* AboutView.swift */,
+				1E8249F860DADCA1F7BFCC2F /* Components.swift */,
+				29EFE404AB5B5AAF1F41A3A7 /* DrawerModel.swift */,
+				98901197B0B97FC9D2616470 /* PhotoCabinet.swift */,
+				3392636AFDE3CA9CDFE26DA0 /* PicksScreen.swift */,
+				D31233EDED29AFC91B772AE4 /* RootView.swift */,
+				E4FD5C2D9C3AF38A1F30617F /* ShadeDetailView.swift */,
+				0E196BEB0334159B1EC64EA6 /* ShadeEditor.swift */,
+				54C924863241BFEB0B8AB013 /* Theme.swift */,
+				1CFB223322F6692A054F1113 /* VermessaApp.swift */,
+				1CA8FC76D33CBE51DE853C55 /* WardrobeScreen.swift */,
+				E36D6DF231751ECC43E0BF09 /* WishScreen.swift */,
+				699BC1F38942CE38A5063460 /* WornScreen.swift */,
+				4C06E17840801FECAC533008 /* Assets.xcassets */,
+				E2515AA68745B0FAE7ED338A /* PrivacyInfo.xcprivacy */,
+				87CDA8E3584501FD585EB132 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6AE81DD3EF2860210DE356F2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3F3B6EDB3B60E9A94767CF3F /* Vermessa.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		18E36ED42BA5F48F36F910A6 = {
+			isa = PBXGroup;
+			children = (
+				CBAAC3A987F50B776101335F /* App */,
+				6AE81DD3EF2860210DE356F2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		07BC4DD9530D722E9BF19F39 /* Vermessa */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09ED8995BE3206BDCB54D4C1 /* Build configuration list for PBXNativeTarget "Vermessa" */;
+			buildPhases = (
+				F066C4EE733A7E1D1C2FF265 /* Sources */,
+				64776EB33CCD06A66F3DEAD6 /* Frameworks */,
+				4BE92DBB45EA51EAA1CE0AC8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Vermessa;
+			packageProductDependencies = (
+				2772F2C75E34DBB627D74590 /* VermessaCore */,
+			);
+			productName = Vermessa;
+			productReference = 3F3B6EDB3B60E9A94767CF3F /* Vermessa.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D4E1575A2E7B1DE5C775AAD1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				ORGANIZATIONNAME = "Jacky Liu";
+				TargetAttributes = {
+					07BC4DD9530D722E9BF19F39 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 0BCB1616156AA742CD88FC4A /* Build configuration list for PBXProject "Vermessa" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 18E36ED42BA5F48F36F910A6;
+			packageReferences = (
+				033CC8EF5D311A02172544CF /* XCLocalSwiftPackageReference "." */,
+			);
+			productRefGroup = 6AE81DD3EF2860210DE356F2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				07BC4DD9530D722E9BF19F39 /* Vermessa */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4BE92DBB45EA51EAA1CE0AC8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1B2FAA1F11095612EA360C1D /* Assets.xcassets in Resources */,
+				DC968EDE662F368229A77FD9 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F066C4EE733A7E1D1C2FF265 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F0A8AECDEDE65A9DEC5C363 /* AboutView.swift in Sources */,
+				BBA21BFE1DD1001453D30308 /* Components.swift in Sources */,
+				FDCC42A61FA6733D59E60190 /* DrawerModel.swift in Sources */,
+				884EE70ABDAE114BF9DEFE95 /* PhotoCabinet.swift in Sources */,
+				8A12CA27379471351DEB692D /* PicksScreen.swift in Sources */,
+				3B28388AB6F59F79B3CE51AA /* RootView.swift in Sources */,
+				961F340803EDC5EFC8AEE51C /* ShadeDetailView.swift in Sources */,
+				42BCFF1EDAF67BF35B92F578 /* ShadeEditor.swift in Sources */,
+				B59377ACBEA86250510A62C1 /* Theme.swift in Sources */,
+				B12C2F0BA51558CD41F32898 /* VermessaApp.swift in Sources */,
+				EC2D655982B175A9269B18AC /* WardrobeScreen.swift in Sources */,
+				4379D7B922C883FC09DD9B8C /* WishScreen.swift in Sources */,
+				B747AC6441CB34A2477DDCFB /* WornScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		80443564890810DD0E8E077B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9E7A144E75BEB6F2E06DAC60 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		961B5B870AE6CED7A8DBC7AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyliu.vermessa;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B3DBE928F54313218578514F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyliu.vermessa;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0BCB1616156AA742CD88FC4A /* Build configuration list for PBXProject "Vermessa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80443564890810DD0E8E077B /* Debug */,
+				9E7A144E75BEB6F2E06DAC60 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		09ED8995BE3206BDCB54D4C1 /* Build configuration list for PBXNativeTarget "Vermessa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				961B5B870AE6CED7A8DBC7AE /* Debug */,
+				B3DBE928F54313218578514F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		033CC8EF5D311A02172544CF /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ".";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2772F2C75E34DBB627D74590 /* VermessaCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 033CC8EF5D311A02172544CF /* XCLocalSwiftPackageReference "." */;
+			productName = VermessaCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D4E1575A2E7B1DE5C775AAD1 /* Project object */;
+}
