@@ -1,0 +1,78 @@
+:root {
+  --paper: #f3e6dc;
+  --card: #fff8f3;
+  --ink: #2c1418;
+  --merlot: #7c2436;
+  --mist: #6b464a;
+  --line: #e4c8be;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+header, main, footer {
+  width: min(760px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+header {
+  padding: 36px 0 8px;
+}
+
+.mark {
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--merlot);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 52px;
+  line-height: 1.05;
+  margin: 8px 0 12px;
+}
+
+h2 {
+  font-size: 30px;
+  margin: 28px 0 8px;
+}
+
+p, li { color: var(--ink); }
+
+.lede { font-size: 22px; color: var(--mist); }
+
+a { color: var(--merlot); }
+
+nav {
+  display: flex;
+  gap: 18px;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 18px;
+  margin-top: 12px;
+}
+
+.panel {
+  background: var(--card);
+  border-radius: 22px;
+  padding: 18px 20px;
+  margin: 16px 0;
+}
+
+ul { padding-left: 22px; }
+
+footer {
+  padding: 12px 0 40px;
+  color: var(--mist);
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  font-size: 17px;
+}
