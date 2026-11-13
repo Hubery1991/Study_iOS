@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7548A89B2789E245A172E5B7 /* DiaryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4777F25E9D9B5147F207585B /* DiaryModel.swift */; };
+		8439915B757B80E28A179A0E /* DiaryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2DC65292166E91717B2D5B4 /* DiaryScreen.swift */; };
+		5D8B3931DF8599C74BA62960 /* LibraryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC835AEC413431B0620030A9 /* LibraryScreen.swift */; };
+		11249DAE396389107696B807 /* LookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600A3A146E34C190F6E7A634 /* LookDetailView.swift */; };
+		A406906CC14E1E6FAE0963BF /* LookEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96D98597113A6991D2D56FB /* LookEditorView.swift */; };
+		EF6CDB0B4DF599F40D474128 /* LookmiraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD8DD5D30033423518A719B /* LookmiraApp.swift */; };
+		16042109319F2228C7467F53 /* PhotoArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A473EB07068462684F9F0C /* PhotoArchive.swift */; };
+		0C3EF45B5871E86E42F53ED8 /* RecreateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C01D0BB780A1A2E9E05A27 /* RecreateScreen.swift */; };
+		C81E82D93EE28C15E379B2F4 /* ReminderScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11276A771A976B774425926 /* ReminderScheduler.swift */; };
+		6E8E75BB9EE2FC8C76FCB2A1 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFEE33AFD10EFE0489531C7 /* SettingsScreen.swift */; };
+		0B8557ACF23677329B207C81 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2A32E6507F01F30E5EDE5C /* Theme.swift */; };
+		13DBC37767BCFA95D0D47E4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFDBAC21689581B04CB7ABB5 /* Assets.xcassets */; };
+		29F7805612C29CE3C25353D0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9931E363DE1366E8771C8468 /* PrivacyInfo.xcprivacy */; };
+		7006E07E5CD47731517F7A08 /* icon-1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 1130F62E092090964A6553BF /* icon-1024.png */; };
+		F2AD411796D1B376A19C4AEE /* icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 2FAB9AB5A1C9CEC7233EAA7F /* icon-120.png */; };
+		DED793904A8DF415CD0DD31E /* icon-152.png in Resources */ = {isa = PBXBuildFile; fileRef = 0BA051776F759BD98936D2A3 /* icon-152.png */; };
+		D0D8DFB744D2FC835277DFA6 /* icon-167.png in Resources */ = {isa = PBXBuildFile; fileRef = 3013670B8811A85C4F07B424 /* icon-167.png */; };
+		A5A93F1AE4D6BE6963A43162 /* icon-180.png in Resources */ = {isa = PBXBuildFile; fileRef = EFD76870F38F29BA9375D9FD /* icon-180.png */; };
+		79100DD4BB72E0A10F1A9F70 /* icon-20.png in Resources */ = {isa = PBXBuildFile; fileRef = 461FB921BE6FF90EDE9DC09E /* icon-20.png */; };
+		0AB87D87A65A8E681803DA0B /* icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = A514C1670345A20AF1E02F64 /* icon-29.png */; };
+		B03F909432C3DCDA5951AD1E /* icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = D54BFD77807968CA8FB7A29B /* icon-40.png */; };
+		CD6D23FA4EBEB443629822D1 /* icon-58.png in Resources */ = {isa = PBXBuildFile; fileRef = 7122B8219035C19F7ABD1862 /* icon-58.png */; };
+		E46FD94393994D8BC97423D3 /* icon-60.png in Resources */ = {isa = PBXBuildFile; fileRef = 456136F083BD0AFDB2F238FA /* icon-60.png */; };
+		984C639488BADA7942E3A455 /* icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 1200EBC18CE5EE267C5C0CA9 /* icon-76.png */; };
+		EC6B6DCCE8581D027E96B513 /* icon-80.png in Resources */ = {isa = PBXBuildFile; fileRef = F6409210DB5F89A8CB5EF34A /* icon-80.png */; };
+		1BE5C5B29D7153472462AD20 /* icon-87.png in Resources */ = {isa = PBXBuildFile; fileRef = 56CFD8914630FCA5F4FE27AA /* icon-87.png */; };
+		CBE77953A8427106548299C1 /* sample-evening.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 12CF75F93EC519CFC055A2A1 /* sample-evening.jpg */; };
+		07256EE849092D97E062A8D1 /* sample-everyday.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AA610D0E101941C758C674AB /* sample-everyday.jpg */; };
+		B6416965DF9B90305042FAC9 /* sample-work.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6789903344CADE252E49117D /* sample-work.jpg */; };
+		C15A76AF73261C9A9E8680CC /* LookmiraCore in Frameworks */ = {isa = PBXBuildFile; productRef = 82BBA81F3E7F4B999F61E7E5 /* LookmiraCore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3FB6BD64A997C517BC11CC6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4777F25E9D9B5147F207585B /* DiaryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryModel.swift; sourceTree = "<group>"; };
+		C2DC65292166E91717B2D5B4 /* DiaryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryScreen.swift; sourceTree = "<group>"; };
+		BC835AEC413431B0620030A9 /* LibraryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryScreen.swift; sourceTree = "<group>"; };
+		600A3A146E34C190F6E7A634 /* LookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookDetailView.swift; sourceTree = "<group>"; };
+		C96D98597113A6991D2D56FB /* LookEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookEditorView.swift; sourceTree = "<group>"; };
+		EDD8DD5D30033423518A719B /* LookmiraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookmiraApp.swift; sourceTree = "<group>"; };
+		82A473EB07068462684F9F0C /* PhotoArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoArchive.swift; sourceTree = "<group>"; };
+		A2C01D0BB780A1A2E9E05A27 /* RecreateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecreateScreen.swift; sourceTree = "<group>"; };
+		F11276A771A976B774425926 /* ReminderScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderScheduler.swift; sourceTree = "<group>"; };
+		7BFEE33AFD10EFE0489531C7 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		AA2A32E6507F01F30E5EDE5C /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		CFDBAC21689581B04CB7ABB5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets.xcassets"; sourceTree = "<group>"; };
+		9931E363DE1366E8771C8468 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
+		1130F62E092090964A6553BF /* icon-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-1024.png"; sourceTree = "<group>"; };
+		2FAB9AB5A1C9CEC7233EAA7F /* icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-120.png"; sourceTree = "<group>"; };
+		0BA051776F759BD98936D2A3 /* icon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-152.png"; sourceTree = "<group>"; };
+		3013670B8811A85C4F07B424 /* icon-167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-167.png"; sourceTree = "<group>"; };
+		EFD76870F38F29BA9375D9FD /* icon-180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-180.png"; sourceTree = "<group>"; };
+		461FB921BE6FF90EDE9DC09E /* icon-20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-20.png"; sourceTree = "<group>"; };
+		A514C1670345A20AF1E02F64 /* icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-29.png"; sourceTree = "<group>"; };
+		D54BFD77807968CA8FB7A29B /* icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-40.png"; sourceTree = "<group>"; };
+		7122B8219035C19F7ABD1862 /* icon-58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-58.png"; sourceTree = "<group>"; };
+		456136F083BD0AFDB2F238FA /* icon-60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-60.png"; sourceTree = "<group>"; };
+		1200EBC18CE5EE267C5C0CA9 /* icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-76.png"; sourceTree = "<group>"; };
+		F6409210DB5F89A8CB5EF34A /* icon-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-80.png"; sourceTree = "<group>"; };
+		56CFD8914630FCA5F4FE27AA /* icon-87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Assets.xcassets/AppIcon.appiconset/icon-87.png"; sourceTree = "<group>"; };
+		12CF75F93EC519CFC055A2A1 /* sample-evening.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpg; path = "SamplePhotos/sample-evening.jpg"; sourceTree = "<group>"; };
+		AA610D0E101941C758C674AB /* sample-everyday.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpg; path = "SamplePhotos/sample-everyday.jpg"; sourceTree = "<group>"; };
+		6789903344CADE252E49117D /* sample-work.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpg; path = "SamplePhotos/sample-work.jpg"; sourceTree = "<group>"; };
+		31B54FA47D655A029C8FC593 /* Lookmira.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lookmira.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CF5BDB0BEAFE176F9629192A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C15A76AF73261C9A9E8680CC /* LookmiraCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1C48CE29E4E135EE62951B22 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3FB6BD64A997C517BC11CC6E /* Info.plist */,
+				4777F25E9D9B5147F207585B /* DiaryModel.swift */,
+				C2DC65292166E91717B2D5B4 /* DiaryScreen.swift */,
+				BC835AEC413431B0620030A9 /* LibraryScreen.swift */,
+				600A3A146E34C190F6E7A634 /* LookDetailView.swift */,
+				C96D98597113A6991D2D56FB /* LookEditorView.swift */,
+				EDD8DD5D30033423518A719B /* LookmiraApp.swift */,
+				82A473EB07068462684F9F0C /* PhotoArchive.swift */,
+				A2C01D0BB780A1A2E9E05A27 /* RecreateScreen.swift */,
+				F11276A771A976B774425926 /* ReminderScheduler.swift */,
+				7BFEE33AFD10EFE0489531C7 /* SettingsScreen.swift */,
+				AA2A32E6507F01F30E5EDE5C /* Theme.swift */,
+				CFDBAC21689581B04CB7ABB5 /* Assets.xcassets */,
+				9931E363DE1366E8771C8468 /* PrivacyInfo.xcprivacy */,
+				1130F62E092090964A6553BF /* icon-1024.png */,
+				2FAB9AB5A1C9CEC7233EAA7F /* icon-120.png */,
+				0BA051776F759BD98936D2A3 /* icon-152.png */,
+				3013670B8811A85C4F07B424 /* icon-167.png */,
+				EFD76870F38F29BA9375D9FD /* icon-180.png */,
+				461FB921BE6FF90EDE9DC09E /* icon-20.png */,
+				A514C1670345A20AF1E02F64 /* icon-29.png */,
+				D54BFD77807968CA8FB7A29B /* icon-40.png */,
+				7122B8219035C19F7ABD1862 /* icon-58.png */,
+				456136F083BD0AFDB2F238FA /* icon-60.png */,
+				1200EBC18CE5EE267C5C0CA9 /* icon-76.png */,
+				F6409210DB5F89A8CB5EF34A /* icon-80.png */,
+				56CFD8914630FCA5F4FE27AA /* icon-87.png */,
+				12CF75F93EC519CFC055A2A1 /* sample-evening.jpg */,
+				AA610D0E101941C758C674AB /* sample-everyday.jpg */,
+				6789903344CADE252E49117D /* sample-work.jpg */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		00C45FD35CB0F9C5F764F070 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				31B54FA47D655A029C8FC593 /* Lookmira.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ADCF10F76EBF2A74473E9DC4 = {
+			isa = PBXGroup;
+			children = (
+				1C48CE29E4E135EE62951B22 /* App */,
+				00C45FD35CB0F9C5F764F070 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EB960D9860626C0245CD02AB /* Lookmira */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACEA347C8CDD29A012FDEB0F /* Build configuration list for PBXNativeTarget "Lookmira" */;
+			buildPhases = (
+				1CDF2F71A52B082132B04DFF /* Sources */,
+				CF5BDB0BEAFE176F9629192A /* Frameworks */,
+				C02F1309AF4906C92F1EAD44 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Lookmira;
+			packageProductDependencies = (
+				82BBA81F3E7F4B999F61E7E5 /* LookmiraCore */,
+			);
+			productName = Lookmira;
+			productReference = 31B54FA47D655A029C8FC593 /* Lookmira.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D09515DBDDCE2C3C94EF1F59 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					EB960D9860626C0245CD02AB = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = EF518AB9E379FA8088ED7FA6 /* Build configuration list for PBXProject "Lookmira" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = ADCF10F76EBF2A74473E9DC4;
+			packageReferences = (
+				49EEF2B4054B73CA25391C68 /* XCLocalSwiftPackageReference "." */,
+			);
+			productRefGroup = 00C45FD35CB0F9C5F764F070 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EB960D9860626C0245CD02AB /* Lookmira */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C02F1309AF4906C92F1EAD44 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13DBC37767BCFA95D0D47E4F /* Assets.xcassets in Resources */,
+				29F7805612C29CE3C25353D0 /* PrivacyInfo.xcprivacy in Resources */,
+				7006E07E5CD47731517F7A08 /* icon-1024.png in Resources */,
+				F2AD411796D1B376A19C4AEE /* icon-120.png in Resources */,
+				DED793904A8DF415CD0DD31E /* icon-152.png in Resources */,
+				D0D8DFB744D2FC835277DFA6 /* icon-167.png in Resources */,
+				A5A93F1AE4D6BE6963A43162 /* icon-180.png in Resources */,
+				79100DD4BB72E0A10F1A9F70 /* icon-20.png in Resources */,
+				0AB87D87A65A8E681803DA0B /* icon-29.png in Resources */,
+				B03F909432C3DCDA5951AD1E /* icon-40.png in Resources */,
+				CD6D23FA4EBEB443629822D1 /* icon-58.png in Resources */,
+				E46FD94393994D8BC97423D3 /* icon-60.png in Resources */,
+				984C639488BADA7942E3A455 /* icon-76.png in Resources */,
+				EC6B6DCCE8581D027E96B513 /* icon-80.png in Resources */,
+				1BE5C5B29D7153472462AD20 /* icon-87.png in Resources */,
+				CBE77953A8427106548299C1 /* sample-evening.jpg in Resources */,
+				07256EE849092D97E062A8D1 /* sample-everyday.jpg in Resources */,
+				B6416965DF9B90305042FAC9 /* sample-work.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1CDF2F71A52B082132B04DFF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7548A89B2789E245A172E5B7 /* DiaryModel.swift in Sources */,
+				8439915B757B80E28A179A0E /* DiaryScreen.swift in Sources */,
+				5D8B3931DF8599C74BA62960 /* LibraryScreen.swift in Sources */,
+				11249DAE396389107696B807 /* LookDetailView.swift in Sources */,
+				A406906CC14E1E6FAE0963BF /* LookEditorView.swift in Sources */,
+				EF6CDB0B4DF599F40D474128 /* LookmiraApp.swift in Sources */,
+				16042109319F2228C7467F53 /* PhotoArchive.swift in Sources */,
+				0C3EF45B5871E86E42F53ED8 /* RecreateScreen.swift in Sources */,
+				C81E82D93EE28C15E379B2F4 /* ReminderScheduler.swift in Sources */,
+				6E8E75BB9EE2FC8C76FCB2A1 /* SettingsScreen.swift in Sources */,
+				0B8557ACF23677329B207C81 /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		73BFC4993D558C2844970A56 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+
+			};
+			name = Debug;
+		};
+		3C5BC6FE1E438E679FB7F74F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+
+			};
+			name = Release;
+		};
+		A45358D7F57D12409C956205 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Lookmira;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyliu.lookmira;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+
+			};
+			name = Debug;
+		};
+		7A3CC3E65B4BE81911CE6871 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Lookmira;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jackyliu.lookmira;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EF518AB9E379FA8088ED7FA6 /* Build configuration list for PBXProject "Lookmira" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				73BFC4993D558C2844970A56 /* Debug */,
+				3C5BC6FE1E438E679FB7F74F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACEA347C8CDD29A012FDEB0F /* Build configuration list for PBXNativeTarget "Lookmira" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A45358D7F57D12409C956205 /* Debug */,
+				7A3CC3E65B4BE81911CE6871 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		49EEF2B4054B73CA25391C68 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ".";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		82BBA81F3E7F4B999F61E7E5 /* LookmiraCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 49EEF2B4054B73CA25391C68 /* XCLocalSwiftPackageReference "." */;
+			productName = LookmiraCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D09515DBDDCE2C3C94EF1F59 /* Project object */;
+}
